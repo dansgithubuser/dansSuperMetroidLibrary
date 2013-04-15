@@ -13,8 +13,8 @@ typedef std::vector<U8> Buffer;
 
 const unsigned TILE_SIZE=16;
 const unsigned CHUNK_SIZE=16;
-
-std::string codeDescription(U16 code);
+const unsigned ROOMS=263;
+extern const U32 ROOM_OFFSETS[];
 
 template <class T> class Array2D{
 	public:
@@ -49,11 +49,8 @@ struct Vertex{
 class Rom{
 	public:
 		std::string open(std::string fileName);
-		const Buffer& readBuffer() const{ return buffer; }
-		U16 readHeaderLength() const{ return headerLength; }
-	private:
-		Buffer buffer;
-		U16 headerLength;
+		void save(std::string fileName);
+		Buffer header, buffer;
 };
 
 struct RoomHeader{
@@ -107,6 +104,7 @@ struct TileAssembler{
 struct TileLayer{
 	TileLayer(): index(0), flipH(false), flipV(false), property(0) {}
 	TileLayer(const Buffer& buffer, U32 offset);
+	void write(Buffer& buffer);
 	U16 index;
 	bool flipH, flipV;
 	U8 property;
@@ -136,13 +134,19 @@ struct Door{
 
 class Room{
 	public:
-		bool open(const Rom& rom, U32 offset, int stateIndex=-1);//nonexistant state indices default to standard state
+		Room(Rom& rom);
+		bool open(U32 offset, int stateIndex=-1);//nonexistant state indices default to standard state
+		bool save(U32 offset, int stateIndex=-1);//nonexistant state indices default to standard state
+		Tile copy(unsigned x, unsigned y);
+		void paste(Tile, unsigned x, unsigned y);
+		void loadGraphics();
 		void drawTileSet(Array2D<Color>&, unsigned tilesWide) const;
 		void getQuadsVertexArray(std::vector<Vertex>&, unsigned tilesWide) const;//tilesWide should be same as used in drawTileSet
 		const Door* readDoor(unsigned x, unsigned y) const;
 		unsigned readW() const{ return header.width *CHUNK_SIZE*TILE_SIZE; }
 		unsigned readH() const{ return header.height*CHUNK_SIZE*TILE_SIZE; }
 	private:
+		Rom& rom;
 		RoomHeader header;
 		std::vector<U32> stateCodes;
 		U8 stateCodeValue;
@@ -151,10 +155,11 @@ class Room{
 		Array2D<Tile> tiles;
 		std::vector<Array2D<Color> > tileSet;
 		std::vector<Door> doors;
+		bool mode7;
+		unsigned originalCompressedTileDataSize;
 };
 
-extern const unsigned ROOMS;
-extern const U32 ROOM_OFFSETS[];
+std::string codeDescription(U16 code);
 
 };//namespace sm
 
