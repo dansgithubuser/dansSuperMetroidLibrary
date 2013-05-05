@@ -1,18 +1,12 @@
 #include "sm.hpp"
 
 #include <fstream>
-#include <vector>
-#include <sstream>
 #include <cassert>
-#include <map>
-#include <iostream>
 
 using namespace std;
 using namespace sm;
 
-const unsigned MAX_BLOCK_LENGTH=1024;
-
-const U32 sm::ROOM_OFFSETS[ROOMS]={
+const U32 sm::VANILLA_ROOM_OFFSETS[VANILLA_ROOMS]={
 	0x791F8, 0x792B3, 0x792FD, 0x793AA, 0x793D5, 0x793FE, 0x79461, 0x7948C,
 	0x794CC, 0x794FD, 0x79552, 0x7957D, 0x795A8, 0x795D4, 0x795FF, 0x7962A,
 	0x7965B, 0x7968F, 0x796BA, 0x7975C, 0x797B5, 0x79804, 0x79879, 0x798E2,
@@ -48,31 +42,27 @@ const U32 sm::ROOM_OFFSETS[ROOMS]={
 	0x7DF45, 0x7DF8D, 0x7DFD7, 0x7E021, 0x7E06B, 0x7E0B5, 0x7E82C
 };
 
-enum{
-	STANDARD=0xE5E6u,
-	DOORS=0xE5EBu,
-	TOURIAN_BOSS_1=0xE5FFu,
-	EVENTS=0xE612u,
-	BOSSES=0xE629u,
-	MORPH=0xE640u,
-	MORPH_AND_MISSILES=0xE652u,
-	POWER_BOMBS=0xE669u,
-	SPEED_BOOSTER=0xE678u
-};
+const U16 VANILLA_CERES_RIDLEY_ROOM_LAYER_HANDLING=0xC97Bu;
 
-unsigned lzDecompress(const Buffer& source, U32 offset, U32 length, unsigned bytes, U8 mask, bool absolute, Buffer& destination){
+//=====SNES format 5 compression=====//
+const unsigned MAX_BLOCK_LENGTH=1024;
+
+unsigned lzDecompress(const Buffer& source, U32 offset, U32 length, unsigned bytes, U8 mask, bool absolute, Buffer* destination=NULL){
 	assert(bytes==1||bytes==2);
 	assert(mask==0||mask==0xFFu);
-	int from=source[offset];
-	if(bytes==2) from|=source[offset+1]<<8;
-	if(!absolute) from=destination.size()-from;
-	if(from>=0)
-		for(unsigned i=0; i<length; ++i)
-			destination.push_back(destination[from+i]^mask);
+	if(destination){
+		int from=source[offset];
+		if(bytes==2) from|=source[offset+1]<<8;
+		if(!absolute) from=destination->size()-from;
+		if(from>=0)
+			for(unsigned i=0; i<length; ++i)
+				destination->push_back((*destination)[from+i]^mask);
+	}
 	return bytes;
 }
 
-unsigned decompress(const Buffer& source, U32 offset, Buffer& destination){
+//returns size of compressed data
+unsigned decompress(const Buffer& source, U32 offset, Buffer* destination=NULL){
 	unsigned initialOffset=offset;
 	while(true){
 		if(source[offset]==0xFF) break;//done
@@ -92,20 +82,20 @@ unsigned decompress(const Buffer& source, U32 offset, Buffer& destination){
 		switch(op){
 			case 0://no compression
 				for(unsigned i=0; i<length; ++i){
-					destination.push_back(source[offset]);
+					if(destination) destination->push_back(source[offset]);
 					++offset;
 				}
 				break;
 			case 1://1 byte run length encoding
-				for(unsigned i=0; i<length; ++i) destination.push_back(source[offset]);
+				if(destination) for(unsigned i=0; i<length; ++i) destination->push_back(source[offset]);
 				++offset;
 				break;
 			case 2://2 byte run length encoding
-				for(unsigned i=0; i<length; ++i) destination.push_back(source[offset+i%2]);
+				if(destination) for(unsigned i=0; i<length; ++i) destination->push_back(source[offset+i%2]);
 				offset+=2;
 				break;
 			case 3://gradient run length encoding
-				for(unsigned i=0; i<length; ++i) destination.push_back((source[offset]+i)%0x100u);
+				if(destination) for(unsigned i=0; i<length; ++i) destination->push_back((source[offset]+i)%0x100u);
 				++offset;
 				break;
 			case 4:
@@ -135,6 +125,12 @@ void putBlockHeader(Buffer& destination, U8 op, unsigned length){
 	else destination.push_back(op<<5|length);
 }
 
+void noCompress(const Buffer& source, U32 offset, U32 length, Buffer& destination){
+	putBlockHeader(destination, 0, length);
+	for(unsigned i=0; i<length; ++i)
+		destination.push_back(source[offset-length+i]);
+}
+
 void rleCompress(const Buffer& source, U32 offset, U32& length, U8 op, Buffer& destination){
 	unsigned bytes=1, gradient=0;
 	switch(op){
@@ -151,11 +147,6 @@ void rleCompress(const Buffer& source, U32 offset, U32& length, U8 op, Buffer& d
 	putBlockHeader(destination, op, length);
 	destination.push_back(source[offset]);
 	if(bytes==2) destination.push_back(source[offset+1]);
-}
-
-template<class T> void eject(vector<T>& v, unsigned i){
-	v[i]=v.back();
-	v.pop_back();
 }
 
 class LzCompressor{
@@ -251,21 +242,15 @@ class LzCompressor{
 		vector<unsigned> offsets[256];
 };
 
-void noCompress(const Buffer& source, U32 offset, U32 length, Buffer& destination){
-	putBlockHeader(destination, 0, length);
-	for(unsigned i=0; i<length; ++i)
-		destination.push_back(source[offset-length+i]);
-}
-
 void compress(const Buffer& source, Buffer& destination){
 	unsigned i=0;
 	unsigned noCompressionLength=0;
 	LzCompressor lzc(source);
 	while(i<source.size()){
 		//attempt all strategies greedily
-		const unsigned stategies=7;
-		Buffer block[stategies];
-		unsigned length[stategies];
+		const unsigned strategies=7;
+		Buffer block[strategies];
+		unsigned length[strategies];
 		rleCompress(source, i, length[0], 1, block[0]);
 		rleCompress(source, i, length[1], 2, block[1]);
 		rleCompress(source, i, length[2], 3, block[2]);
@@ -275,7 +260,7 @@ void compress(const Buffer& source, Buffer& destination){
 		lzc.compress(i, length[6], 7, block[6]);
 		//find best op to use
 		unsigned bestOp=0, bestSourceLength=1, bestDestinationLength=1;
-		for(unsigned j=0; j<stategies; ++j){
+		for(unsigned j=0; j<strategies; ++j){
 			unsigned sourceLength=length[j];
 			if(sourceLength==0) continue;
 			unsigned destinationLength=block[j].size();
@@ -301,59 +286,861 @@ void compress(const Buffer& source, Buffer& destination){
 			//actually stick in the no compression block first if it exists
 			if(noCompressionLength!=0){
 				noCompress(source, i, noCompressionLength, destination);
-
-cerr<<"0 "<<noCompressionLength<<" "<<destination.size()<<" c\n";
-
 				noCompressionLength=0;
 			}
 			//stick in the compressed block
 			for(unsigned j=0; j<block[bestOp-1].size(); ++j)
 				destination.push_back(block[bestOp-1][j]);
-
-cerr<<(unsigned)bestOp<<" "<<length[bestOp-1]<<" "<<destination.size()<<" c\n";
-
 			i+=length[bestOp-1];
 		}
 	}
 	destination.push_back(0xFFu);//done
 }
 
-//convert cpu address to rom address
-//not sure if values returned are correct when address&0x8000u==0x8000u
-U32 cpuToRom(U32 address){ return (address&0x7F0000u)>>1|(address&0x7FFFu); }
+//=====translation=====//
+U32 loRomToOffset(U32 address){ return (address&0x7F0000u)>>1|(address&0x7FFFu); }
+U32 loRomToOffset(U8 bank, U16 address){ return (bank&0x7Fu)<<15|(address&0x7FFFu); }
+U32 offsetToLoRom(U32 offset){ return 0x800000u|(offset&0x3F8000u)<<1|0x8000u|(offset&0x7FFFu); }
+U16 offsetToLoRom16(U32 offset){ return 0x8000u|(offset&0x7FFFu); }
 
 U16 readU16(const Buffer& buffer, U32 offset){
 	return buffer[offset]|buffer[offset+1]<<8;
 }
 
-void writeU16(Buffer& buffer, U16 value){
-	buffer.push_back(value>>0&0xFFu);
-	buffer.push_back(value>>8&0xFFu);
+void writeU16(Buffer& buffer, U32 offset, U16 value){
+	buffer[offset+0]=value>>0&0xFFu;
+	buffer[offset+1]=value>>8&0xFFu;
 }
 
 U32 readU24(const Buffer& buffer, U32 offset){
 	return buffer[offset]|buffer[offset+1]<<8|buffer[offset+2]<<16;
 }
 
-void writeU24(Buffer& buffer, U32 value){
-	buffer.push_back(value>> 0&0xFFu);
-	buffer.push_back(value>> 8&0xFFu);
-	buffer.push_back(value>>16&0xFFu);
-}
-
-U32 readPointer(const Buffer& buffer, U32 offset){
-	return cpuToRom(readU24(buffer, offset));
+void writeU24(Buffer& buffer, U32 offset, U32 value){
+	buffer[offset+0]=value>> 0&0xFFu;
+	buffer[offset+1]=value>> 8&0xFFu;
+	buffer[offset+2]=value>>16&0xFFu;
 }
 
 void readU82D(const Buffer& buffer, U32 offset, Array2D<U8>& u82d){
-	for(unsigned i=0; i<u82d.readISize(); ++i)
-		for(unsigned j=0; j<u82d.readJSize(); ++j){
+	for(unsigned j=0; j<u82d.readJSize(); ++j)
+		for(unsigned i=0; i<u82d.readISize(); ++i){
 			u82d.at(i, j)=buffer[offset];
 			++offset;
 		}
 }
 
-string musicControlDescription(U8 musicControl){
+void writeU82D(Buffer& buffer, U32 offset, const Array2D<U8>& u82d){
+	for(unsigned i=0; i<u82d.readISize(); ++i)
+		for(unsigned j=0; j<u82d.readJSize(); ++j){
+			buffer[offset]=u82d.at(i, j);
+			++offset;
+		}
+}
+
+void drawSubtile(const Buffer& subtiles, U16 tileInfo, const vector<Color>& palette, Array2D<Color>& destination, unsigned x, unsigned y){
+	U8 xMask=(tileInfo&0x4000)?7:0;
+	U8 yMask=(tileInfo&0x8000)?7:0;
+	U8 hi=(tileInfo&0x1C00u)>>6;
+	for(unsigned ty=0; ty<8; ++ty){
+		for(unsigned tx=0; tx<8; ++tx){
+			U8 lo=subtiles[(tileInfo&0x3FFu)*64+(tx^xMask)+(ty^yMask)*8];
+			if(lo) destination.at(x+tx, y+ty)=palette[hi|lo];
+			else destination.at(x+tx, y+ty)=Color();
+		}
+	}
+}
+
+U32 tileSetOffset(U8 tileSet){ return 0x7E6A2u+U32(tileSet)*9; }
+
+//=====class Rom=====//
+string Rom::open(string fileName){
+	header.clear();
+	buffer.clear();
+	ifstream file(fileName.c_str(), ios::binary);
+	char c;
+	while(file.get(c)) buffer.push_back(c);
+	file.close();
+	//handle header
+	if(buffer.size()%32768!=0){
+		for(unsigned i=0; i<512; ++i) header.push_back(buffer[i]);
+		buffer.erase(buffer.begin(), buffer.begin()+512);
+	}
+	//check for PAL
+	if(buffer[0x7FD9u]>=2) return "ROM is PAL. This doesn't work on PAL ROMs.";
+	//finish
+	return "";
+}
+
+bool Rom::indexVanilla(){
+	//saves
+	Save::index(index);
+	//transitions from saves
+	for(unsigned offset=Save::START; offset<Save::END; offset+=Save::SIZE){
+		Save s(*this);
+		s.open(offset);
+		Transition t(*this);
+		t.index(s.transition, index);
+	}
+	//mode 7 graphics
+	Mode7 mode7(*this);
+	for(U8 i=Mode7::FIRST_TILE_SET; i<=Mode7::LAST_TILE_SET; ++i)
+		mode7.index(i, index);
+	//rooms
+	Room room(*this);
+	for(unsigned i=0; i<VANILLA_ROOMS; ++i)
+		if(!room.index(sm::VANILLA_ROOM_OFFSETS[i], index))
+			return false;
+	//finish
+	return true;
+}
+
+bool Rom::takeSpace(U8 bank, U16 size, U32& offset){
+	U32 bankStart=loRomToOffset(bank, 0);
+	offset=bankStart;
+	for(unsigned i=bankStart, sizeSoFar=0; i<bankStart+0x8000u; ++i){
+		if(index[i]==HACKABLE){
+			++sizeSoFar;
+			if(sizeSoFar==size){
+				index.set(offset, size, HACKED);
+				return true;
+			}
+		}
+		else{
+			offset=i+1;
+			sizeSoFar=0;
+		}
+	}
+	return false;
+}
+
+bool Rom::takeSpace(U8 minBank, U8 maxBank, U16 size, U32& offset){
+	for(U8 bank=minBank; bank<=maxBank; ++bank)
+		if(takeSpace(bank, size, offset)) return true;
+	return false;
+}
+
+bool Rom::save(string fileName){
+	ofstream file(fileName.c_str(), ios::binary);
+	for(unsigned i=0; i<header.size(); ++i) file.put(header[i]);
+	for(unsigned i=0; i<buffer.size(); ++i) file.put(buffer[i]);
+	file.close();
+	return true;
+}
+
+void Rom::dummify(){
+///
+	for(unsigned i=loRomToOffset(0xCE, 0); i<index.size(); ++i)
+		if(index[i]==HACKABLE)
+			buffer[i]=0xFFu;
+}
+
+//=====class Transition=====//
+void Transition::index(U32 offset, Rom::Index& index){
+	index.set(offset, SIZE, Rom::HACKABLE);
+}
+
+void Transition::open(U32 offset){
+	room=readU16(rom->buffer, offset);
+	if(room!=0) room=loRomToOffset(Room::BANK, room);
+	flags=rom->buffer[offset+2];
+	direction=rom->buffer[offset+3];
+	animationX=rom->buffer[offset+4];
+	animationY=rom->buffer[offset+5];
+	x=rom->buffer[offset+6];
+	y=rom->buffer[offset+7];
+	distance=readU16(rom->buffer, offset+8);
+	scroll=readU16(rom->buffer, offset+10);
+}
+
+bool Transition::save(U32& offset){
+	if(!rom->takeSpace(BANK, SIZE, offset)) return false;
+	writeU16(rom->buffer, offset, room==0?0:offsetToLoRom16(room));
+	rom->buffer[offset+2]=flags;
+	rom->buffer[offset+3]=direction;
+	rom->buffer[offset+4]=animationX;
+	rom->buffer[offset+5]=animationY;
+	rom->buffer[offset+6]=x;
+	rom->buffer[offset+7]=y;
+	writeU16(rom->buffer, offset+8, distance);
+	writeU16(rom->buffer, offset+10, scroll);
+	return true;
+}
+
+//=====class Save=====//
+void Save::index(Rom::Index& index){
+	index.set(START, END-START, Rom::HACKABLE);
+}
+
+U32 Save::readRegionTable(Region region){
+	return readU16(rom->buffer, REGION_TABLES+2*region);
+}
+
+void Save::setRegionTable(Region region, U32 offset){
+	writeU16(rom->buffer, REGION_TABLES+2*region, offsetToLoRom16(offset));
+}
+
+void Save::open(U32 offset){
+	room=loRomToOffset(Room::BANK, readU16(rom->buffer, offset));
+	transition=loRomToOffset(Transition::BANK, readU16(rom->buffer, offset+2));
+	unknown=readU16(rom->buffer, offset+4);
+	scrollX=readU16(rom->buffer, offset+6);
+	scrollY=readU16(rom->buffer, offset+8);
+	samusY=readU16(rom->buffer, offset+10);
+	samusX=readU16(rom->buffer, offset+12);
+}
+
+bool Save::save(U32& offset){
+	if(!rom->takeSpace(BANK, SIZE, offset)) return false;
+	writeU16(rom->buffer, offset, offsetToLoRom16(room));
+	writeU16(rom->buffer, offset+2, offsetToLoRom16(transition));
+	writeU16(rom->buffer, offset+4, unknown);
+	writeU16(rom->buffer, offset+6, scrollX);
+	writeU16(rom->buffer, offset+8, scrollY);
+	writeU16(rom->buffer, offset+10, samusY);
+	writeU16(rom->buffer, offset+12, samusX);
+	return true;
+}
+
+//=====class Mode7=====//
+void Mode7::index(U8 tileSet, Rom::Index& index){
+	unsigned offset=dataOffset(tileSet);
+	index.set(offset, decompress(rom->buffer, offset), Rom::HACKABLE);
+}
+
+void Mode7::open(U8 tileSet){
+	data.clear();
+	tiles.clear();
+	decompress(rom->buffer, dataOffset(tileSet), &data);
+	tiles.resize(128, 128);
+	for(unsigned i=0; i<tiles.readISize(); ++i)
+		for(unsigned j=0; j<tiles.readJSize(); ++j)
+			tiles.at(i, j)=data[2*(j*tiles.readISize()+i)];
+}
+
+bool Mode7::save(U8 tileSet){
+	for(unsigned i=0; i<tiles.readISize(); ++i)
+		for(unsigned j=0; j<tiles.readJSize(); ++j)
+			data[2*(j*tiles.readISize()+i)]=tiles.at(i, j);
+	Buffer compressed;
+	compress(data, compressed);
+	unsigned offset;
+	if(!rom->takeSpace(Mode7::FIRST_BANK, Mode7::LAST_BANK, compressed.size(), offset))
+		return false;
+	writeU24(rom->buffer, tileSetOffset(tileSet)+3, offsetToLoRom(offset));
+	for(unsigned i=0; i<compressed.size(); ++i) rom->buffer[offset+i]=compressed[i];
+	return true;
+}
+
+void Mode7::clear(){
+	data.clear();
+	tiles.clear();
+}
+
+U32 Mode7::dataOffset(U8 tileSet){
+	return loRomToOffset(readU24(rom->buffer, tileSetOffset(tileSet)+3));
+}
+
+//=====class Header=====//
+string Header::codeDescription(Code code){
+	switch(code){
+		case STANDARD          : return "standard";
+		case DOORS             : return "doors";
+		case TOURIAN_BOSS      : return "Tourian boss";
+		case EVENTS            : return "events";
+		case BOSSES            : return "bosses";
+		case MORPH             : return "morph";
+		case MORPH_AND_MISSILES: return "morph & missiles";
+		case POWER_BOMBS       : return "power bombs";
+		case SPEED_BOOSTER     : return "speed booster";
+		default: break;
+	}
+	return "";
+}
+
+Header::Header(const Buffer& buffer, unsigned offset):
+	index(buffer[offset]),
+	region(Region(buffer[offset+1])),
+	x(buffer[offset+2]),
+	y(buffer[offset+3]),
+	width(buffer[offset+4]),
+	height(buffer[offset+5]),
+	upScroll(buffer[offset+6]),
+	downScroll(buffer[offset+7]),
+	graphicsFlags(buffer[offset+8]),
+	doors(loRomToOffset(DOOR_BANK, readU16(buffer, offset+9)))
+{
+	offset+=MAIN_SIZE;
+	while(true){
+		stateInfo.push_back(StateInfo());
+		stateInfo.back().code=Code(readU16(buffer, offset));
+		offset+=2;
+		for(unsigned i=0; i<fieldSize(stateInfo.back().code); ++i){
+			stateInfo.back().fields.push_back(buffer[offset]);
+			++offset;
+		}
+		if(stateInfo.back().code==STANDARD){
+			stateInfo.back().state=offset;
+			break;
+		}
+		else{
+			stateInfo.back().state=loRomToOffset(State::BANK, readU16(buffer, offset));
+			offset+=2;
+		}
+	}
+}
+
+unsigned Header::size(){
+	unsigned result=MAIN_SIZE;
+	for(unsigned i=0; i<stateInfo.size(); ++i) stateInfoSize(stateInfo[i].code);
+	return result;
+}
+
+void Header::write(Buffer& buffer, U32 offset) const{
+	buffer[offset+0]=index;
+	buffer[offset+1]=region;
+	buffer[offset+2]=x;
+	buffer[offset+3]=y;
+	buffer[offset+4]=width;
+	buffer[offset+5]=height;
+	buffer[offset+6]=upScroll;
+	buffer[offset+7]=downScroll;
+	buffer[offset+8]=graphicsFlags;
+	writeU16(buffer, offset+9, offsetToLoRom16(doors));
+	offset+=MAIN_SIZE;
+	for(unsigned i=0; i<stateInfo.size(); ++i){
+		writeU16(buffer, offset, stateInfo[i].code);
+		offset+=2;
+		for(unsigned j=0; j<stateInfo[i].fields.size(); ++j){
+			buffer[offset]=stateInfo[i].fields[j];
+			++offset;
+		}
+		if(stateInfo[i].code!=STANDARD){
+			writeU16(buffer, offset, offsetToLoRom16(stateInfo[i].state));
+			offset+=2;
+		}
+	}
+}
+
+unsigned Header::fieldSize(Code code){
+	switch(code){
+		case DOORS : return 2;
+		case EVENTS: return 1;
+		case BOSSES: return 1;
+		default: return 0;
+	}
+}
+
+unsigned Header::stateInfoSize(Code code){
+	unsigned result=2;//for the code
+	if(code!=STANDARD) result+=fieldSize(code)+2;//for the fields and state pointer
+	return result;
+}
+
+//=====struct State=====//
+State::State(const Buffer& buffer, U32 offset):
+	tiles(loRomToOffset(readU24(buffer, offset))),
+	tileSet(buffer[offset+3]),
+	musicTrack(buffer[offset+4]),
+	musicControl(buffer[offset+5]),
+	fx1(readU16(buffer, offset+6)),
+	enemies(readU16(buffer, offset+8)),
+	enemySet(readU16(buffer, offset+10)),
+	layer2(readU16(buffer, offset+12)),
+	scroll(readU16(buffer, offset+14)),
+	unknown(readU16(buffer, offset+16)),
+	fx2(readU16(buffer, offset+18)),
+	plm(readU16(buffer, offset+20)),
+	background(readU16(buffer, offset+22)),
+	layerHandling(readU16(buffer, offset+24))
+{
+	if(enemies) enemies=loRomToOffset(Enemy::BANK, enemies);
+	if(scroll>=0x8000u) scroll=loRomToOffset(SCROLL_BANK, scroll);
+	if(plm) plm=loRomToOffset(Plm::BANK, plm);
+}
+
+void State::write(Buffer& buffer, U32 offset) const{
+	writeU24(buffer, offset, offsetToLoRom(tiles));
+	buffer[offset+3]=tileSet;
+	buffer[offset+4]=musicTrack;
+	buffer[offset+5]=musicControl;
+	writeU16(buffer, offset+6, fx1);
+	writeU16(buffer, offset+8, enemies?offsetToLoRom16(enemies):0);
+	writeU16(buffer, offset+10, enemySet);
+	writeU16(buffer, offset+12, layer2);
+	writeU16(buffer, offset+14, scroll>=0x8000u?offsetToLoRom16(scroll):scroll);
+	writeU16(buffer, offset+16, unknown);
+	writeU16(buffer, offset+18, fx2);
+	writeU16(buffer, offset+20, plm?offsetToLoRom16(plm):0);
+	writeU16(buffer, offset+22, background);
+	writeU16(buffer, offset+24, layerHandling);
+}
+
+//=====struct TileLayer=====//
+TileLayer::TileLayer(const Buffer& buffer, U32 offset):
+	index(readU16(buffer, offset)&0x3FFu),
+	flipH(buffer[offset+1]&4),
+	flipV(buffer[offset+1]&8),
+	property(buffer[offset+1]>>4)
+{}
+
+void TileLayer::write(Buffer& buffer) const{
+	buffer.push_back(index&0xFFu);
+	buffer.push_back(property<<4|(flipV?8:0)|(flipH?4:0)|index>>8);
+}
+
+//=====struct Enemy=====//
+Enemy::Enemy(const Buffer& buffer, U32 offset):
+	species(readU16(buffer, offset)),
+	x(readU16(buffer, offset+2)),
+	y(readU16(buffer, offset+4)),
+	field1(readU16(buffer, offset+6)),
+	field2(readU16(buffer, offset+8)),
+	field3(readU16(buffer, offset+10)),
+	field4(readU16(buffer, offset+12)),
+	field5(readU16(buffer, offset+14))
+{}
+
+void Enemy::write(Buffer& buffer, U32 offset) const{
+	writeU16(buffer, offset, species);
+	writeU16(buffer, offset+2, x);
+	writeU16(buffer, offset+4, y);
+	writeU16(buffer, offset+6, field1);
+	writeU16(buffer, offset+8, field2);
+	writeU16(buffer, offset+10, field3);
+	writeU16(buffer, offset+12, field4);
+	writeU16(buffer, offset+14, field5);
+}
+
+//=====struct Plm=====//
+Plm::Plm(const Buffer& buffer, U32 offset):
+	type(readU16(buffer, offset)),
+	x(buffer[offset+2]),
+	y(buffer[offset+3]),
+	field1(buffer[offset+4]),
+	field2(buffer[offset+5])
+{}
+
+void Plm::write(Buffer& buffer, U32 offset) const{
+	writeU16(buffer, offset, type);
+	buffer[offset+2]=x;
+	buffer[offset+3]=y;
+	buffer[offset+4]=field1;
+	buffer[offset+5]=field2;
+}
+
+//=====class Room=====//
+bool Room::index(U32 offset, Rom::Index& index){
+	//header
+	Header indexingHeader=Header(rom->buffer, offset);
+	index.set(offset, indexingHeader.size(), Rom::HACKABLE);
+	offset+=indexingHeader.size();
+	//state dependent data
+	unsigned doorsInRoom=0;
+	for(unsigned i=0; i<indexingHeader.stateInfo.size(); ++i){
+		State state=State(rom->buffer, indexingHeader.stateInfo[i].state);
+		//state
+		index.set(indexingHeader.stateInfo[i].state, State::SIZE, Rom::HACKABLE);
+		//scroll data
+		if(state.scroll>=0x8000u)
+			index.set(state.scroll, indexingHeader.width*indexingHeader.height, Rom::HACKABLE);
+		else if(state.scroll>=2)
+			return false;
+		//tile data
+		Buffer buffer;
+		index.set(state.tiles, decompress(rom->buffer, state.tiles, &buffer), Rom::HACKABLE);
+		U16 roomSize=readU16(buffer, 0);
+		for(unsigned i=0; i<indexingHeader.width*SCREEN_SIZE; ++i)
+			for(unsigned j=0; j<indexingHeader.height*SCREEN_SIZE; ++j){
+				TileLayer layer1=TileLayer(buffer, 2+2*(i+j*indexingHeader.width*SCREEN_SIZE));
+				if(layer1.property==9){
+					U8 bts=buffer[2+roomSize+i+j*indexingHeader.width*SCREEN_SIZE];
+					doorsInRoom=max(doorsInRoom, unsigned(bts)+1);
+				}
+			}
+		//enemies
+		if(state.enemies){
+			offset=state.enemies;
+			while(readU16(rom->buffer, offset)!=Enemy::SENTINEL){
+				index.set(offset, Enemy::SIZE, Rom::HACKABLE);
+				offset+=Enemy::SIZE;
+			}
+			index.set(offset, 2, Rom::HACKABLE);
+		}
+		//post load modifications
+		if(state.plm){
+			offset=state.plm;
+			while(readU16(rom->buffer, offset)!=Plm::SENTINEL){
+				index.set(offset, Plm::SIZE, Rom::HACKABLE);
+				offset+=Plm::SIZE;
+			}
+			index.set(offset, 2, Rom::HACKABLE);
+		}
+	}
+	//doors
+	index.set(indexingHeader.doors, 2*doorsInRoom, Rom::HACKABLE);
+	for(unsigned i=0; i<doorsInRoom; ++i)
+		index.set(
+			loRomToOffset(Transition::BANK, readU16(rom->buffer, indexingHeader.doors+2*i)),
+			Transition::SIZE,
+			Rom::HACKABLE
+		);
+	//finish
+	return true;
+}
+
+bool Room::open(U32 offset){
+	//header
+	header=Header(rom->buffer, offset);
+	//states
+	states.clear();
+	for(unsigned i=0; i<header.stateInfo.size(); ++i)
+		states.push_back(State(rom->buffer, header.stateInfo[i].state));
+	//stuff that can be shared between states
+	scroll.clear();
+	tiles.clear();
+	enemies.clear();
+	plm.clear();
+	unsigned s, doorsInRoom=0;
+	for(s=0; s<states.size(); ++s){
+		State& state=states[s];
+		//scroll data
+		if(state.scroll>=0x8000u){
+			if(scroll.find(state.scroll)==scroll.end()){
+				scroll[state.scroll].resize(header.width, header.height);
+				readU82D(rom->buffer, state.scroll, scroll[state.scroll]);
+			}
+		}
+		else if(state.scroll>=2) return false;
+		//tile data
+		if(tiles.find(state.tiles)==tiles.end()){
+			Buffer buffer;
+			decompress(rom->buffer, state.tiles, &buffer);
+			Array2D<Tile>& stateTiles=tiles[state.tiles];
+			stateTiles.resize(header.width*SCREEN_SIZE, header.height*SCREEN_SIZE);
+			U16 roomSize=readU16(buffer, 0);
+			for(unsigned i=0; i<stateTiles.readISize(); ++i)
+				for(unsigned j=0; j<stateTiles.readJSize(); ++j){
+					stateTiles.at(i, j).layer1=TileLayer(buffer, 2+2*(i+j*stateTiles.readISize()));
+					stateTiles.at(i, j).bts=buffer[2+roomSize+i+j*stateTiles.readISize()];
+					if(buffer.size()>unsigned(2+roomSize+roomSize/2)){
+						stateTiles.at(i, j).layer2=TileLayer(buffer, 2+roomSize+roomSize/2+2*(i+j*stateTiles.readISize()));
+						stateTiles.at(i, j).hasLayer2=true;
+					}
+					else stateTiles.at(i, j).hasLayer2=false;
+					if(stateTiles.at(i, j).layer1.property==9)
+						doorsInRoom=max(doorsInRoom, unsigned(stateTiles.at(i, j).bts+1));
+				}
+		}
+		//enemies
+		if(state.enemies&&enemies.find(state.enemies)==enemies.end()){
+			offset=state.enemies;
+			while(readU16(rom->buffer, offset)!=Enemy::SENTINEL){
+				enemies[state.enemies].push_back(Enemy(rom->buffer, offset));
+				offset+=Enemy::SIZE;
+			}
+		}
+		//post load modifications
+		if(state.plm&&plm.find(state.plm)==plm.end()){
+			offset=state.plm;
+			while(readU16(rom->buffer, offset)!=Plm::SENTINEL){
+				plm[state.plm].push_back(Plm(rom->buffer, offset));
+				offset+=Plm::SIZE;
+			}
+		}
+	}
+	//doors
+	doors.clear();
+	for(unsigned i=0; i<doorsInRoom; ++i)
+		doors.push_back(loRomToOffset(Transition::BANK, readU16(rom->buffer, header.doors+2*i)));
+	//finish
+	stateIndex=s-1;
+	return true;
+}
+
+bool Room::save(U32& offset){
+	//map identifier to written location
+	map<U32, U32> scrollHacks;
+	map<U32, U32> tileHacks;
+	map<U32, U32> enemyHacks;
+	map<U32, U32> plmHacks;
+	//stuff that can be shared between states
+	for(unsigned s=0; s<states.size(); ++s){
+		State& state=states[s];
+		//scroll data
+		if(state.scroll>=0x8000u){
+			if(scrollHacks.find(state.scroll)==scrollHacks.end()){
+				if(!rom->takeSpace(State::SCROLL_BANK, scroll[state.scroll].size(), offset))
+					return false;
+				scrollHacks[state.scroll]=offset;
+				writeU82D(rom->buffer, offset, scroll[state.scroll]);
+			}
+			state.scroll=scrollHacks[state.scroll];
+		}
+		//tile data
+		if(tileHacks.find(state.tiles)==tileHacks.end()){
+			Buffer buffer;
+			buffer.resize(2);
+			Array2D<Tile>& stateTiles=tiles[state.tiles];
+			writeU16(buffer, 0, 2*stateTiles.readISize()*stateTiles.readJSize());
+			for(unsigned j=0; j<stateTiles.readJSize(); ++j)
+				for(unsigned i=0; i<stateTiles.readISize(); ++i)
+					stateTiles.at(i, j).layer1.write(buffer);
+			for(unsigned j=0; j<stateTiles.readJSize(); ++j)
+				for(unsigned i=0; i<stateTiles.readISize(); ++i)
+					buffer.push_back(stateTiles.at(i, j).bts);
+			if(stateTiles.at(0, 0).hasLayer2)
+				for(unsigned j=0; j<stateTiles.readJSize(); ++j)
+					for(unsigned i=0; i<stateTiles.readISize(); ++i)
+						stateTiles.at(i, j).layer2.write(buffer);
+			Buffer compressed;
+			compress(buffer, compressed);
+			if(!rom->takeSpace(Tile::FIRST_BANK, Tile::LAST_BANK, compressed.size(), offset))
+				return false;
+			tileHacks[state.tiles]=offset;
+			for(unsigned i=0; i<compressed.size(); ++i) rom->buffer[offset+i]=compressed[i];
+		}
+		state.tiles=tileHacks[state.tiles];
+		//enemies
+		if(enemies[state.enemies].size()){
+			if(enemyHacks.find(state.enemies)==enemyHacks.end()){
+				if(!rom->takeSpace(Enemy::BANK, enemies[state.enemies].size()*Enemy::SIZE+2, offset))
+					return false;
+				enemyHacks[state.enemies]=offset;
+				for(unsigned i=0; i<enemies[state.enemies].size(); ++i){
+					enemies[state.enemies][i].write(rom->buffer, offset);
+					offset+=Enemy::SIZE;
+				}
+				writeU16(rom->buffer, offset, Enemy::SENTINEL);
+			}
+			state.enemies=enemyHacks[state.enemies];
+		}
+		else state.enemies=0;
+		//post load modifications
+		if(plm[state.plm].size()){
+			if(plmHacks.find(state.plm)==plmHacks.end()){
+				if(!rom->takeSpace(Plm::BANK, plm[state.plm].size()*Plm::SENTINEL+2, offset))
+					return false;
+				plmHacks[state.plm]=offset;
+				for(unsigned i=0; i<plm[state.plm].size(); ++i){
+					plm[state.plm][i].write(rom->buffer, offset);
+					offset+=Plm::SIZE;
+				}
+				writeU16(rom->buffer, offset, Plm::SENTINEL);
+			}
+			state.plm=plmHacks[state.plm];
+		}
+		else state.plm=0;
+		//state
+		if(header.stateInfo[s].code!=Header::STANDARD){
+			if(!rom->takeSpace(State::BANK, State::SIZE, header.stateInfo[s].state))
+				return false;
+			state.write(rom->buffer, header.stateInfo[s].state);
+		}
+	}
+	//doors
+	if(!rom->takeSpace(Header::DOOR_BANK, 2*doors.size(), header.doors))
+		return false;
+	for(unsigned i=0; i<doors.size(); ++i)
+		writeU16(rom->buffer, header.doors+2*i, offsetToLoRom16(doors[i]));
+	//header and default state
+	if(!rom->takeSpace(Header::BANK, header.size()+State::SIZE, offset))
+		return false;
+	header.write(rom->buffer, offset);
+	states.back().write(rom->buffer, offset+header.size());
+	//finish
+	rekey(scroll, scrollHacks);
+	rekey(tiles, tileHacks);
+	rekey(enemies, enemyHacks);
+	rekey(plm, plmHacks);
+	return true;
+}
+
+void Room::loadGraphics(){
+	U32 tileSetPointer=tileSetOffset(states[stateIndex].tileSet);
+	//get palette
+	Buffer buffer;
+	decompress(rom->buffer, loRomToOffset(readU24(rom->buffer, tileSetPointer+6)), &buffer);
+	vector<Color> palette;
+	for(unsigned i=0; i<buffer.size(); i+=2){
+		U16 p=buffer[i+1]<<8|buffer[i];
+		palette.push_back(Color(
+			1.0f*(p>> 0&0x1Fu)/0x1Fu,
+			1.0f*(p>> 5&0x1Fu)/0x1Fu,
+			1.0f*(p>>10&0x1Fu)/0x1Fu,
+			1.0f
+		));
+	}
+	//get tiles
+	tileSet.clear();
+	mode7TileSet.clear();
+	buffer.clear();
+	//handle mode 7
+	decompress(rom->buffer, loRomToOffset(readU24(rom->buffer, tileSetPointer+3)), &buffer);
+	if(Mode7::FIRST_TILE_SET<=states[stateIndex].tileSet&&states[stateIndex].tileSet<=Mode7::LAST_TILE_SET){
+		mode7.open(states[stateIndex].tileSet);
+		mode7TileSet.resize(256);
+		for(unsigned i=0; i<mode7TileSet.size(); ++i){
+			mode7TileSet[i].resize(TILE_SIZE/2, TILE_SIZE/2);
+			for(unsigned x=0; x<TILE_SIZE/2; ++x)
+				for(unsigned y=0; y<TILE_SIZE/2; ++y)
+					mode7TileSet[i].at(x, y)=palette[buffer[2*(TILE_SIZE/2*TILE_SIZE/2*i+8*y+x)+1]];
+		}
+		buffer.clear();
+		if(states[stateIndex].layerHandling==VANILLA_CERES_RIDLEY_ROOM_LAYER_HANDLING)
+			for(unsigned i=0; i<0x2000u; ++i)
+				buffer.push_back(rom->buffer[0x182000u+i]);
+	}
+	else mode7.clear();
+	//get subtiles
+	if(states[stateIndex].tileSet==26) buffer.resize(0x8000u);//Kraid room
+	else buffer.resize(0x5000u);
+	Buffer furtherBuffer;
+	bool loadCommonRoomElements=header.region!=6&&!mode7TileSet.size();
+	if(loadCommonRoomElements) decompress(rom->buffer, 0x1C8000u, &furtherBuffer);//common room elements
+	for(unsigned i=0; i<furtherBuffer.size(); ++i) buffer.push_back(furtherBuffer[i]);
+	for(unsigned i=0; i<buffer.size(); i+=32){
+		U8 copy[32];
+		for(unsigned j=0; j<32; ++j){
+			copy[j]=buffer[i+j];
+			buffer[i+j]=0;
+		}
+		for(unsigned y=0; y<8; y++){
+			U8 line[4];
+			line[0]=copy[y*2];
+			line[1]=copy[y*2+1];
+			line[2]=copy[y*2+16];
+			line[3]=copy[y*2+17];
+			for(unsigned x=0; x<8; x++){
+				unsigned shift=(7-x)*4;
+				U32 word=0;
+				for(unsigned j=0; j<4; ++j) word+=(line[j]&1)<<(shift+j);
+				for(unsigned j=0; j<4; ++j){
+					buffer[i+y*4+j]|=word>>(8*j)&0xFFu;
+					line[j]>>=1;
+				}
+			}
+		}
+	}
+	Buffer subtiles;
+	for(unsigned i=0; i<buffer.size(); ++i){
+		subtiles.push_back(buffer[i]&0xFu);
+		subtiles.push_back(buffer[i]>>4);
+	}
+	//get tile assemblers
+	vector<TileAssembler> tileAssemblers;
+	buffer.clear();
+	if(loadCommonRoomElements) decompress(rom->buffer, 0x1CA09Du, &buffer);//common room elements
+	furtherBuffer.clear();
+	decompress(rom->buffer, loRomToOffset(readU24(rom->buffer, tileSetPointer)), &furtherBuffer);
+	for(unsigned i=0; i<furtherBuffer.size(); ++i) buffer.push_back(furtherBuffer[i]);
+	for(unsigned i=0; i<buffer.size(); i+=8){
+		tileAssemblers.push_back(TileAssembler(
+			buffer[i+1]<<8|buffer[i+0],
+			buffer[i+3]<<8|buffer[i+2],
+			buffer[i+5]<<8|buffer[i+4],
+			buffer[i+7]<<8|buffer[i+6]
+		));
+	}
+	//assemble subtiles into tiles
+	tileSet.resize(tileAssemblers.size());
+	for(unsigned i=0; i<tileAssemblers.size(); ++i){
+		tileSet[i].resize(TILE_SIZE, TILE_SIZE);
+		drawSubtile(subtiles, tileAssemblers[i].ul, palette, tileSet[i], 0          , 0);
+		drawSubtile(subtiles, tileAssemblers[i].ur, palette, tileSet[i], TILE_SIZE/2, 0);
+		drawSubtile(subtiles, tileAssemblers[i].dl, palette, tileSet[i], 0          , TILE_SIZE/2);
+		drawSubtile(subtiles, tileAssemblers[i].dr, palette, tileSet[i], TILE_SIZE/2, TILE_SIZE/2);
+	}
+}
+
+void Room::drawTileSet(Array2D<Color>& destination, unsigned tilesWide) const{
+	destination.resize(tilesWide*TILE_SIZE, (tileSet.size()/tilesWide+1)*TILE_SIZE+(mode7TileSet.size()/(tilesWide/2)+1)*TILE_SIZE/2);
+	for(unsigned i=0; i<tileSet.size(); ++i)
+		for(unsigned x=0; x<TILE_SIZE; ++x)
+			for(unsigned y=0; y<TILE_SIZE; ++y)
+				destination.at(i%tilesWide*TILE_SIZE+x, i/tilesWide*TILE_SIZE+y)=tileSet[i].at(x, y);
+	if(mode7.tiles.readISize())
+		for(unsigned i=0; i<mode7TileSet.size(); ++i)
+			for(unsigned x=0; x<TILE_SIZE/2; ++x)
+				for(unsigned y=0; y<TILE_SIZE/2; ++y)
+					destination.at(i%(tilesWide*2)*TILE_SIZE/2+x, (tileSet.size()/tilesWide+1)*TILE_SIZE+i/(tilesWide*2)*TILE_SIZE/2+y)=mode7TileSet[i].at(x, y);
+}
+
+void Room::getQuadsVertexArray(vector<Vertex>& vertices, unsigned tilesWide, bool showLayer1, bool showLayer2, bool showMode7) const{
+	if(showMode7)
+		for(unsigned i=0; i<mode7.tiles.readISize(); ++i)
+			for(unsigned j=0; j<mode7.tiles.readJSize(); ++j){
+				unsigned tileX=mode7.tiles.at(i, j)%(tilesWide*2)*TILE_SIZE/2;
+				unsigned tileY=mode7.tiles.at(i, j)/(tilesWide*2)*TILE_SIZE/2+(tileSet.size()/tilesWide+1)*TILE_SIZE;
+				unsigned txi=tileX, txf=tileX+TILE_SIZE/2-1, tyi=tileY, tyf=tileY+TILE_SIZE/2-1;
+				vertices.push_back(Vertex((i+0)*TILE_SIZE/2, (j+0)*TILE_SIZE/2, txi, tyi));
+				vertices.push_back(Vertex((i+1)*TILE_SIZE/2, (j+0)*TILE_SIZE/2, txf, tyi));
+				vertices.push_back(Vertex((i+1)*TILE_SIZE/2, (j+1)*TILE_SIZE/2, txf, tyf));
+				vertices.push_back(Vertex((i+0)*TILE_SIZE/2, (j+1)*TILE_SIZE/2, txi, tyf));
+			}
+	if(showLayer2)
+		for(unsigned i=0; i<readStateTiles().readISize(); ++i)
+			for(unsigned j=0; j<readStateTiles().readJSize(); ++j){
+				const Tile& tile=readStateTiles().at(i, j);
+				if(!tile.hasLayer2) continue;
+				unsigned tileX=tile.layer2.index%tilesWide*TILE_SIZE;
+				unsigned tileY=tile.layer2.index/tilesWide*TILE_SIZE;
+				unsigned txi=tileX, txf=tileX+TILE_SIZE-1, tyi=tileY, tyf=tileY+TILE_SIZE-1;
+				if(tile.layer2.flipH){
+					txi=tileX+TILE_SIZE-1;
+					txf=tileX;
+				}
+				if(tile.layer2.flipV){
+					tyi=tileY+TILE_SIZE-1;
+					tyf=tileY;
+				}
+				vertices.push_back(Vertex((i+0)*TILE_SIZE, (j+0)*TILE_SIZE, txi, tyi));
+				vertices.push_back(Vertex((i+1)*TILE_SIZE, (j+0)*TILE_SIZE, txf, tyi));
+				vertices.push_back(Vertex((i+1)*TILE_SIZE, (j+1)*TILE_SIZE, txf, tyf));
+				vertices.push_back(Vertex((i+0)*TILE_SIZE, (j+1)*TILE_SIZE, txi, tyf));
+			}
+	if(showLayer1)
+		for(unsigned i=0; i<readStateTiles().readISize(); ++i)
+			for(unsigned j=0; j<readStateTiles().readJSize(); ++j){
+				const Tile& tile=readStateTiles().at(i, j);
+				unsigned tileX=tile.layer1.index%tilesWide*TILE_SIZE;
+				unsigned tileY=tile.layer1.index/tilesWide*TILE_SIZE;
+				unsigned txi=tileX, txf=tileX+TILE_SIZE-1, tyi=tileY, tyf=tileY+TILE_SIZE-1;
+				if(tile.layer1.flipH){
+					txi=tileX+TILE_SIZE-1;
+					txf=tileX;
+				}
+				if(tile.layer1.flipV){
+					tyi=tileY+TILE_SIZE-1;
+					tyf=tileY;
+				}
+				vertices.push_back(Vertex((i+0)*TILE_SIZE, (j+0)*TILE_SIZE, txi, tyi));
+				vertices.push_back(Vertex((i+1)*TILE_SIZE, (j+0)*TILE_SIZE, txf, tyi));
+				vertices.push_back(Vertex((i+1)*TILE_SIZE, (j+1)*TILE_SIZE, txf, tyf));
+				vertices.push_back(Vertex((i+0)*TILE_SIZE, (j+1)*TILE_SIZE, txi, tyf));
+			}
+}
+
+bool Room::readDoor(unsigned x, unsigned y, Transition& transition){
+	if(!convertScreenToTile(x, y)) return false;
+	if(readStateTiles().at(x, y).layer1.property!=9) return false;
+	transition=Transition(*rom);
+	transition.open(doors[readStateTiles().at(x, y).bts]);
+	return true;
+}
+
+Header::Code Room::readStateCode(unsigned i) const{
+	return header.stateInfo[i].code;
+}
+
+bool Room::convertScreenToTile(unsigned& x, unsigned& y) const{
+	x/=TILE_SIZE;
+	y/=TILE_SIZE;
+	return x<readStateTiles().readISize()&&y<readStateTiles().readJSize();
+}
+
+//=====functions=====//
+string sm::musicControlDescription(U8 musicControl){
 	switch(musicControl){
 		case 0: return "No Change";
 		case 1: return "Samus appear";
@@ -372,7 +1159,7 @@ string musicControlDescription(U8 musicControl){
 	return s;
 }
 
-string musicTrackDescription(U8 musicTrack){
+string sm::musicTrackDescription(U8 musicTrack){
 	switch(musicTrack){
 		case 0x00u: return "None";
 		case 0x03u: return "Title Screen";
@@ -406,527 +1193,4 @@ string musicTrackDescription(U8 musicTrack){
 	string s;
 	ss>>s;
 	return s;
-}
-
-void drawSubTile(const Buffer& subTiles, U16 tileInfo, const vector<Color>& palette, Array2D<Color>& destination, unsigned x, unsigned y){
-	U8 xMask=(tileInfo&0x4000)?7:0;
-	U8 yMask=(tileInfo&0x8000)?7:0;
-	U8 hi=(tileInfo&0x1C00u)>>6;
-	for(unsigned ty=0; ty<8; ++ty){
-		for(unsigned tx=0; tx<8; ++tx){
-			U8 lo=subTiles[(tileInfo&0x3FFu)*64+(tx^xMask)+(ty^yMask)*8];
-			if(lo) destination.at(x+tx, y+ty)=palette[hi|lo];
-			else destination.at(x+tx, y+ty)=Color();
-		}
-	}
-}
-
-//=====class Rom=====//
-string Rom::open(string fileName){
-	header.clear();
-	buffer.clear();
-	ifstream file(fileName.c_str(), ios::binary);
-	char c;
-	while(file.get(c)) buffer.push_back(c);
-	file.close();
-	if(buffer.size()%32768!=0){
-		for(unsigned i=0; i<512; ++i) header.push_back(buffer[i]);
-		buffer.erase(buffer.begin(), buffer.begin()+512);
-	}
-	if(buffer[0x7FD9u]>=2)
-		return "ROM is PAL. This doesn't work on PAL ROMs.";
-	return "";
-}
-
-void Rom::save(string fileName){
-	ofstream file(fileName.c_str(), ios::binary);
-	for(unsigned i=0; i<header.size(); ++i) file.put(header[i]);
-	for(unsigned i=0; i<buffer.size(); ++i) file.put(buffer[i]);
-	file.close();
-}
-
-//=====struct RoomHeader=====//
-RoomHeader::RoomHeader(const Buffer& buffer, unsigned offset):
-	index(buffer[offset]),
-	region(buffer[offset+1]),
-	x(buffer[offset+2]),
-	y(buffer[offset+3]),
-	width(buffer[offset+4]),
-	height(buffer[offset+5]),
-	upScroller(buffer[offset+6]),
-	downScroller(buffer[offset+7]),
-	graphicsFlags(buffer[offset+8]),
-	doors(readU16(buffer, offset+9))
-{}
-
-//=====struct RoomState=====//
-RoomState::RoomState(const Buffer& buffer, U32 offset):
-	data(readU24(buffer, offset)),
-	tileSet(buffer[offset+3]),
-	musicTrack(buffer[offset+4]),
-	musicControl(buffer[offset+5]),
-	fx1(readU16(buffer, offset+6)),
-	enemies(readU16(buffer, offset+8)),
-	enemySet(readU16(buffer, offset+10)),
-	layer2(readU16(buffer, offset+12)),
-	scroll(readU16(buffer, offset+14)),
-	unknown(readU16(buffer, offset+16)),
-	fx2(readU16(buffer, offset+18)),
-	plm(readU16(buffer, offset+20)),
-	background(readU16(buffer, offset+22)),
-	layerHandling(readU16(buffer, offset+24))
-{}
-
-//=====struct TileLayer=====//
-TileLayer::TileLayer(const Buffer& buffer, U32 offset):
-	index(readU16(buffer, offset)&0x3FFu),
-	flipH(buffer[offset+1]&4),
-	flipV(buffer[offset+1]&8),
-	property(buffer[offset+1]>>4)
-{}
-
-void TileLayer::write(Buffer& buffer){
-	buffer.push_back(index&0xFFu);
-	buffer.push_back(property<<4|(flipV?8:0)|(flipH?4:0)|index>>8);
-}
-
-//=====struct Door=====//
-Door::Door(const Buffer& buffer, U32 offset):
-	room(readU16(buffer, offset)),
-	doorBitFlag(buffer[offset+3]),
-	direction(buffer[offset+4]),
-	illusionX(buffer[offset+5]),
-	illusionY(buffer[offset+6]),
-	x(buffer[offset+7]),
-	y(buffer[offset+8]),
-	distance(readU16(buffer, offset+9)),
-	scrollData(readU16(buffer, offset+11))
-{
-	if(room!=0) room=cpuToRom(0x8F0000u|room);
-}
-
-//=====class Room=====//
-Room::Room(Rom& rom): rom(rom) {}
-
-bool Room::open(U32 offset, int stateIndex){
-	//get room header
-	header=RoomHeader(rom.buffer, offset);
-	offset+=RoomHeader::SIZE;
-	//get all room codes
-	stateCodes.clear();
-	bool foundState=false;
-	U32 stateCodeOffset=0;
-	for(int i=0; true; ++i){
-		U16 stateCode=readU16(rom.buffer, offset);
-		switch(stateCode){
-			case STANDARD: offset+=2; break;
-			case DOORS: offset+=6; break;
-			case TOURIAN_BOSS_1: offset+=4; break;
-			case EVENTS: offset+=5; break;
-			case BOSSES: offset+=5; break;
-			case MORPH: offset+=4; break;
-			case MORPH_AND_MISSILES: offset+=4; break;
-			case POWER_BOMBS: offset+=4; break;
-			case SPEED_BOOSTER: offset+=4; break;
-			default: return false;
-		}
-		stateCodes.push_back(stateCode);
-		if(i==stateIndex||(stateCode==STANDARD&&!foundState)){
-			foundState=true;
-			stateCodeOffset=offset;
-			if(stateCode==EVENTS||stateCode==BOSSES) stateCodeValue=rom.buffer[offset-3];
-		}
-		if(stateCode==STANDARD) break;
-	}
-	if(stateIndex>=0&&stateIndex<(int)stateCodes.size()&&stateCodes[stateIndex]!=STANDARD)
-		stateCodeOffset=cpuToRom(0x8F0000u|readU16(rom.buffer, stateCodeOffset-2));
-	//get room state
-	state=RoomState(rom.buffer, stateCodeOffset);
-	//get scroll data
-	scroll.clear();
-	scroll.resize(header.width, header.height);
-	if(state.scroll>=0x8000u)
-		readU82D(rom.buffer, cpuToRom(0x8F0000u|state.scroll), scroll);
-	//get tile data
-	Buffer buffer;
-	originalCompressedTileDataSize=decompress(rom.buffer, cpuToRom(state.data), buffer);
-	tiles.resize(header.width*CHUNK_SIZE, header.height*CHUNK_SIZE);
-	U16 roomDataSize=readU16(buffer, 0);
-	unsigned doorsInRoom=0;
-	for(unsigned i=0; i<tiles.readISize(); ++i)
-		for(unsigned j=0; j<tiles.readJSize(); ++j){
-			tiles.at(i, j).layer1=TileLayer(buffer, 2+2*(i+j*tiles.readISize()));
-			tiles.at(i, j).bts=buffer[2+roomDataSize+i+j*tiles.readISize()];
-			if(buffer.size()>unsigned(2+roomDataSize+roomDataSize/2)){
-				tiles.at(i, j).layer2=TileLayer(buffer, 2+roomDataSize+roomDataSize/2+2*(i+j*tiles.readISize()));
-				tiles.at(i, j).hasLayer2=true;
-			}
-			else tiles.at(i, j).hasLayer2=false;
-			if(tiles.at(i, j).layer1.property==9&&unsigned(tiles.at(i, j).bts+1)>doorsInRoom) doorsInRoom=tiles.at(i, j).bts+1;
-		}
-	//load doors
-	doors.clear();
-	for(unsigned i=0; i<doorsInRoom; ++i)
-		doors.push_back(Door(
-			rom.buffer,
-			cpuToRom(0x830000u|readU16(
-				rom.buffer,
-				cpuToRom(0x8F0000u|header.doors)+2*i)
-			)
-		));
-/*
-    'get location for enemy data
-    Dim EnPopBank As Byte   'finding bank for enemy population (A1 or by my code)
-    Open needslash For Binary As #1
-    'get the new EnPopBank before openning enemies
-    Dim TempThreeVar As ThreeByte
-    TempThreeVar.Byte1 = Val("&H" & Right$(Right$("0000" & Hex$(U1Pointer), 4), 2) & "&")
-    TempThreeVar.Byte2 = Val("&H" & Left$(Right$("0000" & Hex$(U1Pointer), 4), 2) & "&")
-    TempThreeVar.Byte3 = &H80&
-    Get #1, ThreePoint2Offset(TempThreeVar) + ROM_HEADER + 1, MyRoomVar
-    Get #1, &H100B5B + ROM_HEADER + 1, EnPopBank    'first pointer to EnPop Code
-    If EnPopBank <> Val("&H20") Then    'if no JSR
-        EnPopBank = Val("&HA1&")
-    Else    'if JSR found, my code is in the ROM
-        EnPopBank = MyRoomVar.MultiVar1 And Val("&H0020")
-        If EnPopBank = &H20 Then
-            Get #1, &H107FC3 + ROM_HEADER + 1, EnPopBank    'first instance of new bank listed in my code
-        Else
-            EnPopBank = Val("&HA1&")
-        End If
-    End If
-    Close #1
-
-    'Drewseph override for the old enpop coding
-    If UCase$(Right$(App.EXEName, 1)) = "D" And Val("&H" & RoomHeader1.RoomIndexText1.Text & "&") >= &HA0& Then
-        EnPopBank = Val("&HEF&")
-    End If
-    'Scyzer override for the old enpop coding
-    If UCase$(Right$(App.EXEName, 1)) = "S" And Val("&H" & RoomHeader1.RoomIndexText1.Text & "&") >= &H80& Then
-        EnPopBank = Val("&A2&")
-    End If
-
-    'get location for enemy data
-    TempThree.Byte1 = Val("&H" & Right$(InHex(MyState.EnemyPopulation, 4), 2) & "&")
-    TempThree.Byte2 = Val("&H" & Left$(InHex(MyState.EnemyPopulation, 4), 2) & "&")
-    TempThree.Byte3 = EnPopBank    'A1, unless new bank
-    Smile.EnemyLabel.Caption = Hex$(ThreePoint2Offset(TempThree))
-    If TempThree.Byte1 = 0 And TempThree.Byte2 = 0 Then Smile.EnemyLabel.Caption = "000000"
-
-    'get location for PLM data
-    TempThree.Byte1 = Val("&H" & Right$(InHex(MyState.PLM, 4), 2) & "&")
-    TempThree.Byte2 = Val("&H" & Left$(InHex(MyState.PLM, 4), 2) & "&")
-    'TempThree.Byte3 = Val("&H8F&")
-    TempThree.Byte3 = PLMBank   '8F by default
-    Smile.PLMLabel.Caption = Hex$(ThreePoint2Offset(TempThree))
-    If TempThree.Byte1 = 0 And TempThree.Byte2 = 0 Then Smile.PLMLabel.Caption = "000000"
-
-    'refresh controls
-    Smile.MenuPicture1.Refresh
-    Smile.StateGraphicSetCombo1.Tag = 1
-    States1.States1_Load_Again
-    PointerForm1.RefreshPointerForm
-
-    'load fx1 data and decide whether or not to display it
-    FX1Displacement = 0
-    Do
-        DisplayFX1 = FigureFX1Data
-        Select Case Right$("0000" & Hex$(TempFX1.Select), 4)
-            Case "0000": Exit Do
-            Case "FFFF": Exit Do
-            Case Else:
-        End Select
-        'if we entered from the room list, accept any entry
-        If EnteredRoomFromThisDoor = 0 Then Exit Do
-        'if we entered from the door (and are finding door entries) see if this door matches
-        If Right$("0000" & Hex$(TempFX1.Select), 4) = Right$("0000" & Hex$(EnteredRoomFromThisDoor), 4) Then Exit Do
-        'if not, increase fx1pointer and try again
-        FX1Displacement = FX1Displacement + &H10&
-        FX1Pointer = FX1Pointer + FX1Displacement
-    Loop
-    If FX1Displacement > 0 Then MsgBox "You've entered a room that has door-dependent FX1 data." & vbCrLf & "The door you have entered is not the first door in the FX1 list." & vbCrLf & "If changing pointer data for this room with the pointer editor, do NOT move the data or it will get damaged." & vbCrLf & "If you want to change pointers for this room (and move the related data), you should refresh the room first by using the Room List instead of a door.", vbInformation
-*/
-
-	return true;
-}
-
-bool Room::save(U32 offset, int stateIndex){
-
-	/*
-	for(unsigned i=0; i<tiles.readISize(); ++i)
-		for(unsigned j=0; j<tiles.readJSize(); ++j){
-			tiles.at(i, j).layer1=TileLayer(buffer, 2+2*(i+j*tiles.readISize()));
-			tiles.at(i, j).bts=buffer[2+roomDataSize+i+j*tiles.readISize()];
-			if(buffer.size()>unsigned(2+roomDataSize+roomDataSize/2)){
-				tiles.at(i, j).layer2=TileLayer(buffer, 2+roomDataSize+roomDataSize/2+2*(i+j*tiles.readISize()));
-				tiles.at(i, j).hasLayer2=true;
-			}
-			else tiles.at(i, j).hasLayer2=false;
-			if(tiles.at(i, j).layer1.property==9&&unsigned(tiles.at(i, j).bts+1)>doorsInRoom) doorsInRoom=tiles.at(i, j).bts+1;
-		}
-	*/
-
-	//write tile data
-	Buffer buffer;
-	writeU16(buffer, 2*tiles.readISize()*tiles.readJSize());
-	for(unsigned j=0; j<tiles.readJSize(); ++j)
-		for(unsigned i=0; i<tiles.readISize(); ++i)
-			tiles.at(i, j).layer1.write(buffer);
-	for(unsigned j=0; j<tiles.readJSize(); ++j)
-		for(unsigned i=0; i<tiles.readISize(); ++i)
-			buffer.push_back(tiles.at(i, j).bts);
-	if(tiles.at(0, 0).hasLayer2)
-		for(unsigned j=0; j<tiles.readJSize(); ++j)
-			for(unsigned i=0; i<tiles.readISize(); ++i)
-				tiles.at(i, j).layer2.write(buffer);
-
-	Buffer testbuf;
-	decompress(rom.buffer, cpuToRom(state.data), testbuf);
-	for(unsigned i=0; i<min(testbuf.size(), buffer.size()); ++i)
-		if(testbuf[i]!=buffer[i]){
-			cerr<<"difference at "<<i<<"\n";
-			break;
-		}
-
-	Buffer compressed;
-	compress(buffer, compressed);
-
-	cerr<<"SNES compressed length: "<<originalCompressedTileDataSize<<"\n";
-	cerr<<"My compressed length: "<<compressed.size()<<"\n";
-
-	if(compressed.size()>originalCompressedTileDataSize) return false;
-	for(unsigned i=0; i<compressed.size(); ++i)
-		rom.buffer[cpuToRom(state.data)+i]=compressed[i];
-	return true;
-}
-
-Tile Room::copy(unsigned x, unsigned y){
-	if(mode7){
-		x/=(TILE_SIZE/2);
-		y/=(TILE_SIZE/2);
-	}
-	else{
-		x/=TILE_SIZE;
-		y/=TILE_SIZE;
-	}
-	if(x>=tiles.readISize()||y>=tiles.readJSize()) return Tile();
-	return tiles.at(x, y);
-}
-
-void Room::paste(Tile t, unsigned x, unsigned y){
-	if(mode7){
-		x/=(TILE_SIZE/2);
-		y/=(TILE_SIZE/2);
-	}
-	else{
-		x/=TILE_SIZE;
-		y/=TILE_SIZE;
-	}
-	if(x>=tiles.readISize()||y>=tiles.readJSize()) return;
-	tiles.at(x, y)=t;
-}
-
-void Room::loadGraphics(){
-	U32 tileSetPointer=0x7E6A2u+U32(state.tileSet)*9;
-	Buffer buffer;
-	decompress(rom.buffer, readPointer(rom.buffer, tileSetPointer+6), buffer);
-	vector<Color> palette;
-	for(unsigned i=0; i<buffer.size(); i+=2){
-		U16 p=buffer[i+1]<<8|buffer[i];
-		palette.push_back(Color(
-			1.0f*(p>> 0&0x1Fu)/0x1Fu,
-			1.0f*(p>> 5&0x1Fu)/0x1Fu,
-			1.0f*(p>>10&0x1Fu)/0x1Fu,
-			1.0f
-		));
-	}
-	buffer.clear();
-	decompress(rom.buffer, readPointer(rom.buffer, tileSetPointer+3), buffer);
-	if(17<=state.tileSet&&state.tileSet<=20){//These tile sets use SNES mode 7 -- they are used in 2 Ceres rooms
-		mode7=true;
-		tileSet.clear();
-		tileSet.resize(256);
-		for(unsigned i=0; i<tileSet.size(); ++i){
-			tileSet[i].resize(TILE_SIZE/2, TILE_SIZE/2);
-			for(unsigned x=0; x<TILE_SIZE/2; ++x)
-				for(unsigned y=0; y<TILE_SIZE/2; ++y)
-					tileSet[i].at(x, y)=palette[buffer[2*(TILE_SIZE/2*TILE_SIZE/2*i+8*y+x)+1]];
-		}
-		Array2D<Tile> tilesCopy=tiles;
-		tiles.clear();
-		tiles.resize(128, 128);
-		for(unsigned i=0; i<tiles.readISize(); ++i)
-			for(unsigned j=0; j<tiles.readJSize(); ++j){
-				if(i/2<tilesCopy.readISize()&&j/2<tilesCopy.readJSize()) tiles.at(i, j)=tilesCopy.at(i/2, j/2);
-				tiles.at(i, j).layer2.index=buffer[2*(j*tiles.readISize()+i)];
-			}
-	}
-	else{
-		mode7=false;
-		if(state.tileSet==26) buffer.resize(0x8000u);
-		else buffer.resize(0x5000u);
-		Buffer furtherBuffer;
-		decompress(rom.buffer, 0x1C8000u, furtherBuffer);
-		for(unsigned i=0; i<furtherBuffer.size(); ++i) buffer.push_back(furtherBuffer[i]);
-		for(unsigned i=0; i<buffer.size(); i+=32){
-			U8 copy[32];
-			for(unsigned j=0; j<32; ++j){
-				copy[j]=buffer[i+j];
-				buffer[i+j]=0;
-			}
-			for(unsigned y=0; y<8; y++){
-				U8 line[4];
-				line[0]=copy[y*2];
-				line[1]=copy[y*2+1];
-				line[2]=copy[y*2+16];
-				line[3]=copy[y*2+17];
-				for(unsigned x=0; x<8; x++){
-					unsigned shift=(7-x)*4;
-					U32 word=0;
-					for(unsigned j=0; j<4; ++j) word+=(line[j]&1)<<(shift+j);
-					for(unsigned j=0; j<4; ++j){
-						buffer[i+y*4+j]|=word>>(8*j)&0xFFu;
-						line[j]>>=1;
-					}
-				}
-			}
-		}
-		Buffer subTiles;
-		for(unsigned i=0; i<buffer.size(); ++i){
-			subTiles.push_back(buffer[i]&0xFu);
-			subTiles.push_back(buffer[i]>>4);
-		}
-		vector<TileAssembler> tileAssemblers;
-		buffer.clear();
-		if(header.region!=6) decompress(rom.buffer, 0x1CA09Du, buffer);
-		furtherBuffer.clear();
-		decompress(rom.buffer, readPointer(rom.buffer, tileSetPointer), furtherBuffer);
-		for(unsigned i=0; i<furtherBuffer.size(); ++i) buffer.push_back(furtherBuffer[i]);
-		for(unsigned i=0; i<buffer.size(); i+=8){
-			tileAssemblers.push_back(TileAssembler(
-				buffer[i+1]<<8|buffer[i+0],
-				buffer[i+3]<<8|buffer[i+2],
-				buffer[i+5]<<8|buffer[i+4],
-				buffer[i+7]<<8|buffer[i+6]
-			));
-		}
-		tileSet.clear();
-		tileSet.resize(tileAssemblers.size());
-		for(unsigned i=0; i<tileAssemblers.size(); ++i){
-			tileSet[i].resize(TILE_SIZE, TILE_SIZE);
-			drawSubTile(subTiles, tileAssemblers[i].ul, palette, tileSet[i], 0          , 0);
-			drawSubTile(subTiles, tileAssemblers[i].ur, palette, tileSet[i], TILE_SIZE/2, 0);
-			drawSubTile(subTiles, tileAssemblers[i].dl, palette, tileSet[i], 0          , TILE_SIZE/2);
-			drawSubTile(subTiles, tileAssemblers[i].dr, palette, tileSet[i], TILE_SIZE/2, TILE_SIZE/2);
-		}
-	}
-}
-
-void Room::drawTileSet(Array2D<Color>& destination, unsigned tilesWide) const{
-	if(mode7){
-		tilesWide*=2;//tiles in this mode are half as big as usual, so compensate
-		destination.resize(tilesWide*TILE_SIZE/2, (tileSet.size()/(tilesWide/2)+1)*TILE_SIZE/2);
-		for(unsigned i=0; i<tileSet.size(); ++i)
-			for(unsigned x=0; x<TILE_SIZE/2; ++x)
-				for(unsigned y=0; y<TILE_SIZE/2; ++y)
-					destination.at(i%tilesWide*TILE_SIZE/2+x, i/tilesWide*TILE_SIZE/2+y)=tileSet[i].at(x, y);
-	}
-	else{
-		destination.resize(tilesWide*TILE_SIZE, (tileSet.size()/tilesWide+1)*TILE_SIZE);
-		for(unsigned i=0; i<tileSet.size(); ++i)
-			for(unsigned x=0; x<TILE_SIZE; ++x)
-				for(unsigned y=0; y<TILE_SIZE; ++y)
-					destination.at(i%tilesWide*TILE_SIZE+x, i/tilesWide*TILE_SIZE+y)=tileSet[i].at(x, y);
-	}
-}
-
-void Room::getQuadsVertexArray(vector<Vertex>& vertices, unsigned tilesWide) const{
-	if(mode7){
-		tilesWide*=2;//tiles in this mode are half as big as usual, so compensate
-		for(unsigned i=0; i<tiles.readISize(); ++i)
-			for(unsigned j=0; j<tiles.readJSize(); ++j){
-				const Tile& tile=tiles.at(i, j);
-				unsigned tileX=tile.layer2.index%tilesWide*TILE_SIZE/2;
-				unsigned tileY=tile.layer2.index/tilesWide*TILE_SIZE/2;
-				unsigned txi=tileX, txf=tileX+TILE_SIZE/2-1, tyi=tileY, tyf=tileY+TILE_SIZE/2-1;
-				vertices.push_back(Vertex((i+0)*TILE_SIZE/2, (j+0)*TILE_SIZE/2, txi, tyi));
-				vertices.push_back(Vertex((i+1)*TILE_SIZE/2, (j+0)*TILE_SIZE/2, txf, tyi));
-				vertices.push_back(Vertex((i+1)*TILE_SIZE/2, (j+1)*TILE_SIZE/2, txf, tyf));
-				vertices.push_back(Vertex((i+0)*TILE_SIZE/2, (j+1)*TILE_SIZE/2, txi, tyf));
-			}
-	}
-	else{
-		//layer 2
-		for(unsigned i=0; i<tiles.readISize(); ++i)
-			for(unsigned j=0; j<tiles.readJSize(); ++j){
-				const Tile& tile=tiles.at(i, j);
-				if(!tile.hasLayer2) continue;
-				unsigned tileX=tile.layer2.index%tilesWide*TILE_SIZE;
-				unsigned tileY=tile.layer2.index/tilesWide*TILE_SIZE;
-				unsigned txi=tileX, txf=tileX+TILE_SIZE-1, tyi=tileY, tyf=tileY+TILE_SIZE-1;
-				if(tile.layer2.flipH){
-					txi=tileX+TILE_SIZE-1;
-					txf=tileX;
-				}
-				if(tile.layer2.flipV){
-					tyi=tileY+TILE_SIZE-1;
-					tyf=tileY;
-				}
-				vertices.push_back(Vertex((i+0)*TILE_SIZE, (j+0)*TILE_SIZE, txi, tyi));
-				vertices.push_back(Vertex((i+1)*TILE_SIZE, (j+0)*TILE_SIZE, txf, tyi));
-				vertices.push_back(Vertex((i+1)*TILE_SIZE, (j+1)*TILE_SIZE, txf, tyf));
-				vertices.push_back(Vertex((i+0)*TILE_SIZE, (j+1)*TILE_SIZE, txi, tyf));
-			}
-		//layer 1
-		for(unsigned i=0; i<tiles.readISize(); ++i)
-			for(unsigned j=0; j<tiles.readJSize(); ++j){
-				const Tile& tile=tiles.at(i, j);
-				unsigned tileX=tile.layer1.index%tilesWide*TILE_SIZE;
-				unsigned tileY=tile.layer1.index/tilesWide*TILE_SIZE;
-				unsigned txi=tileX, txf=tileX+TILE_SIZE-1, tyi=tileY, tyf=tileY+TILE_SIZE-1;
-				if(tile.layer1.flipH){
-					txi=tileX+TILE_SIZE-1;
-					txf=tileX;
-				}
-				if(tile.layer1.flipV){
-					tyi=tileY+TILE_SIZE-1;
-					tyf=tileY;
-				}
-				vertices.push_back(Vertex((i+0)*TILE_SIZE, (j+0)*TILE_SIZE, txi, tyi));
-				vertices.push_back(Vertex((i+1)*TILE_SIZE, (j+0)*TILE_SIZE, txf, tyi));
-				vertices.push_back(Vertex((i+1)*TILE_SIZE, (j+1)*TILE_SIZE, txf, tyf));
-				vertices.push_back(Vertex((i+0)*TILE_SIZE, (j+1)*TILE_SIZE, txi, tyf));
-			}
-	}
-}
-
-const Door* Room::readDoor(unsigned x, unsigned y) const{
-	if(mode7){
-		x/=(TILE_SIZE/2);
-		y/=(TILE_SIZE/2);
-	}
-	else{
-		x/=TILE_SIZE;
-		y/=TILE_SIZE;
-	}
-	if(x>=tiles.readISize()||y>=tiles.readJSize()) return NULL;
-	if(tiles.at(x, y).layer1.property==9) return &doors[tiles.at(x, y).bts];
-	return NULL;
-}
-
-//=====functions=====//
-string codeDescription(U16 code){
-	switch(code){
-		case STANDARD: return "STANDARD";
-		case DOORS: return "Doors";
-		case TOURIAN_BOSS_1: return "Tourian Boss 1";
-		case EVENTS: return "Events";
-		case BOSSES: return "Bosses";
-		case MORPH: return "Morph";
-		case MORPH_AND_MISSILES: return "Morph & Missiles";
-		case POWER_BOMBS: return "Power Bombs";
-		case SPEED_BOOSTER: return "Speed Booster";
-		default: break;
-	}
-	return "";
 }
