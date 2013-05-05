@@ -73,7 +73,7 @@ template<class T> class SparseRangeArray{
 			return data[a][b];
 		}
 
-		unsigned size() const{ return BLOCK_SIZE*(data.size()); }
+		unsigned size() const{ return BLOCK_SIZE*data.size(); }
 
 		std::string print() const{
 			std::stringstream s;

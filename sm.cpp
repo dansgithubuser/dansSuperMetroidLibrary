@@ -429,10 +429,9 @@ bool Rom::save(string fileName){
 }
 
 void Rom::dummify(){
-///
-	for(unsigned i=loRomToOffset(0xCE, 0); i<index.size(); ++i)
+	for(unsigned i=0; i<index.size(); ++i)
 		if(index[i]==HACKABLE)
-			buffer[i]=0xFFu;
+			buffer[i]=0xD0u;
 }
 
 //=====class Transition=====//
@@ -473,7 +472,7 @@ void Save::index(Rom::Index& index){
 }
 
 U32 Save::readRegionTable(Region region){
-	return readU16(rom->buffer, REGION_TABLES+2*region);
+	return loRomToOffset(BANK, readU16(rom->buffer, REGION_TABLES+2*region));
 }
 
 void Save::setRegionTable(Region region, U32 offset){
@@ -583,16 +582,14 @@ Header::Header(const Buffer& buffer, unsigned offset):
 			stateInfo.back().state=offset;
 			break;
 		}
-		else{
-			stateInfo.back().state=loRomToOffset(State::BANK, readU16(buffer, offset));
-			offset+=2;
-		}
+		stateInfo.back().state=loRomToOffset(State::BANK, readU16(buffer, offset));
+		offset+=2;
 	}
 }
 
 unsigned Header::size(){
 	unsigned result=MAIN_SIZE;
-	for(unsigned i=0; i<stateInfo.size(); ++i) stateInfoSize(stateInfo[i].code);
+	for(unsigned i=0; i<stateInfo.size(); ++i) result+=stateInfoSize(stateInfo[i].code);
 	return result;
 }
 
