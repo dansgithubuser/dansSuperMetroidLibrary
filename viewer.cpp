@@ -68,8 +68,8 @@ void setupRoom(sm::Room& room, U16 index, int& state, sf::Texture& tilesTexture,
 		}
 	tilesTexture.loadFromImage(tilesImage);
 	updateTiles(room, level, layer1, layer2, mode7);
-	x=room.readW()/2;
-	y=room.readH()/2;
+	x=room.readPixelsWide()/2;
+	y=room.readPixelsHigh()/2;
 	if(standardState) state=room.readStates()-1;
 	else if(state>=(int)room.readStates()) state=room.readStates()-1;
 }
@@ -134,9 +134,9 @@ int main(int argc, char **argv){
 					}
 					else if(sfEvent.mouseButton.button==sf::Mouse::Right){
 						sf::Vector2f viewPosition;
-						viewPosition=window.convertCoords(sf::Vector2i(sfEvent.mouseButton.x, sfEvent.mouseButton.y));
+						viewPosition=window.mapPixelToCoords(sf::Vector2i(sfEvent.mouseButton.x, sfEvent.mouseButton.y));
 						sm::Transition door(rom);
-						if(room.readDoor(viewPosition.x, viewPosition.y, door)&&door.room){
+						if(room.readDoorWithPixelPosition(viewPosition.x, viewPosition.y, door)&&door.room){
 							for(index=0; index<sm::VANILLA_ROOMS; ++index)
 								if(sm::VANILLA_ROOM_OFFSETS[index]==door.room)
 									break;
@@ -152,7 +152,9 @@ int main(int argc, char **argv){
 						case sf::Keyboard::Q: window.close(); break;
 						case sf::Keyboard::M: zoom=zoom>=MAX_ZOOM?MAX_ZOOM:zoom*ZOOM_SPEED; break;
 						case sf::Keyboard::N: zoom=zoom<=MIN_ZOOM?MIN_ZOOM:zoom/ZOOM_SPEED; break;
-						case sf::Keyboard::Space: x=room.readW()/2; y=room.readH()/2; break;
+						case sf::Keyboard::B: zoom=2; break;
+						case sf::Keyboard::V: zoom=1; break;
+						case sf::Keyboard::Space: x=room.readPixelsWide()/2; y=room.readPixelsHigh()/2; break;
 						case sf::Keyboard::Num1: setupRoom(room, index=  0, state, tilesTexture, level, x, y, layer1, layer2, mode7, true); break;//crateria
 						case sf::Keyboard::Num2: setupRoom(room, index= 46, state, tilesTexture, level, x, y, layer1, layer2, mode7, true); break;//brinstar
 						case sf::Keyboard::Num3: setupRoom(room, index= 91, state, tilesTexture, level, x, y, layer1, layer2, mode7, true); break;//norfair

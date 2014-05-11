@@ -17,6 +17,7 @@ typedef std::vector<U8> Buffer;
 template<class T> class Array2D{
 	public:
 		Array2D(): w(0), h(0) {}
+		Array2D(unsigned maxI, unsigned maxJ): w(maxI), h(maxJ) { data.resize(w, h); }
 
 		void resize(unsigned maxI, unsigned maxJ){
 			data.resize(maxI*maxJ);
@@ -57,7 +58,7 @@ struct Vertex{
 template<class T> class SparseRangeArray{
 	public:
 		void set(unsigned start, unsigned size, T value){
-			data.resize(max(data.size(), (start+size)/BLOCK_SIZE+1), std::vector<T>(BLOCK_SIZE, T(0)));
+			data.resize(std::max(unsigned(data.size()), (start+size)/BLOCK_SIZE+1), std::vector<T>(BLOCK_SIZE, T(0)));
 			for(unsigned i=start; i<start+size; ++i){
 				unsigned a=i/BLOCK_SIZE;
 				unsigned b=i%BLOCK_SIZE;
@@ -117,7 +118,7 @@ enum Region{
 	MARIDIA,
 	TOURIAN,
 	CERES,
-	DEBUG,
+	TESTING,
 	REGIONS
 };
 
@@ -335,7 +336,7 @@ struct Plm{//post load modification
 	U16 type;//pointer in bank 0x84
 	U8
 		x, y,
-		//tese 2 fields' meanings depend on the type
+		//these 2 fields' meanings depend on the type
 		field1,
 		field2;
 };
@@ -354,14 +355,21 @@ class Room{
 			std::vector<Vertex>&, unsigned tilesWide,//tilesWide should be same as used in drawTileSet
 			bool showLayer1=true, bool showLayer2=true, bool showMode7=true
 		) const;
-		bool readDoor(unsigned x, unsigned y, Transition& transition);
-		unsigned readW() const{ return header.width *SCREEN_SIZE*TILE_SIZE; }
-		unsigned readH() const{ return header.height*SCREEN_SIZE*TILE_SIZE; }
+		bool readDoorWithPixelPosition(unsigned x, unsigned y, Transition& transition);
+		Tile& getTile(unsigned x, unsigned y);
+		U8& getMode7Tile(unsigned x, unsigned y);
+		bool isMode7() const{ return mode7.tiles.size(); }
+		unsigned readPixelsWide() const{ return header.width *SCREEN_SIZE*TILE_SIZE; }
+		unsigned readPixelsHigh() const{ return header.height*SCREEN_SIZE*TILE_SIZE; }
+		unsigned readTilesWide() const{ return header.width *SCREEN_SIZE; }
+		unsigned readTilesHigh() const{ return header.height*SCREEN_SIZE; }
 		unsigned readStates() const{ return states.size(); }
 		Header::Code readStateCode(unsigned i) const;
-	private:
 		bool convertScreenToTile(unsigned& x, unsigned& y) const;
-		const Array2D<Tile>& readStateTiles() const{ return tiles.find(states[stateIndex].tiles)->second; }
+		bool visible(unsigned x, unsigned y) const;
+	private:
+		Array2D<Tile>& readStateTiles(){ return tiles.find(states[stateIndex].tiles)->second; }
+		const Array2D<Tile>& readStateTilesConst() const{ return tiles.find(states[stateIndex].tiles)->second; }
 		Rom* rom;
 		//per room
 		Header header;

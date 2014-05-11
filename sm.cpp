@@ -175,9 +175,9 @@ class LzCompressor{
 				if(bytes==2) lowest=max(int(offset-0xFFFFu), 0);
 				else lowest=max(int(offset-0xFFu), 0);
 			}
-			//build Knuth–Morris–Pratt table
+			//build Knuthâ€“Morrisâ€“Pratt table
 			int table[MAX_BLOCK_LENGTH];
-			const unsigned wordLength=min(MAX_BLOCK_LENGTH, source.size()-offset);
+			const unsigned wordLength=min(MAX_BLOCK_LENGTH, U32(source.size()-offset));
 			table[0]=-1;
 			table[1]=0;
 			unsigned i=2, j=0;
@@ -193,7 +193,7 @@ class LzCompressor{
 					++i;
 				}
 			}
-			//find longest match using Knuth–Morris–Pratt algorithm
+			//find longest match using Knuthâ€“Morrisâ€“Pratt algorithm
 			unsigned bestStart=0, bestLength=0, nextOffsetToTry=0;
 			while(nextOffsetToTry<offsets[source[offset]^mask].size()){
 				i=offsets[source[offset]^mask][nextOffsetToTry];
@@ -1076,9 +1076,9 @@ void Room::getQuadsVertexArray(vector<Vertex>& vertices, unsigned tilesWide, boo
 				vertices.push_back(Vertex((i+0)*TILE_SIZE/2, (j+1)*TILE_SIZE/2, txi, tyf));
 			}
 	if(showLayer2)
-		for(unsigned i=0; i<readStateTiles().readISize(); ++i)
-			for(unsigned j=0; j<readStateTiles().readJSize(); ++j){
-				const Tile& tile=readStateTiles().at(i, j);
+		for(unsigned i=0; i<readStateTilesConst().readISize(); ++i)
+			for(unsigned j=0; j<readStateTilesConst().readJSize(); ++j){
+				const Tile& tile=readStateTilesConst().at(i, j);
 				if(!tile.hasLayer2) continue;
 				unsigned tileX=tile.layer2.index%tilesWide*TILE_SIZE;
 				unsigned tileY=tile.layer2.index/tilesWide*TILE_SIZE;
@@ -1097,9 +1097,9 @@ void Room::getQuadsVertexArray(vector<Vertex>& vertices, unsigned tilesWide, boo
 				vertices.push_back(Vertex((i+0)*TILE_SIZE, (j+1)*TILE_SIZE, txi, tyf));
 			}
 	if(showLayer1)
-		for(unsigned i=0; i<readStateTiles().readISize(); ++i)
-			for(unsigned j=0; j<readStateTiles().readJSize(); ++j){
-				const Tile& tile=readStateTiles().at(i, j);
+		for(unsigned i=0; i<readStateTilesConst().readISize(); ++i)
+			for(unsigned j=0; j<readStateTilesConst().readJSize(); ++j){
+				const Tile& tile=readStateTilesConst().at(i, j);
 				unsigned tileX=tile.layer1.index%tilesWide*TILE_SIZE;
 				unsigned tileY=tile.layer1.index/tilesWide*TILE_SIZE;
 				unsigned txi=tileX, txf=tileX+TILE_SIZE-1, tyi=tileY, tyf=tileY+TILE_SIZE-1;
@@ -1118,12 +1118,20 @@ void Room::getQuadsVertexArray(vector<Vertex>& vertices, unsigned tilesWide, boo
 			}
 }
 
-bool Room::readDoor(unsigned x, unsigned y, Transition& transition){
+bool Room::readDoorWithPixelPosition(unsigned x, unsigned y, Transition& transition){
 	if(!convertScreenToTile(x, y)) return false;
 	if(readStateTiles().at(x, y).layer1.property!=9) return false;
 	transition=Transition(*rom);
 	transition.open(doors[readStateTiles().at(x, y).bts]);
 	return true;
+}
+
+Tile& Room::getTile(unsigned x, unsigned y){
+	return readStateTiles().at(x, y);
+}
+
+U8& Room::getMode7Tile(unsigned x, unsigned y){
+	return mode7.tiles.at(x, y);
 }
 
 Header::Code Room::readStateCode(unsigned i) const{
@@ -1133,7 +1141,13 @@ Header::Code Room::readStateCode(unsigned i) const{
 bool Room::convertScreenToTile(unsigned& x, unsigned& y) const{
 	x/=TILE_SIZE;
 	y/=TILE_SIZE;
-	return x<readStateTiles().readISize()&&y<readStateTiles().readJSize();
+	return x<readStateTilesConst().readISize()&&y<readStateTilesConst().readJSize();
+}
+
+bool Room::visible(unsigned x, unsigned y) const{
+	if(x>=readTilesWide()||y>=readTilesHigh()) return false;
+	if(states[stateIndex].scroll<0x8000u) return states[stateIndex].scroll;
+	return scroll.find(states[stateIndex].scroll)->second.at(x/SCREEN_SIZE, y/SCREEN_SIZE);
 }
 
 //=====functions=====//
