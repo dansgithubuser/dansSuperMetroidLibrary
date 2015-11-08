@@ -1,6 +1,6 @@
 #include "sm.hpp"
 
-#include "SFML/Graphics.hpp"//SFML 2.0 RC
+#include <SFML/Graphics.hpp>
 
 #include <fstream>
 #include <iostream>
