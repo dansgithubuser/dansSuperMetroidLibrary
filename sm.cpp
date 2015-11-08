@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <cassert>
+#include <algorithm>
 
 using namespace std;
 using namespace sm;
@@ -358,6 +359,7 @@ string Rom::open(string fileName){
 	header.clear();
 	buffer.clear();
 	ifstream file(fileName.c_str(), ios::binary);
+	if(!file.good()) return "Couldn't open ROM.";
 	char c;
 	while(file.get(c)) buffer.push_back(c);
 	file.close();
