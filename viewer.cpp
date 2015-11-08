@@ -75,13 +75,6 @@ void setupRoom(sm::Room& room, U16 index, int& state, sf::Texture& tilesTexture,
 }
 
 int main(int argc, char **argv){
-	//redirect
-	std::ofstream out("stdout.txt");
-	std::ofstream err("stderr.txt");
-	std::streambuf* coutbuf=std::cout.rdbuf();
-	std::streambuf* cerrbuf=std::cerr.rdbuf();
-	std::cout.rdbuf(out.rdbuf());
-	std::cerr.rdbuf(err.rdbuf());
 	//sfml
 	sf::RenderWindow window(sf::VideoMode(640, 480, 32), "super metroid viewer");
 	sf::Text text;
@@ -89,7 +82,13 @@ int main(int argc, char **argv){
 	text.setScale(0.5f, 0.5f);
 	//sm
 	Rom rom;
-	if(rom.open("sm.smc")!="") return -1;
+	{
+		std::string s=rom.open("sm.smc");
+		if(s!=""){
+			std::cerr<<s<<'\n';
+			return -1;
+		}
+	}
 	if(!rom.indexVanilla()) return -1;
 	Room room(rom);
 	//state initialization
@@ -225,9 +224,5 @@ int main(int argc, char **argv){
 		sf::sleep(sf::seconds(1/60.0f));
 	}
 	//finish
-	std::cout<<std::flush;
-	std::cerr<<std::flush;
-	std::cout.rdbuf(coutbuf);
-	std::cerr.rdbuf(cerrbuf);
 	return 0;
 }
