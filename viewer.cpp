@@ -60,7 +60,7 @@ void drawTexture(const sf::Texture& texture, sf::VertexArray& vertices){
 	));
 }
 
-void setupRoom(sm::Room& room, U16 index, int& state, sf::Texture& tilesTexture, sf::VertexArray& level, float& x, float& y, bool layer1, bool layer2, bool mode7, bool standardState){
+void setupRoom(sm::Room& room, uint16_t index, int& state, sf::Texture& tilesTexture, sf::VertexArray& level, float& x, float& y, bool layer1, bool layer2, bool mode7, bool standardState){
 	room.open(sm::VANILLA_ROOM_OFFSETS[index]);
 	if(standardState) state=room.readStates()-1;
 	room.setState(state);
@@ -100,7 +100,7 @@ int main(int argc, char **argv){
 	if(!rom.indexVanilla()) return -1;
 	Room room(rom);
 	//state initialization
-	U16 index=0;
+	uint16_t index=0;
 	int state;
 	sf::Texture tilesTexture;
 	sf::VertexArray level;

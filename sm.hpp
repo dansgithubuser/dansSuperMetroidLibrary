@@ -5,14 +5,12 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <cstdint>
 
 namespace sm{
 
 //=====utility=====//
-typedef unsigned char U8;
-typedef unsigned short U16;
-typedef unsigned U32;
-typedef std::vector<U8> Buffer;
+typedef std::vector<uint8_t> Buffer;
 
 template<class T> class Array2D{
 	public:
@@ -108,7 +106,7 @@ template<class K, class V> void rekey(std::map<K, V>& map, const std::map<K, K>&
 const unsigned TILE_SIZE=16;//tile size in pixels
 const unsigned SCREEN_SIZE=16;//screen size in tiles
 const unsigned VANILLA_ROOMS=263;
-extern const U32 VANILLA_ROOM_OFFSETS[];
+extern const uint32_t VANILLA_ROOM_OFFSETS[];
 
 enum Region{
 	CRATERIA,
@@ -128,8 +126,8 @@ class Rom{
 		typedef SparseRangeArray<Usage> Index;
 		std::string open(std::string fileName);
 		bool indexVanilla();
-		bool takeSpace(U8 bank, U16 size, U32& offset);
-		bool takeSpace(U8 minBank, U8 maxBank, U16 size, U32& offset);
+		bool takeSpace(uint8_t bank, uint16_t size, uint32_t& offset);
+		bool takeSpace(uint8_t minBank, uint8_t maxBank, uint16_t size, uint32_t& offset);
 		bool save(std::string fileName);
 		void dummify();//write dummy data over unused data
 		Buffer header, buffer;
@@ -140,13 +138,13 @@ class Rom{
 class Transition{
 	public:
 		static const unsigned SIZE=12;
-		static const U8 BANK=0x83u;
+		static const uint8_t BANK=0x83u;
 		Transition(Rom& rom): rom(&rom) {}
-		void index(U32 offset, Rom::Index& index);
-		void open(U32 offset);
-		bool save(U32& offset);
-		U32 room;//pointer to destination room
-		U8
+		void index(uint32_t offset, Rom::Index& index);
+		void open(uint32_t offset);
+		bool save(uint32_t& offset);
+		uint32_t room;//pointer to destination room
+		uint8_t
 			flags,
 				//0x80 elevator
 				//0x40 switch region
@@ -165,7 +163,7 @@ class Transition{
 				//direction=145 or 147 => hide health and such (used with elevators)
 			animationX, animationY,//position of other side of door closing animation in tiles from top left corner of new room
 			x, y;//Samus' location in new room in tiles from top left corner
-		U16
+		uint16_t
 			distance,//distance Samus is placed on exit in pixels, 0x8000 means default
 			scroll;//pointer in bank 0x8F to code for updating scroll data
 	private:
@@ -174,50 +172,50 @@ class Transition{
 
 class Save{
 	public:
-		static const U32 REGION_TABLES=0x44B5u;
+		static const uint32_t REGION_TABLES=0x44B5u;
 		static const unsigned SIZE=14;//size in bytes on rom
-		static const U8 BANK=0x80u;
-		static const U16 START=0x44C5u;//offset of first save
-		static const U16 END=0x4D07u;//offset just past last save -- 0x4C19u would be a more conservative value, excluding (probably) debug region saves
+		static const uint8_t BANK=0x80u;
+		static const uint16_t START=0x44C5u;//offset of first save
+		static const uint16_t END=0x4D07u;//offset just past last save -- 0x4C19u would be a more conservative value, excluding (probably) debug region saves
 		static void index(Rom::Index& index);
 		Save(Rom& rom): rom(&rom) {}
-		U32 readRegionTable(Region region);
-		void setRegionTable(Region region, U32 offset);
-		void open(U32 offset);
-		bool save(U32& offset);
-		U32 room;//room that this save point is inside
-		U32 transition;//transition to room this save point is inside
-		U16 unknown;//always zero?
-		U16 scrollX;
-		U16 scrollY;
-		U16 samusY;//offset from top
-		U16 samusX;//offset from center
+		uint32_t readRegionTable(Region region);
+		void setRegionTable(Region region, uint32_t offset);
+		void open(uint32_t offset);
+		bool save(uint32_t& offset);
+		uint32_t room;//room that this save point is inside
+		uint32_t transition;//transition to room this save point is inside
+		uint16_t unknown;//always zero?
+		uint16_t scrollX;
+		uint16_t scrollY;
+		uint16_t samusY;//offset from top
+		uint16_t samusX;//offset from center
 	private:
 		Rom* rom;
 };
 
 class Mode7{
 	public:
-		static const U8 FIRST_BANK=0xC0u;
-		static const U8 LAST_BANK=0xCEu;
-		static const U8 FIRST_TILE_SET=17;
-		static const U8 LAST_TILE_SET=20;
+		static const uint8_t FIRST_BANK=0xC0u;
+		static const uint8_t LAST_BANK=0xCEu;
+		static const uint8_t FIRST_TILE_SET=17;
+		static const uint8_t LAST_TILE_SET=20;
 		Mode7(Rom& rom): rom(&rom) {}
-		void index(U8 tileSet, Rom::Index& index);
-		void open(U8 tileSet);
-		bool save(U8 tileSet);
+		void index(uint8_t tileSet, Rom::Index& index);
+		void open(uint8_t tileSet);
+		bool save(uint8_t tileSet);
 		void clear();
-		Array2D<U8> tiles;
+		Array2D<uint8_t> tiles;
 	private:
-		U32 dataOffset(U8 tileSet);
+		uint32_t dataOffset(uint8_t tileSet);
 		Rom* rom;
 		Buffer data;
 };
 
 class Header{
 	public:
-		static const U8 BANK=0x8Fu;
-		static const U8 DOOR_BANK=0x8Fu;
+		static const uint8_t BANK=0x8Fu;
+		static const uint8_t DOOR_BANK=0x8Fu;
 		enum Code{
 			STANDARD          =0xE5E6u,
 			DOORS             =0xE5EBu,
@@ -231,13 +229,13 @@ class Header{
 		};
 		static std::string codeDescription(Code code);
 		Header(){}
-		Header(const Buffer& buffer, U32 offset);
+		Header(const Buffer& buffer, uint32_t offset);
 		unsigned size();//size in bytes on rom
-		void write(Buffer& buffer, U32 offset) const;
-		U8
+		void write(Buffer& buffer, uint32_t offset) const;
+		uint8_t
 			index;//index value for room, doesn't seem to do anything
 		Region region;//crateria=0, brinstar=1, norfair=2, wrecked ship=3, maridia=4, tourian=5, ceres=6, debug=7
-		U8
+		uint8_t
 			x, y,//map location
 			width, height,//in screens
 			upScroll,//how far the room scrolls up -- usually 0x70
@@ -247,11 +245,11 @@ class Header{
 				//1=doesn't seem to do anything. Used in Crocomire and Draygon rooms
 				//2=force refresh of common room elements. Used in neighbors of 1s and 5s except Draygon room.
 				//5=rooms that wipe out common room elements. Used in Ceres shaft, Ceres Ridley, Kraid's Room
-		U32 doors;
+		uint32_t doors;
 		struct StateInfo{
 			Code code;
 			Buffer fields;
-			U32 state;
+			uint32_t state;
 		};
 		std::vector<StateInfo> stateInfo;
 	private:
@@ -262,60 +260,60 @@ class Header{
 
 struct State{
 	static const unsigned SIZE=26;//size in bytes on rom
-	static const U8 BANK=0x8Fu;
-	static const U8 SCROLL_BANK=0x8Fu;
+	static const uint8_t BANK=0x8Fu;
+	static const uint8_t SCROLL_BANK=0x8Fu;
 	State(){}
-	State(const Buffer& buffer, U32 offset);
-	void write(Buffer& buffer, U32 offset) const;
-	U32 tiles;//pointer to somewhere in banks 0xC2 to 0xCE
-	U8
+	State(const Buffer& buffer, uint32_t offset);
+	void write(Buffer& buffer, uint32_t offset) const;
+	uint32_t tiles;//pointer to somewhere in banks 0xC2 to 0xCE
+	uint8_t
 		tileSet,
 		musicTrack,
 		musicControl;
-	U16 fx1;//pointer in bank 0x83
-	U32 enemies;//pointer
-	U16 enemySet;//pointer in bank 0xB4
-	U16 layer2;//how layer 2 is drawn
-	U32 scroll;
+	uint16_t fx1;//pointer in bank 0x83
+	uint32_t enemies;//pointer
+	uint16_t enemySet;//pointer in bank 0xB4
+	uint16_t layer2;//how layer 2 is drawn
+	uint32_t scroll;
 		//if >= 0x8000, pointer to 2d scroll array in bank 0x8F -- 0 means no scroll, 1 means scroll but don't show top or bottom 2 tile rows, 2 means full scroll
 		//else it should be 0, 1, or 2, meaning the entire room has that scroll value
-	U16 unknown;//used in escape version of Bomb Torizo's room -- xray casing code (bank 0x8F)? -- doesn't seem to do anything
-	U16 fx2;//pointer in bank 0x8F
-	U32 plm;//pointer
-	U16 background;//pointer in bank 0x8F
-	U16 layerHandling;//pointer in bank 0x8F
+	uint16_t unknown;//used in escape version of Bomb Torizo's room -- xray casing code (bank 0x8F)? -- doesn't seem to do anything
+	uint16_t fx2;//pointer in bank 0x8F
+	uint32_t plm;//pointer
+	uint16_t background;//pointer in bank 0x8F
+	uint16_t layerHandling;//pointer in bank 0x8F
 };
 
 struct TileAssembler{
-	TileAssembler(U16 ul, U16 ur, U16 dl, U16 dr): ul(ul), ur(ur), dl(dl), dr(dr) {}
-	U16 ul, ur, dl, dr;
+	TileAssembler(uint16_t ul, uint16_t ur, uint16_t dl, uint16_t dr): ul(ul), ur(ur), dl(dl), dr(dr) {}
+	uint16_t ul, ur, dl, dr;
 };
 
 struct TileLayer{
 	TileLayer(): index(0), flipH(0), flipV(0), property(0) {}
-	TileLayer(const Buffer& buffer, U32 offset);
+	TileLayer(const Buffer& buffer, uint32_t offset);
 	void write(Buffer& buffer) const;
-	U16 index;
+	uint16_t index;
 	bool flipH, flipV;
-	U8 property;
+	uint8_t property;
 };
 
 struct Tile{
-	static const U8 FIRST_BANK=0xC2u;
-	static const U8 LAST_BANK=0xCEu;
+	static const uint8_t FIRST_BANK=0xC2u;
+	static const uint8_t LAST_BANK=0xCEu;
 	TileLayer layer1, layer2;
 	bool hasLayer2;
-	U8 bts;//behind-the-scenes data
+	uint8_t bts;//behind-the-scenes data
 };
 
 struct Enemy{
 	static const unsigned SIZE=16;//size in bytes on rom
-	static const U8 BANK=0xA1u;
-	static const U16 SENTINEL=0xFFFFu;
+	static const uint8_t BANK=0xA1u;
+	static const uint16_t SENTINEL=0xFFFFu;
 	Enemy(): species(0), x(0), y(0), field1(0), field2(0), field3(0), field4(0), field5(0) {}
-	Enemy(const Buffer& buffer, U32 offset);
-	void write(Buffer& buffer, U32 offset) const;
-	U16
+	Enemy(const Buffer& buffer, uint32_t offset);
+	void write(Buffer& buffer, uint32_t offset) const;
+	uint16_t
 		species,//pointer to enemy data in bank 0xA0
 		x, y,//in pixels, from top left corner
 		//these 5 fields' meanings depend on the species
@@ -328,13 +326,13 @@ struct Enemy{
 
 struct Plm{//post load modification
 	static const unsigned SIZE=6;//size in bytes on rom
-	static const U8 BANK=0x8Fu;
-	static const U16 SENTINEL=0;
+	static const uint8_t BANK=0x8Fu;
+	static const uint16_t SENTINEL=0;
 	Plm(): x(0), y(0), field1(0), field2(0) {}
-	Plm(const Buffer& buffer, U32 offset);
-	void write(Buffer& buffer, U32 offset) const;
-	U16 type;//pointer in bank 0x84
-	U8
+	Plm(const Buffer& buffer, uint32_t offset);
+	void write(Buffer& buffer, uint32_t offset) const;
+	uint16_t type;//pointer in bank 0x84
+	uint8_t
 		x, y,
 		//these 2 fields' meanings depend on the type
 		field1,
@@ -343,11 +341,11 @@ struct Plm{//post load modification
 
 class Room{
 	public:
-		static const U8 BANK=0x8Fu;
+		static const uint8_t BANK=0x8Fu;
 		Room(Rom& rom): rom(&rom), mode7(rom) {}
-		bool index(U32 offset, Rom::Index& index);
-		bool open(U32 offset);
-		bool save(U32& offset);
+		bool index(uint32_t offset, Rom::Index& index);
+		bool open(uint32_t offset);
+		bool save(uint32_t& offset);
 		void setState(unsigned i){ stateIndex=i; }
 		void loadGraphics();
 		void drawTileSet(Array2D<Color>&, unsigned tilesWide) const;
@@ -357,7 +355,7 @@ class Room{
 		) const;
 		bool readDoorWithPixelPosition(unsigned x, unsigned y, Transition& transition);
 		Tile& getTile(unsigned x, unsigned y);
-		U8& getMode7Tile(unsigned x, unsigned y);
+		uint8_t& getMode7Tile(unsigned x, unsigned y);
 		bool isMode7() const{ return mode7.tiles.size()!=0; }
 		unsigned readPixelsWide() const{ return header.width *SCREEN_SIZE*TILE_SIZE; }
 		unsigned readPixelsHigh() const{ return header.height*SCREEN_SIZE*TILE_SIZE; }
@@ -373,14 +371,14 @@ class Room{
 		Rom* rom;
 		//per room
 		Header header;
-		std::vector<U32> doors;
+		std::vector<uint32_t> doors;
 		//per state
 		std::vector<State> states;
 		//shareable between states
-		std::map<U32, Array2D<U8> > scroll;//map from identifier to scroll data
-		std::map<U32, Array2D<Tile> > tiles;//map from identifier to tiles
-		std::map<U32, std::vector<Enemy> > enemies;//map from identifier to enemies
-		std::map<U32, std::vector<Plm> > plm;//map from identifier to plm
+		std::map<uint32_t, Array2D<uint8_t> > scroll;//map from identifier to scroll data
+		std::map<uint32_t, Array2D<Tile> > tiles;//map from identifier to tiles
+		std::map<uint32_t, std::vector<Enemy> > enemies;//map from identifier to enemies
+		std::map<uint32_t, std::vector<Plm> > plm;//map from identifier to plm
 		//for interacting with a state
 		unsigned stateIndex;
 		Mode7 mode7;
@@ -388,8 +386,8 @@ class Room{
 		std::vector<Array2D<Color> > mode7TileSet;
 };
 
-std::string musicControlDescription(U8 musicControl);
-std::string musicTrackDescription(U8 musicTrack);
+std::string musicControlDescription(uint8_t musicControl);
+std::string musicTrackDescription(uint8_t musicTrack);
 
 };//namespace sm
 
