@@ -20,6 +20,14 @@ template <class T> std::string toString(T t){
 	return ss.str();
 }
 
+sf::Vector2f sfVector2f(int x, int y){
+	return sf::Vector2f((float)x, (float)y);
+}
+
+sf::Color sfColor(float r, float g, float b, float a){
+	return sf::Color(sf::Uint8(255*r), sf::Uint8(255*g), sf::Uint8(255*b), sf::Uint8(255*a));
+}
+
 void updateTiles(sm::Room& room, sf::VertexArray& level, bool layer1, bool layer2, bool mode7){
 	std::vector<Vertex> vertices;
 	room.getQuadsVertexArray(vertices, TILES_WIDE, layer1, layer2, mode7);
@@ -27,28 +35,28 @@ void updateTiles(sm::Room& room, sf::VertexArray& level, bool layer1, bool layer
 	level.setPrimitiveType(sf::Quads);
 	for(unsigned i=0; i<vertices.size(); ++i)
 		level.append(sf::Vertex(
-			sf::Vector2f(vertices[i].x, vertices[i].y),
-			sf::Vector2f(vertices[i].tx, vertices[i].ty)
+			sfVector2f(vertices[i].x, vertices[i].y),
+			sfVector2f(vertices[i].tx, vertices[i].ty)
 		));
 }
 
 void drawTexture(const sf::Texture& texture, sf::VertexArray& vertices){
 	vertices.clear();
 	vertices.append(sf::Vertex(
-		sf::Vector2f(0, 0),
-		sf::Vector2f(0, 0)
+		sfVector2f(0, 0),
+		sfVector2f(0, 0)
 	));
 	vertices.append(sf::Vertex(
-		sf::Vector2f(texture.getSize().x, 0),
-		sf::Vector2f(texture.getSize().x, 0)
+		sfVector2f(texture.getSize().x, 0),
+		sfVector2f(texture.getSize().x, 0)
 	));
 	vertices.append(sf::Vertex(
-		sf::Vector2f(texture.getSize().x, texture.getSize().y),
-		sf::Vector2f(texture.getSize().x, texture.getSize().y)
+		sfVector2f(texture.getSize().x, texture.getSize().y),
+		sfVector2f(texture.getSize().x, texture.getSize().y)
 	));
 	vertices.append(sf::Vertex(
-		sf::Vector2f(0, texture.getSize().y),
-		sf::Vector2f(0, texture.getSize().y)
+		sfVector2f(0, texture.getSize().y),
+		sfVector2f(0, texture.getSize().y)
 	));
 }
 
@@ -64,12 +72,12 @@ void setupRoom(sm::Room& room, U16 index, int& state, sf::Texture& tilesTexture,
 	for(unsigned i=0; i<tilesImage.getSize().x; ++i)
 		for(unsigned j=0; j<tilesImage.getSize().y; ++j){
 			Color c=tilesBuffer.at(i, j);
-			tilesImage.setPixel(i, j, sf::Color(c.r*255, c.g*255, c.b*255, c.a*255));
+			tilesImage.setPixel(i, j, sfColor(c.r, c.g, c.b, c.a));
 		}
 	tilesTexture.loadFromImage(tilesImage);
 	updateTiles(room, level, layer1, layer2, mode7);
-	x=room.readPixelsWide()/2;
-	y=room.readPixelsHigh()/2;
+	x=room.readPixelsWide()/2.0f;
+	y=room.readPixelsHigh()/2.0f;
 	if(standardState) state=room.readStates()-1;
 	else if(state>=(int)room.readStates()) state=room.readStates()-1;
 }
@@ -96,7 +104,7 @@ int main(int argc, char **argv){
 	int state;
 	sf::Texture tilesTexture;
 	sf::VertexArray level;
-	float x, y, w=window.getSize().x, h=window.getSize().y, zoom=2.0f;
+	float x, y, w=(float)window.getSize().x, h=(float)window.getSize().y, zoom=2.0f;
 	Tile tile;
 	int previousMouseX=0, previousMouseY=0;
 	bool dragging=false, layer1=true, layer2=true, mode7=true, tileSet=false;
@@ -135,7 +143,7 @@ int main(int argc, char **argv){
 						sf::Vector2f viewPosition;
 						viewPosition=window.mapPixelToCoords(sf::Vector2i(sfEvent.mouseButton.x, sfEvent.mouseButton.y));
 						sm::Transition door(rom);
-						if(room.readDoorWithPixelPosition(viewPosition.x, viewPosition.y, door)&&door.room){
+						if(room.readDoorWithPixelPosition((unsigned)viewPosition.x, (unsigned)viewPosition.y, door)&&door.room){
 							for(index=0; index<sm::VANILLA_ROOMS; ++index)
 								if(sm::VANILLA_ROOM_OFFSETS[index]==door.room)
 									break;
@@ -153,7 +161,7 @@ int main(int argc, char **argv){
 						case sf::Keyboard::N: zoom=zoom<=MIN_ZOOM?MIN_ZOOM:zoom/ZOOM_SPEED; break;
 						case sf::Keyboard::B: zoom=2; break;
 						case sf::Keyboard::V: zoom=1; break;
-						case sf::Keyboard::Space: x=room.readPixelsWide()/2; y=room.readPixelsHigh()/2; break;
+						case sf::Keyboard::Space: x=room.readPixelsWide()/2.0f; y=room.readPixelsHigh()/2.0f; break;
 						case sf::Keyboard::Num1: setupRoom(room, index=  0, state, tilesTexture, level, x, y, layer1, layer2, mode7, true); break;//crateria
 						case sf::Keyboard::Num2: setupRoom(room, index= 46, state, tilesTexture, level, x, y, layer1, layer2, mode7, true); break;//brinstar
 						case sf::Keyboard::Num3: setupRoom(room, index= 91, state, tilesTexture, level, x, y, layer1, layer2, mode7, true); break;//norfair

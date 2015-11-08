@@ -678,8 +678,8 @@ void State::write(Buffer& buffer, U32 offset) const{
 //=====struct TileLayer=====//
 TileLayer::TileLayer(const Buffer& buffer, U32 offset):
 	index(readU16(buffer, offset)&0x3FFu),
-	flipH(buffer[offset+1]&4),
-	flipV(buffer[offset+1]&8),
+	flipH((buffer[offset+1]&4)!=0),
+	flipV((buffer[offset+1]&8)!=0),
 	property(buffer[offset+1]>>4)
 {}
 
@@ -1148,8 +1148,8 @@ bool Room::convertScreenToTile(unsigned& x, unsigned& y) const{
 
 bool Room::visible(unsigned x, unsigned y) const{
 	if(x>=readTilesWide()||y>=readTilesHigh()) return false;
-	if(states[stateIndex].scroll<0x8000u) return states[stateIndex].scroll;
-	return scroll.find(states[stateIndex].scroll)->second.at(x/SCREEN_SIZE, y/SCREEN_SIZE);
+	if(states[stateIndex].scroll<0x8000u) return states[stateIndex].scroll!=0;
+	return scroll.find(states[stateIndex].scroll)->second.at(x/SCREEN_SIZE, y/SCREEN_SIZE)!=0;
 }
 
 //=====functions=====//

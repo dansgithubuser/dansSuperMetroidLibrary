@@ -358,7 +358,7 @@ class Room{
 		bool readDoorWithPixelPosition(unsigned x, unsigned y, Transition& transition);
 		Tile& getTile(unsigned x, unsigned y);
 		U8& getMode7Tile(unsigned x, unsigned y);
-		bool isMode7() const{ return mode7.tiles.size(); }
+		bool isMode7() const{ return mode7.tiles.size()!=0; }
 		unsigned readPixelsWide() const{ return header.width *SCREEN_SIZE*TILE_SIZE; }
 		unsigned readPixelsHigh() const{ return header.height*SCREEN_SIZE*TILE_SIZE; }
 		unsigned readTilesWide() const{ return header.width *SCREEN_SIZE; }
