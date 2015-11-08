@@ -4,4 +4,4 @@ Dan's Super Metroid Library aims to be a Super Metroid ROM reader, editor, and w
 
 The entirety of the library exists in sm.hpp and sm.cpp.
 
-viewer.cpp uses the library and SFML to create a Super Metroid viewer. Right click on a door to enter it.
+viewer.cpp uses the library and SFML to create a Super Metroid viewer. Copy an SFML source release to neighbor CMakeLists.txt, and rename it from SFML-some-version to SFML.
