@@ -525,8 +525,8 @@ bool Mode7::save(uint8_t tileSet){
 			data[2*(j*tiles.readISize()+i)]=tiles.at(i, j);
 	Buffer compressed;
 	compress(data, compressed);
-	unsigned offset;
-	if(!rom->takeSpace(Mode7::FIRST_BANK, Mode7::LAST_BANK, compressed.size(), offset))
+	uint32_t offset;
+	if(!rom->takeSpace(Mode7::FIRST_BANK, Mode7::LAST_BANK, (uint16_t)compressed.size(), offset))
 		return false;
 	writeU24(rom->buffer, tileSetOffset(tileSet)+3, offsetToLoRom(offset));
 	for(unsigned i=0; i<compressed.size(); ++i) rom->buffer[offset+i]=compressed[i];
@@ -894,7 +894,7 @@ bool Room::save(uint32_t& offset){
 						stateTiles.at(i, j).layer2.write(buffer);
 			Buffer compressed;
 			compress(buffer, compressed);
-			if(!rom->takeSpace(Tile::FIRST_BANK, Tile::LAST_BANK, compressed.size(), offset))
+			if(!rom->takeSpace(Tile::FIRST_BANK, Tile::LAST_BANK, (uint16_t)compressed.size(), offset))
 				return false;
 			tileHacks[state.tiles]=offset;
 			for(unsigned i=0; i<compressed.size(); ++i) rom->buffer[offset+i]=compressed[i];
@@ -903,7 +903,7 @@ bool Room::save(uint32_t& offset){
 		//enemies
 		if(enemies[state.enemies].size()){
 			if(enemyHacks.find(state.enemies)==enemyHacks.end()){
-				if(!rom->takeSpace(Enemy::BANK, enemies[state.enemies].size()*Enemy::SIZE+2, offset))
+				if(!rom->takeSpace(Enemy::BANK, uint16_t(enemies[state.enemies].size()*Enemy::SIZE+2), offset))
 					return false;
 				enemyHacks[state.enemies]=offset;
 				for(unsigned i=0; i<enemies[state.enemies].size(); ++i){
@@ -918,7 +918,7 @@ bool Room::save(uint32_t& offset){
 		//post load modifications
 		if(plm[state.plm].size()){
 			if(plmHacks.find(state.plm)==plmHacks.end()){
-				if(!rom->takeSpace(Plm::BANK, plm[state.plm].size()*Plm::SENTINEL+2, offset))
+				if(!rom->takeSpace(Plm::BANK, uint16_t(plm[state.plm].size()*Plm::SENTINEL+2), offset))
 					return false;
 				plmHacks[state.plm]=offset;
 				for(unsigned i=0; i<plm[state.plm].size(); ++i){
@@ -938,7 +938,7 @@ bool Room::save(uint32_t& offset){
 		}
 	}
 	//doors
-	if(!rom->takeSpace(Header::DOOR_BANK, 2*doors.size(), header.doors))
+	if(!rom->takeSpace(Header::DOOR_BANK, uint16_t(2*doors.size()), header.doors))
 		return false;
 	for(unsigned i=0; i<doors.size(); ++i)
 		writeU16(rom->buffer, header.doors+2*i, offsetToLoRom16(doors[i]));
