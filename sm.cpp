@@ -244,6 +244,10 @@ class LzCompressor{
 					}
 				}
 			}
+			if(bestLength==0){
+				length=0;
+				return;
+			}
 			//apply
 			length=bestLength;
 			putBlockHeader(destination, op, length);
