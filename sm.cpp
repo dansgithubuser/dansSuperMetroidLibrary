@@ -1,7 +1,6 @@
 #include "sm.hpp"
 
 #include <fstream>
-#include <cassert>
 #include <algorithm>
 #include <stdexcept>
 
@@ -50,8 +49,8 @@ const uint16_t VANILLA_CERES_RIDLEY_ROOM_LAYER_HANDLING=0xC97Bu;
 const unsigned MAX_BLOCK_LENGTH=1024;
 
 unsigned lzDecompress(const Buffer& source, uint32_t offset, uint32_t length, unsigned bytes, uint8_t mask, bool absolute, Buffer* destination=NULL){
-	assert(bytes==1||bytes==2);
-	assert(mask==0||mask==0xFFu);
+	if(!(bytes==1||bytes==2)) throw std::logic_error("bad bytes in call for lz decompress");
+	if(!(mask==0||mask==0xFFu)) throw std::logic_error("bad mask in call for lz decompress");
 	if(destination){
 		int from=source[offset];
 		if(bytes==2) from|=source[offset+1]<<8;
@@ -144,7 +143,7 @@ void rleCompress(const Buffer& source, uint32_t offset, uint32_t& length, uint8_
 		case 1: break;
 		case 2: bytes=2; break;
 		case 3: gradient=1; break;
-		default: assert(false);
+		default: throw std::logic_error("bad op in call for rle compress");
 	}
 	length=1;
 	for(unsigned i=1; offset+i<source.size()&&length<MAX_BLOCK_LENGTH; ++i){
@@ -171,7 +170,7 @@ class LzCompressor{
 				case 5: bytes=2; mask=0xFFu; break;
 				case 6: absolute=false; break;
 				case 7: mask=0xFFu; absolute=false; break;
-				default: assert(false);
+				default: throw std::logic_error("bad op in call for lz compress");
 			}
 			uint32_t lowest=0, highest=offset;
 			if(absolute){
