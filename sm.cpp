@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cassert>
 #include <algorithm>
+#include <stdexcept>
 
 using namespace std;
 using namespace sm;
@@ -63,7 +64,7 @@ unsigned lzDecompress(const Buffer& source, uint32_t offset, uint32_t length, un
 }
 
 //returns size of compressed data
-unsigned decompress(const Buffer& source, uint32_t offset, Buffer* destination=NULL){
+unsigned decompress(const Buffer& source, uint32_t offset, Buffer* destination){
 	unsigned initialOffset=offset;
 	while(true){
 		if(source[offset]==0xFF) break;//done
@@ -118,6 +119,11 @@ unsigned decompress(const Buffer& source, uint32_t offset, Buffer* destination=N
 }
 
 void putBlockHeader(Buffer& destination, uint8_t op, unsigned length){
+	if(length==0||length>MAX_BLOCK_LENGTH){
+		std::stringstream ss;
+		ss<<"bad length "<<length<<" in compression block header";
+		throw std::logic_error(ss.str());
+	}
 	--length;
 	if(length>0x1Fu||op==7u){
 		destination.push_back(0xE0u|op<<2|(length&0x300u)>>8);
@@ -506,7 +512,7 @@ bool Save::save(uint32_t& offset){
 //=====class Mode7=====//
 void Mode7::index(uint8_t tileSet, Rom::Index& index){
 	unsigned offset=dataOffset(tileSet);
-	index.set(offset, decompress(rom->buffer, offset), Rom::HACKABLE);
+	index.set(offset, decompress(rom->buffer, offset, NULL), Rom::HACKABLE);
 }
 
 void Mode7::open(uint8_t tileSet){
