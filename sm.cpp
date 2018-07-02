@@ -157,14 +157,14 @@ void rleCompress(const Buffer& source, uint32_t offset, uint32_t& length, uint8_
 
 class LzCompressor{
 	public:
-		LzCompressor(const Buffer& source): source(source) {
-			for(unsigned i=0; i<source.size(); ++i)
-				offsets[source[i]].push_back(i);
+		LzCompressor(const Buffer& source): _source(source) {
+			for(unsigned i=0; i<_source.size(); ++i)
+				_offsets[_source[i]].push_back(i);
 		}
 		void compress(uint32_t offset, uint32_t& length, uint8_t op, Buffer& destination){
-			unsigned bytes=1;
-			uint8_t mask=0;
-			bool absolute=true;
+			unsigned bytes=1;//bytes allocated to specify where to decompress from
+			uint8_t mask=0;//the range being decompressed shall be xor with this value
+			bool absolute=true;//whether the place to decompress from specified absolutely or relatively
 			switch(op){
 				case 4: bytes=2; break;
 				case 5: bytes=2; mask=0xFFu; break;
@@ -172,67 +172,75 @@ class LzCompressor{
 				case 7: mask=0xFFu; absolute=false; break;
 				default: throw std::logic_error("bad op in call for lz compress");
 			}
-			uint32_t lowest=0, highest=offset;
-			if(absolute){
-				if(bytes==2) highest=min(0x10000u, highest);
-				else highest=min(0x100u, highest);
-			}
-			else{
-				if(bytes==2) lowest=max(int(offset-0xFFFFu), 0);
-				else lowest=max(int(offset-0xFFu), 0);
-			}
+			uint32_t lowest=0, highest=offset;//extreme possible indices to start reading from while decompressing
+			if(absolute) highest=min(bytes==2?0x10000u:0x100u, offset);
+			else lowest=max(int(offset-(bytes==2?0xFFFFu:0xFFu)), 0);
 			//build Knuth–Morris–Pratt table
+			//search word is source[offset..length]
+			//table tells us what index into the search word to start from when we hit a mismatch
 			int table[MAX_BLOCK_LENGTH];
-			const unsigned wordLength=min(MAX_BLOCK_LENGTH, uint32_t(source.size()-offset));
+			const unsigned wordLength=min(MAX_BLOCK_LENGTH, uint32_t(_source.size()-offset));//length of search word
 			table[0]=-1;
 			table[1]=0;
-			unsigned i=2, j=0;
-			while(i<wordLength){
-				if(source[offset+i-1]==source[offset+j]){
-					++j;
-					table[i]=j;
-					++i;
-				}
-				else if(j>0) j=table[j];
-				else{
-					table[i]=0;
-					++i;
+			{
+				unsigned i=2, j=0;
+				while(i<wordLength){
+					if(_source[offset+i-1]==_source[offset+j]){
+						++j;
+						table[i]=j;
+						++i;
+					}
+					else if(j>0) j=table[j];
+					else{
+						table[i]=0;
+						++i;
+					}
 				}
 			}
 			//find longest match using Knuth–Morris–Pratt algorithm
-			unsigned bestStart=0, bestLength=0, nextOffsetToTry=0;
-			while(nextOffsetToTry<offsets[source[offset]^mask].size()){
-				i=offsets[source[offset]^mask][nextOffsetToTry];
+			unsigned bestStart=0, bestLength=0, nextOffsetToTry=0,
+				i,//i is where in source current match started
+				j=0;//j is index into search word; i+j is index into source currently being inspected
+			const auto offsets=_offsets[_source[offset]^mask];//the particular offsets into source that we will try
+			while(true){//skip to the lowest offset we can use
+				if(nextOffsetToTry>=offsets.size()){
+					length=0;
+					return;
+				}
+				i=offsets[nextOffsetToTry];
 				if(i>=lowest) break;
 				++nextOffsetToTry;
 			}
-			if(nextOffsetToTry>=offsets[source[offset]^mask].size()){
-				length=0;
-				return;
-			}
-			j=0;//offset into string being searched for
-			while(i+j<highest||(j!=0&&i<offset&&i+j<highest+MAX_BLOCK_LENGTH&&i+j<source.size())){
-				if(source[offset+j]==(source[i+j]^mask)){
-					++j;
-					if(j>bestLength){
+			while(
+				i+j<highest//obvious condition for condition for continuing
+				||(//we may want to allow decompression by reading what we've just decompressed, but we must fulfill
+					j!=0//currently matching
+					&&i<offset//start of match is before where we're trying to compress
+					&&i+j<highest+MAX_BLOCK_LENGTH//we are capable of specifying how to decompress when limited by absolute offset
+					&&i+j<_source.size()//reading valid data at all
+				)
+			){
+				if(_source[offset+j]==(_source[i+j]^mask)){//match
+					++j;//increase length of match (which is index into search word)
+					if(j>bestLength){//keep track of best
 						bestStart=i;
 						bestLength=j;
 					}
-					if(j==wordLength) break;
+					if(j==wordLength) break;//early exit if we found the entire search word
 				}
-				else{
+				else{//mismatch
 					i+=j-table[j];
-					if(table[j]>=0) j=table[j];
+					if(table[j]>=0) j=table[j];//don't have to start over; i+j remains constant
 					else{
-						j=0;
+						j=0;//have to start over; i+j increases by 1
 						//advance i based on index of source
 						while(true){
 							++nextOffsetToTry;
-							if(nextOffsetToTry>=offsets[source[offset]^mask].size()) break;
-							if(offsets[source[offset]^mask][nextOffsetToTry]>=i) break;
+							if(nextOffsetToTry>=offsets.size()) break;
+							if(offsets[nextOffsetToTry]>=i) break;
 						}
-						if(nextOffsetToTry>=offsets[source[offset]^mask].size()) break;
-						else i=offsets[source[offset]^mask][nextOffsetToTry];
+						if(nextOffsetToTry>=offsets.size()) break;
+						else i=offsets[nextOffsetToTry];
 					}
 				}
 			}
@@ -244,8 +252,8 @@ class LzCompressor{
 			if(bytes==2) destination.push_back(bestStart>>8);
 		}
 	private:
-		const Buffer& source;
-		vector<unsigned> offsets[256];
+		const Buffer& _source;
+		vector<unsigned> _offsets[256];//map byte to vector of offsets into source equal to that byte, sorted low-to-high
 };
 
 void compress(const Buffer& source, Buffer& destination){
