@@ -298,7 +298,10 @@ void compress(const Buffer& source, Buffer& destination){
 		if(bestOp==0){
 			++noCompressionLength;
 			++i;
-			if(i>=source.size()) noCompress(source, i, noCompressionLength, destination);
+			if(i>=source.size()||noCompressionLength==MAX_BLOCK_LENGTH){
+				noCompress(source, i, noCompressionLength, destination);
+				noCompressionLength=0;
+			}
 		}
 		else{
 			//actually stick in the no compression block first if it exists
