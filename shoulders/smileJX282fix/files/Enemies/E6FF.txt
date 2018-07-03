@@ -1,0 +1,7 @@
+E6FF (aka- FUNE)
+[Speed] AACD
+     C = 0/1 for left/right
+     D = 0/1 for normal/eyed
+[Speed 2] AABB
+     AA = vertical proximity
+     BB = speed of shots

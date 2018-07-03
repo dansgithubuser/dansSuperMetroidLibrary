@@ -1,0 +1,2 @@
+EDBF
+Unusable enemy?  Include in Enemies Allowed list to get ED7F to function properly.

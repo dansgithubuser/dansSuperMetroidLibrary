@@ -1,0 +1,8 @@
+C8CA
+[High] = 80
+[Low] = 00
+
+Gate is closed  behind you when you leave Mother Brain's room.
+Not sure how to make it close elsewhere.
+
+Needs to use Graphic Set 14 or 15.

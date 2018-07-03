@@ -1,0 +1,6 @@
+E27F
+
+All 3 Zebetites are actually just one enemy.  This places one at a time.  When it is destroyed, it moves to its next location, further to the left.
+
+*Do not include this in the Enemy Allowed list or it will crash your room.
+

@@ -1,0 +1,3 @@
+D9BF (aka- SIDE)
+[Speed] = 0000/8000 for floor/ceiling
+

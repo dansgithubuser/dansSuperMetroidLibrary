@@ -1,0 +1,64 @@
+ # tsa    graph  pal    description
+ 
+ 0 20b6f6 1d4629 212d7c Crateria
+ 1 20b6f6 1d4629 212e5d red Crateria
+ 
+ 2 20beee 1d7911 212f43 fungus Crateria and live old Tourian
+ 3 20beee 1d7911 213015 dead old Tourian
+ 
+ 4 20c5cf 1dae9e 2130e7 wrecked ship
+ 5 20c5cf 1dae9e 2131a6 unpowered wrecked ship
+ 
+ 6 20cfa6 1de6b0 213264 pink, green, and blue Brinstar
+
+ 7 20d8dc 1e25aa 21335f green metal near Kraid and red Brinstar
+ 8 20d8dc 1e25aa 213447 tunnel to statue room
+
+ 9 20e361 1ec3f9 2135e4 red Norfair, green bubble Norfair, middle Norfair, lower Norfair
+10 20e361 1ec3f9 2136bb pink Norfair
+
+11 20f4b1 1f3130 21383c Maridia
+12 21055f 1f678d 21392e icy Maridia
+
+13 211b01 1fd414 213aed Tourian
+14 211b01 1fd414 213bc1 Mother Brain chamber
+
+15 21275e 203004 214104 Ceres rooms normal
+16 21275e 203004 2141e3 Ceres rooms exploding
+
+17 21275e 20622a 214104 Ceres shaft normal (mode 7)
+18 21275e 20622a 2141e3 Ceres shaft exploding (mode 7)
+19 21275e 208da9 214104 Ceres Ridley room normal (mode 7)
+20 21275e 208da9 2141e3 Ceres Ridley room exploding (mode 7)
+
+21 21227b 20060b 213c9c Save room, statue room
+22 21227b 20060b 213d7b Save room
+23 21227b 20060b 213e58 Save room
+24 21227b 20060b 213f3d Save room
+25 21227b 20060b 214021 Save room
+
+26 20e189 1e5ff0 213510 Kraid
+27 20f3af 1efe2a 213798 Crocomire room
+28 21160d 1f9dea 213a2c Draygon room
+
+
+tsa    graph  description
+
+1ca09d 1c8000 common room elements
+21227b 1d4629 Crateria
+20beee 1d7911 fungus Crateria and old Tourian
+20c5cf 1dae9e wrecked ship
+20cfa6 1de6b0 pink Brinstar
+20d8dc 1e25aa metal, red Brinstar, and way to Kraid
+20e361 1ec3f9 Norfair
+20f4b1 1f3130 Maridia
+211b01 1fd414 Tourian
+21275e        Ceres
+       203004 Ceres non-mode-7 rooms
+       20622a Ceres shaft (mode 7)
+       208da9 Ceres Ridley flying (mode 7)
+21227b 20060b Save room, statue room
+20e189 1e5ff0 Kraid
+20f3af 1efe2a Crocomire room
+21160d 1f9dea Draygon room
+       182000 Ceres Ridley room (uncompressed)

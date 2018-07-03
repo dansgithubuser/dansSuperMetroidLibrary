@@ -1,0 +1,3 @@
+EF3F
+
+Should be the item orbs that get shot out from EEFF, but totally interchangable.  If you place EF3F as an enemy, it will be run as an EEFF instead.

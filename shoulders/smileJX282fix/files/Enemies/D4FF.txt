@@ -1,0 +1,6 @@
+D4FF (aka- SHUTTER)
+[Orientation]
+     -0000/0002 = Down/Up with Delay
+     -0001/0003 = Down/Up with Proximity
+[Speed] = Delay/Distance to set off shutter
+[Speed 2] = speed to close

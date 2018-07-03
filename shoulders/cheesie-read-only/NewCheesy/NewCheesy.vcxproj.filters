@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{23957cb5-e5ae-4e7a-a974-7f118db8d99d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\MainPanel">
+      <UniqueIdentifier>{d90f1c51-4902-4551-9441-f35d20907ca3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Compresch">
+      <UniqueIdentifier>{6773cc75-388b-4b1a-ad79-5b323f742c23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CustomControls">
+      <UniqueIdentifier>{aca9ef30-b12a-4e7e-ac2b-ea96ac818d02}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="app.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Compare.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="gameImage.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="gbaimage.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="gbatiles.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="globals.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWindow.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="picWindow.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="RomClass.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SMClass.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="tilebuffer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TileHandling.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="mainpanel.cpp">
+      <Filter>Source\MainPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowStuff.cpp">
+      <Filter>Source\MainPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="Compresch\block_lz2.cpp">
+      <Filter>Compresch</Filter>
+    </ClCompile>
+    <ClCompile Include="Compresch\block_lzbitrev.cpp">
+      <Filter>Compresch</Filter>
+    </ClCompile>
+    <ClCompile Include="Compresch\block_minus.cpp">
+      <Filter>Compresch</Filter>
+    </ClCompile>
+    <ClCompile Include="Compresch\blocklist.cpp">
+      <Filter>Compresch</Filter>
+    </ClCompile>
+    <ClCompile Include="Compresch\compresch_castlevania4.cpp">
+      <Filter>Compresch</Filter>
+    </ClCompile>
+    <ClCompile Include="Compresch\compresch_kirby.cpp">
+      <Filter>Compresch</Filter>
+    </ClCompile>
+    <ClCompile Include="Compresch\compresch_konamiblock.cpp">
+      <Filter>Compresch</Filter>
+    </ClCompile>
+    <ClCompile Include="Compresch\compresch_lttp.cpp">
+      <Filter>Compresch</Filter>
+    </ClCompile>
+    <ClCompile Include="Compresch\compresch_metroid.cpp">
+      <Filter>Compresch</Filter>
+    </ClCompile>
+    <ClCompile Include="Compresch\compresch_pokemon.cpp">
+      <Filter>Compresch</Filter>
+    </ClCompile>
+    <ClCompile Include="Compresch\compresch_stdblock.cpp">
+      <Filter>Compresch</Filter>
+    </ClCompile>
+    <ClCompile Include="Compresch\CompreschMain.cpp">
+      <Filter>Compresch</Filter>
+    </ClCompile>
+    <ClCompile Include="Compresch\crunchtree.cpp">
+      <Filter>Compresch</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="app.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Compare.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gameImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gbaimage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gbatiles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gbatypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainHeader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mainpanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="picWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RomClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SMClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tilebuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TileData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TileHandling.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tileset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wxDeclarations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wxhdr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_copy.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_copypadded.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_copytwo.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_hybridlz.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_hybridlzbitrev.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_hybridlzrev.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_lz.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_lz2.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_lzbitrev.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_lzrev.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_minus.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_rle.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_rlealternate.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_rleplus.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_rletwo.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\block_zero.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\blocklist.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\compresch_castlevania4.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\compresch_kirby.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\compresch_konamiblock.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\compresch_lttp.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\compresch_metroid.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\compresch_pokemon.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\compresch_stdblock.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\compresch_types.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\CompreschMain.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\crunchtree.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\resource.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+    <ClInclude Include="Compresch\sizelimits.h">
+      <Filter>Compresch</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Compresch\block_copy.h.bak">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\block_copypadded.h.bak">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\block_lz.h.bak">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\block_rle.h.bak">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\blocklist.cpp.bak">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\blocklist.h.bak">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\compresch.aps">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\compresch.ncb">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\compresch.sln">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\compresch.sln.old">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\compresch.suo">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\compresch.suo.old">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\compresch.vcproj">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\compresch.vcproj.7.00.old">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\compresch_kirby.cpp.bak">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\compresch_konamiblock.cpp.bak">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\compresch_lttp.cpp.bak">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\compresch_lttp.h.bak">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\compresch_pokemon.cpp.bak">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\compresch_stdblock.cpp.bak">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\crunchtree.cpp.bak">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\crunchtree.h.bak">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\sizelimits.h.bak">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="Compresch\UpgradeLog.XML">
+      <Filter>Compresch</Filter>
+    </None>
+    <None Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Compresch\compresch.rc">
+      <Filter>Compresch</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

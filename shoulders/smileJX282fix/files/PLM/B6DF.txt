@@ -1,0 +1,3 @@
+B6DF (Energy Refill Station)
+[High] = 80
+[Low] = 00

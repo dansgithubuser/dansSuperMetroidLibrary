@@ -1,0 +1,10 @@
+E6BF (aka- EYE)
+
+*1st Piece:
+[Speed 2] = 8000 (makes the mount for the wall)
+[Speed 2] = XXX0/XXX1 for face left/right
+2nd Piece:
+[Speed 2] = 0000 (makes the eye)
+
+*EYE is not a possessor, but is made of more than one part.
+

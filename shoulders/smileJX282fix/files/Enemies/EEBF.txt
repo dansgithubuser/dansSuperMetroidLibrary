@@ -1,0 +1,23 @@
+EEBF (the big metroid)
+[Special] = 2800 (make sure it's active offscreen)
+
+When you get to the 3rd screen, EEBF becomes active, temporarily setting up invisible walls and locking the scroll of the screen you're on.  It then "attacks" the next enemy in the room.  Then it frees scrolling, removes the invisible walls, and goes after you.
+
+Below are notes on how to change certain aspects of the large metroid's behavior to make it act slightly more like a "normal" enemy.  An offset is given, then the code at that location. Recommendations of what to do with a code are also given:
+ *$14EFCB = 9D 8C 0F (keeps HP as 7FFF)
+**$14EFE9 = C9 (01 02) (activate if left of 0201)
+**$14EFEE = A9 (00 02) (value for x scrolling)
+ *$14EFF0 = 8D 11 09 (change x scrolling of screen)
+ *$14EFFB = 8F 20 CD 7E (lock left scroll)
+ *$14F006 = 8F 22 CD 7E (lock right scroll)
+ *$14F00A = 22 D7 83 84 (left solid wall)
+ *$14F012 = 22 D7 83 84 (right solid wall)
+**$14F031 = A9 (D0 01) (time until active)
+**$14F0DF = A9 (40 01) (time sucking enemy)
+ *$14F160 = 8F 20 CD 7E (free left scroll)
+ *$14F16B = 8F 22 CD 7E (free right scroll)
+ *$14F16F = 22 D7 83 84 (left air wall)
+ *$14F177 = 22 D7 83 84 (right air wall)
+
+ *Change each byte to EA
+**Values to change. Bytes are reversed. (0000 = forever)

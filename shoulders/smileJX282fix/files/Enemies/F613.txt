@@ -1,0 +1,7 @@
+F613 (BATTA2Tu)
+[Speed] = 0000/0001 for facing left/right
+[Speed 2] = distance it can walk/jump
+[Graphic Unknown] = 0004
+Set [Special GFX]
+
+Weaker fighter pirate from Tourian.

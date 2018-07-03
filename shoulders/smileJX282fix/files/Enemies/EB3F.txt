@@ -1,0 +1,2 @@
+EB3F (HACHI2)
+Speed is used rarely (set to 0050 sometimes), but not sure for what.

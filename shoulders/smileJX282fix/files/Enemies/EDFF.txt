@@ -1,0 +1,6 @@
+EDFF*
+[Speed] 0000/0002/0004 for ceiling/floor/ceiling
+
+Destroying any EDFF of a certain Speed will destroy all others of the same type.
+
+*Do not include this in the Enemy Allowed list or it will crash your room. Include ED7F in the Enemies Allowed list instead.

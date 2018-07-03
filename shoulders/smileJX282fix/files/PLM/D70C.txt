@@ -1,0 +1,8 @@
+D70C
+[High] = 80
+[Low] = 00
+
+Upper left corner of the glass tube in Maridia.  Power bombable.  Activates Enemy F0BF to simulate shattering glass.  The PLM causes the appearance of falling glass.
+
+Needs to use Graphic Set 12 or 13.
+

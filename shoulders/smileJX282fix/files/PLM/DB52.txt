@@ -1,0 +1,6 @@
+DB52 (Eye Door Piece)
+[High] = 00
+[Low] = Index of door shell.
+
+Should be the same index as its other 2 pieces (DB48 and DB4C).
+

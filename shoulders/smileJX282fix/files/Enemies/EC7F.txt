@@ -1,0 +1,8 @@
+EC7F
+[Graphic Unknown] = 0004
+
+EC7F combines with EC3F to make Mother Brain.  EC7F must be the 1st in the enemy index of the room.  EC7F and EC3F should have the same palette value in the Enemies Allowed List.
+
+EC7F acts as a trigger.  Once it is "dead", the room seals around you and activates the main version of Mother Brain.
+
+Need to include PLM D6DE.

@@ -1,0 +1,17 @@
+DB3F (aka- BANG)<Possesser Type C>
+[Orientation] = 0000/0001 for stationary/movable
+[Speed] = pointer to code to run!
+     BB66 = Possesses next enemy.  Allows red core to be destroyed.
+     BB4A = Make this piece a blue bubble. Allows Bang to shoot.
+     BB2B = Make this piece static.
+[Speed 2] = speed
+
+Has 3 parts/enemies:
+1) Red core (shootable part)
+2) Blue bubble
+3) Static charge
+
+Absorbs your shots, growing each time.  Shoots a charged blast at you when it bursts.  Unused enemy.
+
+Possess an enemy by making it the second part of the matrix instead.
+

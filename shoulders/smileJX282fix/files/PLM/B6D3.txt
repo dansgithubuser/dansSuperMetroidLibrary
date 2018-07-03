@@ -1,0 +1,6 @@
+B6D3 (Mapping Station)
+[High] = 80
+[Low] = 00
+
+Room uses a graphic set from 22-26.
+

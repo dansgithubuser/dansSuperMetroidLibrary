@@ -1,0 +1,5 @@
+EBFF (wings of HACHI3)
+[Speed] = HP at which the wings will fall
+
+Wings of HACHI's are interchangable.
+Wings attach themselves to any enemy that's just before them in the enemy index.

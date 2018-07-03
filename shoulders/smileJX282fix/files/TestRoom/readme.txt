@@ -1,0 +1,1 @@
+These files are here for a reason... If you delete them, you won't be able to properly test your rom in an emulator, because you'll keep dying and glitching.

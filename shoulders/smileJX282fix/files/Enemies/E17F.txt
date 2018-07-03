@@ -1,0 +1,5 @@
+E17F (Boss - Ridley)
+
+[Speed] = 2800 (for normal use anyway)
+Sets itself to a hardcoded location one screen below the upper-left screen of a room.
+

@@ -1,0 +1,5 @@
+C832 (Upside Down Closed Gate)
+[High] = 80
+[Low] = 00
+
+Must have a C83A connected to the top to make it function.

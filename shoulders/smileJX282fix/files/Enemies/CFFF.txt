@@ -1,0 +1,5 @@
+CFFF (aka- SABOTEN)
+[Speed]
+     -1st byte (00-01) is upside down/normal
+     -2nd byte (00-01) left/right
+[Speed 2] = distance to travel... 0101, 0301, 0200 are normal values

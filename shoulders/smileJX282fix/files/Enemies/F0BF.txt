@@ -1,0 +1,5 @@
+F0BF
+[Special] = 2200
+
+This is the shattering (but not falling) glass of the glass Maridian tube.  It requires and is aligned to PLM D70C.
+

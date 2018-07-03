@@ -1,0 +1,287 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch
+END
+block_zero.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_zero.h
+END
+block.h
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block.h
+END
+block_rle.h
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_rle.h
+END
+compresch_konamiblock.h
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch_konamiblock.h
+END
+block_rlealternate.h
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_rlealternate.h
+END
+block_minus.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_minus.cpp
+END
+compresch_metroid.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch_metroid.cpp
+END
+block_hybridlz.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_hybridlz.h
+END
+crunchtree.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/crunchtree.h
+END
+compresch_stdblock.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch_stdblock.cpp
+END
+compresch_pokemon.h
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch_pokemon.h
+END
+block_lzbitrev.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_lzbitrev.h
+END
+block_lzrev.h
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_lzrev.h
+END
+compresch_castlevania4.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch_castlevania4.cpp
+END
+compresch_kirby.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch_kirby.cpp
+END
+compresch.aps
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch.aps
+END
+main.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/main.cpp
+END
+block_lz2.h
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_lz2.h
+END
+block_copy.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_copy.h
+END
+block_rletwo.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_rletwo.h
+END
+block_copypadded.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_copypadded.h
+END
+compresch_lttp.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch_lttp.h
+END
+blocklist.h
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/blocklist.h
+END
+compresch_konamiblock.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch_konamiblock.cpp
+END
+resource.h
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/resource.h
+END
+CompreschMain.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/CompreschMain.h
+END
+sizelimits.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/sizelimits.h
+END
+crunchtree.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/crunchtree.cpp
+END
+block_lz.h
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_lz.h
+END
+block_rleplus.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_rleplus.h
+END
+compresch.rc
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch.rc
+END
+block_minus.h
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_minus.h
+END
+block_lzbitrev.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_lzbitrev.cpp
+END
+compresch_pokemon.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch_pokemon.cpp
+END
+compresch_metroid.h
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch_metroid.h
+END
+compresch_types.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch_types.h
+END
+compresch_stdblock.h
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch_stdblock.h
+END
+block_lz2.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_lz2.cpp
+END
+block_hybridlzbitrev.h
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_hybridlzbitrev.h
+END
+block_copytwo.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_copytwo.h
+END
+block_hybridlzrev.h
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_hybridlzrev.h
+END
+blocklist.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/blocklist.cpp
+END
+compresch_lttp.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch_lttp.cpp
+END
+compresch_castlevania4.h
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch_castlevania4.h
+END
+CompreschMain.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/CompreschMain.cpp
+END
+compresch_kirby.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/compresch_kirby.h
+END
+block_rle.h.bak
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/2/trunk/NewCheesy/Compresch/block_rle.h.bak
+END

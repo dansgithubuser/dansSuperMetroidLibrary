@@ -1,0 +1,102 @@
+Suomi
+Tiedosto
+Avaa uusi ROM
+Tallenna huone
+Erikoisasetukset
+Alue kuvaksi
+Asetukset
+Kielet
+Palettimuoto
+Tasaa viholliset ruudukkoon
+Pikanäppäimet
+Aja asetukset
+Kokeile huoneen 
+Emulaattori
+SRM-kansio
+Poistu
+Muokkaa
+Huoneen valinnat
+Tilan valinnat
+RoomVar Data (tila)
+FX1
+Pointterit
+Alueen latausasemat
+Samuksen asennot
+Erikoisasetukset
+Täytä alue
+Pelin toiminta
+Viholliset/PLM +/-
+Näkymä
+Ikkuna
+Perus (2x1)
+Suuri (2x2 valikon automaattinen kätkentä)
+Suuri (2x2)
+Extra-suuri (3x2)
+Extra-suuri (3x2 valikon automaattinen kätkentä)
+Mukautettu automaattinen kätkentä
+XXL (4x3)
+XXL (4x3 valikon automaattinen kätkentä)
+XXXL (5x4)
+XXXL (5x4 valikon automaattinen kätkentä)
+XXXXL (6x5)
+XXXXL (6x5 valikon automaattinen kätkentä)
+Laattakoko
+Valinnat
+Kirkkaus
+Normaali
+Kirkas
+Häikäisevä
+Läpinäkyvä BTS
+Näytä siirtoalueet
+Rajaa PLM
+Taso 1
+Taso 2
+BTS
+PLM
+Viholliset
+Näytä kaikki
+Työkalut
+Kenttäeditori
+Siirtoeditori (virkistää huoneen)
+Erikoiskenttämuotoeditori
+Karttaeditori
+Grafiikkaeditori
+Taustaeditori
+Muokkaa taustaa
+Tausta/taso 2 rullaus
+Lisää taso 2-tausta
+Poista taso 2-tausta
+Kauneussalonki
+Tekstieditori
+Alkunimiö
+Lisää alkunimiö
+Poista alkunimiö
+Laajenna ROM
+Luo SIPS paikkaus
+Luo IPS paikkaus
+Käytä paikkausta
+Kaytä koko kansiota
+Tiedoston vertaus
+Plug-init
+Aja
+Testaa huone
+Ohjeet
+Tietoja
+Ota yhteyttä
+Tarkista päivitykset
+Smile-verkkotoiminta (SOLA)
+Saavuttamattomat viholliset näkyviin
+Saavuttamattomat PLM:t näkyviin
+Vihollisväestö
+Laji
+Halkaise alus siirrettäessä
+PLM-väestö
+Tyyppi
+Oviväestö
+Kloonaa ovi
+Käy sisään
+Tallenna ensin
+Älä tallenna
+Ovieditori
+%-Painike
+Avaa viimeaikaisin huone

@@ -1,0 +1,4 @@
+E5FF <Possesser Type B>
+[Speed] = 0000/0001 to start facing left/right.
+
+The next four enemies are possessed by E5FF to be used as echoes.  Use a speed of 8000 or 8001 for each of the echoes.  Can only correctly possess pieces of its own species.

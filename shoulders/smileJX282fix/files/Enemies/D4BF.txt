@@ -1,0 +1,8 @@
+D4BF (aka- DRAGON) - <Possesser Type A>
+With Orientation, Speed, and Speed 2 at 0000, Dragon is an easy enemy to get working.  The game can possess the next enemy to use as a  flipper on its back.  If you wish to include the flipper, make the possessed enemy have the following values:
+[Special] = 2400*
+[Orientation] = 0002
+[Speed] = 0001
+
+*If Special is kept as 2000, the second Dragon will be possessed, but not be a flipper. It will raise up relative to the current position of the possesser.
+

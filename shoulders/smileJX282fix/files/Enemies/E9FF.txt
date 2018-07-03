@@ -1,0 +1,7 @@
+E9FF (aka- ATOMIC)
+[Speed] = Direction to spin
+     0000 for up/right
+     0001 for up/left
+     0002 for down/left
+     0003 for down/right
+[Speed 2] = Velocity (0000 to ~0040)

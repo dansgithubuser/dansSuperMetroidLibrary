@@ -1,0 +1,8 @@
+EC3F
+[Graphic Unknown] = 0004
+
+EC3F combines with EC7F to make Mother Brain.  EC3F must be 1st in the Enemies Allowed List, but 2nd in the enemy index of the room.  EC3F and EC7F should have the same palette value in the Enemies Allowed List.
+
+EC3F is where Mother Brain's head will actually appear (and is actually the version you fight).
+
+Need to include PLM D6DE.

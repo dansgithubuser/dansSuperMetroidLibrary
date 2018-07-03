@@ -1,0 +1,5 @@
+C82A (Normal Closed Gate)
+[High] = 80
+[Low] = 00
+
+Must have a C836 connected to the top to make it function.

@@ -1,0 +1,10 @@
+DEBF (Draygon's Tail)
+[Special] = 2C00
+[Graphic Unknown] = 0004
+
+Graphic Set must be 29.
+Layer 2 Scroll should be set to 0101.
+
+Draygon is made of 4 parts (DE3F, DE7F, DEBF, and DEFF).  His tail must be the third enemy in the room.
+
+*Do not put DEBF in the Enemies Allowed List.

@@ -1,0 +1,14 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!
+graphic set 28
+Special = A800
+Graphic Unknown = 0004
+Orientation = BD2A
+
+0007 is the palette
+use DDFF as well, though that enemy isn't in the allowed list
+layer 2 scroll is 0101
+
+crocomire normally goes on screen 04.
+

@@ -1,0 +1,3 @@
+E97F (aka- PIPE)
+[Speed] = delay/distance after shot? (usual value is 0003)
+[Speed 2] = acceleration delay? (usual value is 0003)

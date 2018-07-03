@@ -1,0 +1,7 @@
+E1FF
+[Speed] = direction
+     -0000/0001/0002/0003 for up/left/down/right
+
+Seems to be grey, not pink (as it is in escape sequences). Palette is probably refreshed by special coding.
+
+*Do not include this in the Enemy Allowed list or it will crash your room.

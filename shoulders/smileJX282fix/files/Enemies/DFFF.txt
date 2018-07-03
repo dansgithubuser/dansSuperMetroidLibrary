@@ -1,0 +1,7 @@
+DFFF (aka- KZAN)
+[Special] = AXXX.
+[Speed 2]<Possesser?>
+     -1st nybble = distance to travel
+     -2nd nybble = delay at top (00 = stop forever)
+
+The game connects Kzan with E03F, but its effect is unknown/unneeded.  If you choose to use the 2nd enemy, its orientation would be 0100.

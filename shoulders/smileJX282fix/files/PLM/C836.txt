@@ -1,0 +1,12 @@
+C836 (Gate Control)
+[High] = 00
+[Low] Type of gate.
+     00 = blue left
+     02 = blue right
+     04 = pink left
+     06 = pink right
+     08 = green left
+     0A = green right
+     0C = yellow left
+     0E = yellow right
+

@@ -1,0 +1,8 @@
+CEFF (aka- STOKE)
+[Speed] = Initial direction (0 = left)
+[Speed 2] = Speed
+
+Unused enemy by Nintendo (It does appear in the Enemies Allowed list in room $79A44 though).  Its palette is bad.  Can be made to be red without adjusting the palette, but not sure how.
+
+
+

@@ -1,0 +1,6 @@
+B63F (Continuation PLM)
+[High] = 80
+[Low] = 00
+
+Copies the tile from where the arrow is pointing from.  Should use BTS values and Vertical/Horizontal tile type instead.
+

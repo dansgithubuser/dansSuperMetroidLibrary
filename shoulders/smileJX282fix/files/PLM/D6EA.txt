@@ -1,0 +1,5 @@
+D6EA (Crumbling Chozo)
+[High] = 00/80 for normal/returning
+[Low] = 00
+
+Crumbles after a delay if bombs are inventoried.

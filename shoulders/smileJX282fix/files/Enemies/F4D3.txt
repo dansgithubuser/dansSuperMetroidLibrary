@@ -1,0 +1,7 @@
+F4D3 (BATTA2)
+[Speed] = 0000/0001 for facing left/right
+[Speed 2] = distance it can cover/jump
+[Graphic Unknown] = 0004
+Set [Special GFX]
+
+Fighter pirates from Crateria.

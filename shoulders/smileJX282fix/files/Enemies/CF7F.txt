@@ -1,0 +1,6 @@
+CF7F
+[Special] = A800 to be able to land on it.
+[Speed] = Speed left or right (FFFF or 0001).  Other speeds are choppy.
+
+When you land on this enemy, it stops and goes in its shell.  Land on it while it's hiding and it'll slide away.
+

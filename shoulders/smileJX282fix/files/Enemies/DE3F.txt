@@ -1,0 +1,9 @@
+DE3F (Draygon's Body)
+[Special] = 2800
+[Graphic Unknown] = 0004
+
+Place DE3F in Enemies Allowed List.  It's palette entry is 0007.
+Graphic Set must be 29.
+Layer 2 Scroll should be set to 0101.
+
+Draygon is made of 4 parts (DE3F, DE7F, DEBF, and DEFF).  His body must be the first enemy in the room.

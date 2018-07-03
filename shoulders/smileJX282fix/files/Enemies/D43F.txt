@@ -1,0 +1,3 @@
+D43F (aka- RIPPER2)
+[Speed] = speed
+[Speed 2] = 0000/0001 for left/right.

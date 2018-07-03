@@ -1,0 +1,4 @@
+D1BF (aka- MULTI)
+[Speed 2] = Speed (if 0000, you'll move, but fail to bounce off of walls)
+[Speed] = Angle to start (00 is left, counterclockwise).
+

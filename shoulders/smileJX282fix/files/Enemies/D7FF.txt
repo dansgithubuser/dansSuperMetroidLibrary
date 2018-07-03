@@ -1,0 +1,5 @@
+D7FF (aka- KAMER)
+[Speed] = 0000/0001 for left/right
+[Speed 2]
+     -1st nybble = vertical speed (maxes out around 40)
+     -2nd nybble = horizontal speed (starts glitching around 50)

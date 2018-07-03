@@ -1,0 +1,4 @@
+EA7F (aka- KOMA)
+[Speed] = Proximity
+[Speed 2] = 0000/0001 for facing left/right
+

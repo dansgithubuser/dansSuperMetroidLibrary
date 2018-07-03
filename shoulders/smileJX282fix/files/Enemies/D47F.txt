@@ -1,0 +1,4 @@
+D47F (aka- RIPPER)
+[Speed] = speed
+[Speed 2] = 0000/0001 for left/right.
+

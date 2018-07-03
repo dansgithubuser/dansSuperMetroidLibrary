@@ -1,0 +1,6 @@
+E2BF (Boss - Kraid!)
+Points to these graphics
+In Enemies allowed list in room $7A59F
+Palette = 0007
+
+Changing HP of this enemy will change Kraid's HP.

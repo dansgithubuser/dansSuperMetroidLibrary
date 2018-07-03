@@ -1,0 +1,102 @@
+Français
+Fichier
+Ouvrir une nouvelle rom
+Sauver la salle
+Options spéciales
+Niveau en .Bmp
+Preferences
+Languages
+Format de la pallette 
+Snap Enemies to Grid
+Touches spéciales
+Réglages
+Options de la fonction de test
+Emulateur
+Répertoire de la sauvegarde .srm
+Quitter
+Editer
+Menstruations de la salle
+Modifier l'événement
+RoomVar Data (State)
+FX1
+Pointeurs
+Stations de la zone de charge
+Mouvements de samus
+Special
+Déglinguer la zone (inutilisable)
+Réglages pratiques
+Les objets et ennemis +/-
+ Format Image  
+Fenêtre
+Standard (2x1)
+Large (2x2 menu caché automatiquement)
+Large (2x2)
+X-Large (3x2)
+X-Large (3x2 menu caché automatiquement)
+Cachage automatique spécial
+XXL (4x3)
+XXL (4x3 menu caché automatiquement)
+XXXL (5x4)
+XXXL (5x4 menu caché automatiquement)
+XXXXL (6x5)
+XXXXL (6x5 menu caché automatiquement)
+Taille de la sprite
+Options
+Luminositée
+Normal
+Radieux
+Enflammé
+Rentre le BTS transparent
+Voir les scollings
+Encadrer les Objets
+Couche 1
+Couche 2
+BTS
+Objet
+Enemis
+Tout voir
+Outils
+Editeur de niveau
+Editeur de scrolling (actualise la salle)
+Special Level Format Editor
+Editeur de carte
+Editeur de graphismes
+Editeur du font d'écran
+Editer le fond d'écran
+Scrolling des fonts d'écrans
+Ajouter un 2eme font d'écran
+Supprimer le 2eme font d'écran
+Salon de beautée
+Editeur de texte
+Header
+Ajouter un header
+Effacer un Header
+Ajouter un banc de donnée à la rom
+Creer un patch SIPS
+Creer un patch IPS
+Appliquer un patch .ips
+Appliquer un dossier entier de patchs.ips
+Comparer deux fichiers
+Plugins
+Lancer
+Salle de test
+Aide
+à propos
+Contacter
+Rechercher des M.A.J
+Smile On-Line Access (SOLA)
+Les ennemis en dehors de smile dans l'écran
+Les objets en dehors de smile dans l'écran
+EnemyPop
+Espèces
+Split Ship When Moved
+PLMPop
+Type
+DoorPop
+Cloner une porte
+Entrer dans une porte
+Sauver
+Ne pas sauver
+Editeur de porte
+% Key
+Ouvrir la rom la plus récente

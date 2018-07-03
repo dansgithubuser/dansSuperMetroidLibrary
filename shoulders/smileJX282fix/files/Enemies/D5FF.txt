@@ -1,0 +1,16 @@
+D5FF (aka- SHUTTER2)
+[Orientation] = speed
+     -1st nybble = 00/01 for up/down
+     -2nd nybble = speed
+[Speed]
+     -1st nybble = distance to travel
+     -2nd nybble = motion type
+          -00/02 = always on
+          -01 = proximity*
+          -03/04 = shoot to turn on
+*[Speed 2]
+     -Distance from door to (de)activate
+
+Can lower you through a floor, but not up through a ceiling.
+
+

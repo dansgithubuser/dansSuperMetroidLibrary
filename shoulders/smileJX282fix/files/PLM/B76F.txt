@@ -1,0 +1,3 @@
+B76F (Save Point)
+[High] = 80
+[Low] = Index of save point in area.

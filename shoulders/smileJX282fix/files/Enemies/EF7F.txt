@@ -1,0 +1,9 @@
+EF7F
+!!!!HOW DO YOU ACTIVATE HIM?!!!!
+Yellow or grey, doesn't really matter.  Torizo's can be used in Crateria or Norfair.  In Crateria, they are hardcoded to be on screen 00,00.  In Norfair, they are hardcoded to be on screen 01,01 and fall from the ceiling.  The Norfair ones also have a few extra attack modes.
+
+To allow it to be placed correctly in SMILE, do the following:
+$1548E0 = 9D 7A 0F*
+$1548E6 = 9D 7E 0F*
+*Change each byte to EA
+

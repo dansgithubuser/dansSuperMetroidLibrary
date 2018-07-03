@@ -1,0 +1,5 @@
+E7BF (aka- HAND)
+[Speed] = proximity (minimum around 0028)
+[Speed 2] = 0000/0001 for ceiling/floor
+
+

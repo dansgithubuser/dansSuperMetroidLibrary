@@ -1,0 +1,6 @@
+D23F (aka- RINKA)
+[Speed] = Spawn Mode (see below)
+
+With a Speed of 0000, rinkas emerge from where you placed them.  All other values result in the game choosing where it thinks the rinka should emerge from (anywhere in the entire room).  The first rink, in this case, will emerge from ceilings, the second from the floors, etc...
+
+The palette/right column of enemies allowed should contain 0002.

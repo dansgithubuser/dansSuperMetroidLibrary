@@ -1,0 +1,3 @@
+F03F
+In Enemies allowed list in room $7A66A
+Palette = D003

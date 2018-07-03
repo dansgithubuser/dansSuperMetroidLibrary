@@ -1,0 +1,6 @@
+F213 (aka- GAMET)
+[Speed 2] AABB
+     AA = Velocity
+     BB = Proximity
+
+5 Pieces... All must be included.  Speed 2 includes velocity for all 5, but only the first piece has a proximity value.  Proximity is only figured in relation to the first piece (ie- you can be near another piece without activating it).

@@ -1,0 +1,5 @@
+E03F
+[Orientation] = 0100
+
+The game connects E03F with KZAN (DFFF), but its effect is unknown/unneeded.  If you choose to use this, it should be as a 2nd enemy to DFFF.  Not sure if it can be used by itself.
+

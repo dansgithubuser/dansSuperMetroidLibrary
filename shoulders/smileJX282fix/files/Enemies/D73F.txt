@@ -1,0 +1,8 @@
+D73F (it's an elevator*)
+[Special] = 2C00
+[Speed] = 0000/0001 for down/up
+[Speed 2] = Y position to make the elevator first appear when entering the room on an elevator. 0018 is a common value for elevators going down into a room.  0Z40 works quite well for elevators going up into a room, where Z is the screen just below where you emerge from.
+
+*Do not include this in the Enemy Allowed list or it will crash your room.
+**Door tiles with a RoomID of 0000 must be directly underneath the elevator, or you won't be able to stand on and use it.
+***Elevators need 2 door in their path to function correctly.  More information on this is included with the door editor.

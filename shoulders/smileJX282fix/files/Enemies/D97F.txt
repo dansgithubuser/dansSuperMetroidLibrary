@@ -1,0 +1,2 @@
+D97F (aka- SDEATH)
+[Speed] = 0000/8000 for floor/ceiling

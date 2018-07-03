@@ -1,0 +1,264 @@
+/*
+ *	Compresch - compression library
+ *  Copyright 2008 Disch
+ *  See license.txt for details
+ */
+
+
+#ifndef __BLOCK_LZ_H__
+#define __BLOCK_LZ_H__
+
+
+/*
+ *	LZ -- Basic LZ copy.  2-byte absolute address to copy from
+ *
+ *  if @ 0816:  16 18 EA 6F 3F 67 11 09
+ *
+ *  dat=0818  len=4:   EA 6F 3F 67
+ */
+
+
+    class Block_LZ : public Block
+    {
+        
+    // ==============================================
+        
+    protected:
+        
+        bool littleEndian;
+        int dat;
+        
+    // ==============================================
+        
+    public:
+        
+        Block_LZ(bool isLittleEndian = false)
+        {
+            littleEndian = isLittleEndian;
+        }
+        
+    // ==============================================
+        
+        virtual int GetBodySize()
+        {
+            return 2;
+        }
+        
+    // ==============================================
+        
+        virtual int GetMinLength()
+        {
+            return GetBodySize() + 2;
+        }
+        
+    // ==============================================
+        
+        virtual int Output(u8* buf)
+        { 
+            // Some games use little endian representations of the LZ pointer
+            if(littleEndian)
+            {   buf[0] = (u8)(dat);      buf[1] = (u8)(dat >> 8); }
+            else
+            {   buf[0] = (u8)(dat >> 8); buf[1] = (u8)(dat);      }
+            
+            return 2; 
+        }
+        
+    // ==============================================
+        
+        virtual int Shrink(int newstart,int newstop)
+        {
+            int newdat = (dat + newstart - start);
+            if(newdat > 0xFFFF)		return 1;
+            
+            dat   = newdat;
+            start = newstart;
+            stop  = newstop;
+            len   = stop - start;
+            return 0;
+        }
+        
+    // ==============================================
+        
+        virtual Block* Dup()	{	return (new Block_LZ(*this));		}
+        
+    // ==============================================
+        
+        static void Build(u8 type,BlockList& lst,const u8* src,int srclen, bool littleEndian = false)
+        {
+            Block_LZ tmp(littleEndian);
+            
+            tmp.BuildBlocks(type, lst, src, srclen, 3, 0xFFFF);
+        }
+        
+    // ==============================================
+        
+        virtual int Decompress(int len, const u8 *src, u8 *dst,int &dstpos)
+        {
+            int from = littleEndian ? (src[1] << 8) | src[0] : (src[0] << 8) | src[1];
+            
+            DoDecompress(from,len,dst,dstpos);
+            
+            return 2;
+        }
+        
+    // ==============================================
+        
+    protected:
+        
+        virtual Block_LZ* InnerDup()	{	return (new Block_LZ(*this));		}
+        
+    // ==============================================
+            
+        void BuildBlocks(u8 type, BlockList &lst, const u8 *src, int srclen, int minsize, int mxstrt)
+        {
+            Block_LZ *bk;
+            
+            int i = 1;
+            int j;
+            int len;
+            
+            int bestlen;
+            int beststrt;
+            
+            int justblocked = 0;
+            int adj;
+            int bestadj;
+            
+            // ---------------------------------
+            
+            while(i < srclen)
+            {
+                bestadj = 0;
+                bestlen = minsize - 1;
+                
+                for(j = 0; j < i; ++j)
+                {
+                    if(j > mxstrt)
+                        break;
+                    
+                    for
+                    (
+                        len = 0;
+                        (len + i < srclen) && (src[len + j] == src[len + i]);
+                        ++len
+                    )
+                    {
+                        continue;
+                    }
+                    
+                    adj = 0;
+                    
+                    if(justblocked && len)
+                    {
+                        for
+                        (
+                            ;
+                            (j - adj >= 0) && (src[i - adj] == src[j - adj]);
+                            ++adj
+                        )
+                        {
+                            continue;
+                        }
+                        
+                        --adj;
+                        
+                        len += adj;
+                        
+                        if(len < minsize)
+                            continue;
+                    }
+                    
+                    if( ( (adj == bestadj) && (len > bestlen) ) || (adj > bestadj) )
+                    {
+                        bestlen  = len;
+                        beststrt = j - adj;
+                        bestadj  = adj;
+                    }
+                }
+                
+                if(bestlen >= minsize)
+                {
+                    bk        =	InnerDup();
+                    bk->type  =	type;
+                    bk->start =	i - bestadj;
+                    bk->stop  =	i - bestadj + bestlen;
+                    bk->len   =	bestlen;
+                    bk->dat   =	beststrt;
+                    
+                    if(bk->Shrink(bk->start, bk->stop))
+                    {
+                        delete bk;
+                        ++i;
+                        justblocked = 0;
+                    }
+                    else
+                    {
+                        lst.InsertBlock(bk);
+                        i = bk->stop;
+                        justblocked = 1;
+                    }
+                }
+                else
+                {
+                    ++i;
+                    justblocked = 0;
+                }
+            }
+        }
+        
+    // ==============================================
+        
+        static void DoDecompress(int from, int len, u8 *dst, int &dstPos)
+        {
+            if(from < 0)
+            {
+                return;
+            }
+            
+            if(from >= dstPos)
+            {
+                return;
+            }
+            
+            int i;
+            
+            if(dst)
+            {
+                for(i = 0; i < len; ++i)
+                    dst[dstPos + i] = dst[from + i];
+            }
+            
+            dstPos += len;
+        }
+    };
+    
+// ==================================================
+    
+    // Specialized LZ class for Castlevania IV but otherwise the same as Block_LZ
+    class Block_LZ_CV4 : public Block_LZ
+    {
+    public:
+        
+        virtual int GetBodySize() { return 1; }
+        
+        virtual int Decompress(int len, const u8 *src, u8 *dst,int &dstPos)
+        {
+            // align the current destination pointer to a 0x400 byte boundary
+            int from    = (dstPos - (dstPos % 0x400)); 
+            int offset  = ((src[0] << 8) | src[1]);
+            
+            // --------------------
+            
+            // Since Konami decompresses in 0x400 byte chunks, the pointer must be relative to the start of the current chunk.
+            from += (offset - 0x3DF) & 0x3FF;
+            
+            DoDecompress(from, len, dst, dstPos);
+            
+            return 1;
+        }
+    };
+    
+// ==================================================
+    
+#endif

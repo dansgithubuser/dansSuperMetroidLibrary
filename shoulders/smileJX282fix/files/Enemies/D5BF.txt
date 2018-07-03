@@ -1,0 +1,16 @@
+D5BF (aka- SHUTTER2)
+[Orientation] = speed
+     -1st nybble = 00/01 for up/down
+     -2nd nybble = speed
+[Speed]
+     -1st nybble = distance to travel
+     -2nd nybble = motion type
+          -00/02 = always on
+          -01 = proximity*
+          -03/04 = bomb to turn on
+*[Speed 2]
+     -Distance from door to (de)activate
+
+This shutter blows up if you shoot it.
+
+

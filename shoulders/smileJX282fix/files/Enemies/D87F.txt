@@ -1,0 +1,17 @@
+D87F (aka- SBUG)
+[Speed]
+     -1st nybble
+          -00 = fly away
+          -01 = wiggle away
+          -02 = fly away (different angles)
+          -03 = find new place
+          -04 = wander then fly away
+          -05 = fly to a distance
+          -06 = slow fly away (different angles)
+     -2nd nybble = distance to activate from
+[Speed 2]
+     -1st nybble = angle (00 = right, counterclockwise)*
+     -2nd nybble = speed
+
+*Sbug will either move at a specific angle you choose, or appears to head at different angles toward you, depending on Speed 2.
+

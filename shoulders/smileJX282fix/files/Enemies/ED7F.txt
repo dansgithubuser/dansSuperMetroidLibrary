@@ -1,0 +1,10 @@
+ED7F (Hopper remaints)
+[Speed]
+     0000 = alive*
+     0002 = remaints on ceiling
+
+These are the hoppers that are normally in the large metroid's room.  Either hopping on the floor or left as remaints on the ceiling.
+
+Include EDBF in the Enemy Allowed list.  Both ED7F and EDBF should be 0001 in the palette side of the list.  May have to play around with the palette values to get it to appear correct.
+
+*X/Y are hard coded to place the living version 3 screens from the left on the top row.

@@ -1,0 +1,5 @@
+D8BF (aka- SBUG)
+
+This SBUG works the same as D87F, but is never used in the game.  Graphics are screwed up, due to Anim(DNA) grabbing 8200 bytes instead of 0200?!  Don't think there was a purpose for this.
+
+Shouldn't use.

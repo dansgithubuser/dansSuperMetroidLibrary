@@ -1,0 +1,11 @@
+E83F (aka- LAVAMAN)<Possessor Type ?>
+[Speed 2] AABB
+     AA = speed to rise
+     BB = horizontal proximity
+
+1st Piece (face):
+     [Speed] = 0000
+2nd Piece (strechable part?):
+     [Speed] = 0001
+3rd Piece (shot?):
+     [Speed] = 0002

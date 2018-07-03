@@ -1,0 +1,3 @@
+CFBF (aka- PUYO)
+[Speed] = Delay between jumps
+

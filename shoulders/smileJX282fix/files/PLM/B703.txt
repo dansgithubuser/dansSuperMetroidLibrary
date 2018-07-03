@@ -1,0 +1,7 @@
+B703 (Scroll PLM)
+[High][Low] form a pointer (bank $8F) to the scroll update data.*
+
+*Format of scroll updating data is as follows:
+(screen)(scroll)...(screen)(scroll)(80)
+Example:
+03 01 80 <--- change screen 03 to a blue scroll.

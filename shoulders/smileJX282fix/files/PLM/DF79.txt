@@ -1,0 +1,9 @@
+DF79 (Diagonal Electrical Outlet)
+[High][Low] in the game:
+     8802
+     8804
+     8806
+     8808
+
+Needs to use Graphic Set 29.
+Discovered by JAM.

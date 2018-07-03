@@ -1,0 +1,7 @@
+D6FF (aka- FISH)
+[Speed]
+     -1st nybble = 00/01 = left/right
+     -2nd nybble = horizontal speed
+[Speed 2]
+     -1st nybble = vertical speed
+     -2nd nybble = vertical distance allowed

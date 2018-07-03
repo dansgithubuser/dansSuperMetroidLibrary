@@ -1,0 +1,5 @@
+F2D3
+[Speed]
+     0000 = run, starting left
+     0002 = run, starting right
+     0004 = stand still on right edge of screen

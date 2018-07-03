@@ -1,0 +1,7 @@
+E0BF (aka- PUROMI)
+[Speed]
+     1st nybble = size of arc
+     2nd nybble = speed
+[Speed 2]
+     1st nybble = delay
+     2nd nybble = direction (00 = clockwise, 01 = counterclockwise)

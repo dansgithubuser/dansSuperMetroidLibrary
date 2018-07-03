@@ -1,0 +1,6 @@
+D3FF (aka- RIPPER2)
+[Orientation] = speed
+[Speed] = Leftmost
+[Speed 2] = Rightmost
+
+Ripper2 has left/right bounds that it likes to stay in. If it is outside these bounds, it will head toward them (getting stuck at walls in the way).  It will turn at their edges when inside the bounds.

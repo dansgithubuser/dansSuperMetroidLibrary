@@ -1,0 +1,3 @@
+EF0F (Item)
+[High] = 00/80 for normal/returning
+[Low] = Index of the item.

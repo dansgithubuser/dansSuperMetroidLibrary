@@ -1,0 +1,5 @@
+E23F
+[Special] = A000
+[Speed] = Direction (0000 = right, 0001 = left).
+
+*Palette entry next to the Enemies Allowed list must be D002.

@@ -1,0 +1,6 @@
+B70B (Elevator Base)
+[High] = 80
+[Low] = 00
+
+Actually just sits there.  Elevator is an enemy.
+

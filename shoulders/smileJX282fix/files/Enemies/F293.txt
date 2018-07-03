@@ -1,0 +1,6 @@
+F293 (aka- BOTOON)
+Insists on being the first enemy in a room, but doesn't need to be the only enemy.  In the Enemies Allowed list, it's palette entry is 0007.
+
+Will be on the upper left screen of the room.
+
+Turns the right side of the screen into air tiles and changes the scroll of the room to its right into scrollable.

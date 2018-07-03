@@ -1,0 +1,5 @@
+E13F (Boss - Ceres Ridley)
+
+Always appears in the upper left screen of the room.  This is the only screen he'll manuever in and he'll always be facing left.
+
+When he runs away, the screen will dim a lot, but he won't fly towards you unless he's in a room that supports mode 7.

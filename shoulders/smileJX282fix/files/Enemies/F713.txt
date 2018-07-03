@@ -1,0 +1,7 @@
+F713 (BATTA3Na)
+[Speed] = 0000/0001 for facing left/right
+[Speed 2] = distance it can walk
+[Graphic Unknown] = 0004
+Set [Special GFX]
+
+Shooting pirate from Lower Norfair.

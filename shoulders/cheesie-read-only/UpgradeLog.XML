@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="NewCheesy">
+</Property><Property Name="Solution File" Value="D:\files\C\2011\dansSMR\cheesie-read-only\NewCheesy.sln">
+</Property><Property Name="Date" Value="Monday, April 01, 2013">
+</Property><Property Name="Time" Value="1:12 AM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="NewCheesy.sln" Description="File successfully backed up as D:\files\C\2011\dansSMR\cheesie-read-only\NewCheesy.sln.old">
+</Event><Event ErrorLevel="0" Project="NewCheesy" Source="NewCheesy\NewCheesy.vcproj" Description="Converting project file 'D:\files\C\2011\dansSMR\cheesie-read-only\NewCheesy\NewCheesy.vcproj'.">
+</Event><Event ErrorLevel="1" Project="NewCheesy" Source="NewCheesy\NewCheesy.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="NewCheesy" Source="NewCheesy\NewCheesy.vcproj" Description="Done converting to new project file 'D:\files\C\2011\dansSMR\cheesie-read-only\NewCheesy\NewCheesy.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="NewCheesy" Source="NewCheesy\NewCheesy.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="NewCheesy.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="NewCheesy.sln" Description="Converted">
+</Event></UpgradeLog>

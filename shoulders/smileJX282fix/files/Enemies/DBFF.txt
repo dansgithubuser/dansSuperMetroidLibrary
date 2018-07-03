@@ -1,0 +1,5 @@
+DBFF (aka- REFLEC)
+
+[Speed] = Angle (0-7)... 45 degree clockwise turn (starts facing left)
+
+Reflec bounces your shots back at you.  Unused enemy.

@@ -1,0 +1,6 @@
+E8BF (aka- PUU)<Possessor Type ?>
+[Speed 2] = Upper most Y position
+1st Piece (grippable part):
+     [Speed] = 0001
+2nd Piece (balloon):
+     [Speed] = 0000

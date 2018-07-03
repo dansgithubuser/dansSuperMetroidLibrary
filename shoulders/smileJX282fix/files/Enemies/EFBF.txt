@@ -1,0 +1,3 @@
+EFBF
+
+Should be the item orbs that get shot out from EF7F, but totally interchangable.  If you place EFBF as an enemy, it will be run as an EF7F instead.

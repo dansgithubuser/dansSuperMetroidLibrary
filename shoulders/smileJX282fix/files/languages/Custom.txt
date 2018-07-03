@@ -1,0 +1,102 @@
+Make Your Own
+File
+Open New ROM
+Save Room
+Special
+Level to Bitmap
+Preferences
+Languages
+Palette Format
+Snap Enemies to Grid
+Hotkeys
+Run Settings
+Test Room Options
+Emulator
+SRM Folder
+Exit
+Edit
+Room Properties
+State Properties
+RoomVar Data (State)
+FX1
+Pointers
+Area Load Stations
+Samus Poses
+Special
+Fill Area
+Game Behavior
+Enemy/PLM +/-
+View
+Window
+Standard (2x1)
+Large (2x2 auto-hide menu)
+Large (2x2)
+X-Large (3x2)
+X-Large (3x2 auto-hide menu)
+Custom AutoHide
+XXL (4x3)
+XXL (4x3 auto-hide menu)
+XXXL (5x4)
+XXXL (5x4 auto-hide menu)
+XXXXL (6x5)
+XXXXL (6x5 auto-hide menu)
+TileSize
+Options
+Brightness
+Normal
+Bright
+Blazing
+Transparent BTS
+Show Scroll Areas
+Draw Box Around PLM
+Layer 1
+Layer 2
+BTS
+PLM
+Enemies
+Show All
+Tools
+Level Editor
+Scroll Editor (refreshes room)
+Special Level Format Editor
+Map Editor
+Graphics Editor
+Background Editor
+EDIT BG
+BG/Layer 2 SCROLLING
+ADD Layer 2 Background
+REMOVE Layer 2 Background
+Beauty Salon
+Text Editor
+Header
+Add Header
+Remove Header
+Expand ROM
+Create SIPS patch
+Create IPS patch
+Apply a patch
+Apply entire folder
+File Compare
+Plugins
+Run
+Test Room
+Help
+About
+Contact
+Check for updates
+Smile On-Line Access (SOLA)
+Offscreen Enemies to Screen
+Offscreen PLM's to Screen
+EnemyPop
+Species
+Split Ship When Moved
+PLMPop
+Type
+DoorPop
+Clone Door
+Enter Room
+Save First
+Don't Save
+Door Editor
+% Key
+Open Most Recent Room

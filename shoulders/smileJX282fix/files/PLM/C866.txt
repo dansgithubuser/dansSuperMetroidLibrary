@@ -1,0 +1,3 @@
+C866 (Yellow Door Shell)
+[High] = 00/80 for normal/returning
+[Low] = Index of door shell.

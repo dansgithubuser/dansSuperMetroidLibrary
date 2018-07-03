@@ -1,0 +1,10 @@
+DE7F (Draygon's Eye)
+[Special] = 2C00
+[Graphic Unknown] = 0004
+
+Graphic Set must be 29.
+Layer 2 Scroll should be set to 0101.
+
+Draygon is made of 4 parts (DE3F, DE7F, DEBF, and DEFF).  His eye must be the second enemy in the room.
+
+*Do not put DE7F in the Enemies Allowed List.

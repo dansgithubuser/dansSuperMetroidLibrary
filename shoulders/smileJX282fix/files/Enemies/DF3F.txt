@@ -1,0 +1,6 @@
+DF3F (Boss - Spore Spawn!)
+[Graphic Unknown] = 0004
+
+Spore Spawn must be the first enemy in the room, but not necessarily the only enemy.  His AI sets the first two screens of the room to non-scrolling.  The 3rd screen down on the left edge of the room will be where his spores and central part of his neck appear, but he can actually be placed in any screen.
+
+His palette in the Enemies Allowed list should be 0007.

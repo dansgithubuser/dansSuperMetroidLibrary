@@ -1,0 +1,7 @@
+F753 (BATTA3Ma)
+[Speed] = 0000/0001 for facing left/right
+[Speed 2] = distance it can walk
+[Graphic Unknown] = 0004
+Set [Special GFX]
+
+Shooting pirate from Maridia.

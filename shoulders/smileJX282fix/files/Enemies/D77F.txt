@@ -1,0 +1,6 @@
+D77F (aka- KANI)
+[Special] = Direction
+     -XXX0/XXX2 = left/up
+     -XXX1/XXX3 = right/down
+[Orientation] = 0002/0003 for most appropriate ceiling/floor positions.
+[Speed] = speed

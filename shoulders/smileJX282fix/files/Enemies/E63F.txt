@@ -1,0 +1,17 @@
+E5FF (aka- EBI)<Possesser Type B>
+[Speed 2]*
+     1st nybble = distance to cover?
+     2nd nybble = speed?
+
+1st Piece
+     [Special] = 2000/2800
+     [Speed] = 0000
+2nd Piece (claw)
+     [Special] = 2400
+     [Speed] = 0001
+3rd Piece (shot)
+     [Special] = 2800
+     [Speed] = 0002
+
+*Not 100% sure about what Speed 2 is for.
+

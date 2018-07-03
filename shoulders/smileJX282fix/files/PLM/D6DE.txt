@@ -1,0 +1,7 @@
+D6DE
+[High] = 80
+[Low] = 00
+
+Upper right corner of Mother Brain's glass.  Acts shootable and changes the graphics for 4 vertical tiles to make it look like broken glass.
+
+Needs to use Graphic Set 14 or 15 (Should be 15, if you plan on also using Mother Brain).

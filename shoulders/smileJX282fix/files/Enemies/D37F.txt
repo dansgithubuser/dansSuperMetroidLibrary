@@ -1,0 +1,4 @@
+D37F (aka- OUM)
+[Special] = A800, to act as it normally would.
+[Graphic Unknown] = 0004
+

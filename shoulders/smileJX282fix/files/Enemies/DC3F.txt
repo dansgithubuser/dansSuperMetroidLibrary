@@ -1,0 +1,5 @@
+DC3F (aka- HZOOMER)
+[Special] = XXX0/XXX1 for left/right.
+[Speed] = speed.
+
+Uses palette of DCBF.

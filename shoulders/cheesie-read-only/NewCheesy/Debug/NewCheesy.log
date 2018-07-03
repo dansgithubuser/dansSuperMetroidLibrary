@@ -1,0 +1,142 @@
+﻿Build started 4/3/2013 1:20:20 AM.
+     1>Project "D:\files\C\2011\dansSMR\cheesie-read-only\NewCheesy\NewCheesy.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\NewCheesy.unsuccessfulbuild".
+       ClCompile:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _UNICODE /D _CRT_SECURE_NO_WARNINGS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt SMClass.cpp WindowStuff.cpp gameImage.cpp gbaimage.cpp mainpanel.cpp
+         mainpanel.cpp
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\mainpanel.cpp(49): error C2065: 'TheMapWindow' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\mainpanel.cpp(49): error C2227: left of '->dcPic' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\mainpanel.cpp(49): error C2065: 'TheTileset' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\mainpanel.cpp(49): error C2227: left of '->dcPic' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\mainpanel.cpp(49): error C2660: 'SMClass::DrawRoom' : function does not take 2 arguments
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\mainpanel.cpp(50): error C2065: 'TheMapWindow' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\mainpanel.cpp(50): error C2227: left of '->Refresh' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+         gbaimage.cpp
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(9): error C2065: 'pDC' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(20): error C2065: 'pDC' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(21): error C2065: 'pDC' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(21): error C2541: 'delete' : cannot delete objects that are not pointers
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(37): error C2065: 'pDC' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(37): error C2061: syntax error : identifier 'wxMemoryDC'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(103): error C2039: 'GetImage' : is not a member of 'GBAImage'
+                 d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.h(10) : see declaration of 'GBAImage'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(103): error C2146: syntax error : missing ';' before identifier 'GetImage'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(103): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(104): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(105): error C2039: 'GetImage' : is not a member of 'GBAImage'
+                 d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.h(10) : see declaration of 'GBAImage'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(105): error C2065: 'nWd' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(105): error C2065: 'nHt' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(105): warning C4508: 'GetImage' : function should return a value; 'void' return type assumed
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(108): error C2039: 'GetImage' : is not a member of 'GBAImage'
+                 d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.h(10) : see declaration of 'GBAImage'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(108): error C2146: syntax error : missing ';' before identifier 'GetImage'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(108): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(108): error C2086: 'int wxImage' : redefinition
+                 d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(103) : see declaration of 'wxImage'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(108): error C2065: 'wxCoord' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(108): error C2146: syntax error : missing ')' before identifier 'x'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(108): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(108): error C2365: 'GetImage' : redefinition; previous definition was 'function'
+                 d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(103) : see declaration of 'GetImage'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(108): error C2059: syntax error : ')'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(109): error C2143: syntax error : missing ';' before '{'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(109): error C2447: '{' : missing function header (old-style formal list?)
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(152): error C2039: 'BlitToDC' : is not a member of 'GBAImage'
+                 d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.h(10) : see declaration of 'GBAImage'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(152): error C2065: 'wxDC' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(152): error C2065: 'dst' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(152): error C2065: 'wxCoord' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(152): error C2146: syntax error : missing ')' before identifier 'xdst'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(152): error C2182: 'BlitToDC' : illegal use of type 'void'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(152): error C2078: too many initializers
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(152): error C2059: syntax error : ')'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(153): error C2143: syntax error : missing ';' before '{'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(153): error C2447: '{' : missing function header (old-style formal list?)
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(167): error C2065: 'pDC' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(167): error C2227: left of '->SelectObject' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.cpp(167): error C3861: 'wxBitmap': identifier not found
+         gameImage.cpp
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gameimage.cpp(36): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gameimage.cpp(64): error C2039: 'BlitToDC' : is not a member of 'GBAImage'
+                 d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gbaimage.h(10) : see declaration of 'GBAImage'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\gameimage.cpp(64): error C2065: 'mDC' : undeclared identifier
+         WindowStuff.cpp
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(4): error C2039: 'BuildEditingOptions' : is not a member of 'MainPanel'
+                 d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\mainpanel.h(13) : see declaration of 'MainPanel'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(5): error C2355: 'this' : can only be referenced inside non-static member functions
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(6): error C2065: 'chkTileEdit' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(6): error C2355: 'this' : can only be referenced inside non-static member functions
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(6): error C2065: 'CHKTILEEDIT' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(7): error C2065: 'chkPropEdit' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(7): error C2355: 'this' : can only be referenced inside non-static member functions
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(7): error C2065: 'CHKPROPEDIT' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(9): error C2065: 'chkTileEdit' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(10): error C2065: 'chkPropEdit' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(15): error C2039: 'BuildMap' : is not a member of 'MainPanel'
+                 d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\mainpanel.h(13) : see declaration of 'MainPanel'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(18): error C2355: 'this' : can only be referenced inside non-static member functions
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(28): error C2065: 'TheMapWindow' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(28): error C2355: 'this' : can only be referenced inside non-static member functions
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(28): error C2661: 'PicWindow::PicWindow' : no overloaded function takes 3 arguments
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(31): error C2065: 'TheMapWindow' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(31): error C2227: left of '->MakeVSB' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(33): error C2065: 'TheMapWindow' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(33): error C2227: left of '->VSB' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(33): error C2227: left of '->SetScrollbar' must point to class/struct/union/generic type
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(35): error C2065: 'TheMapWindow' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(35): error C2227: left of '->MakeHSB' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(36): error C2065: 'TheMapWindow' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(36): error C2227: left of '->HSB' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(36): error C2227: left of '->SetScrollbar' must point to class/struct/union/generic type
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(39): error C2065: 'TheMapWindow' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(39): error C2227: left of '->gI' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(39): error C2065: 'TheMapWindow' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(39): error C2227: left of '->dcPic' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(40): error C2065: 'TheMapWindow' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(68): error C2039: 'BuildTileset' : is not a member of 'MainPanel'
+                 d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\mainpanel.h(13) : see declaration of 'MainPanel'
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(71): error C2355: 'this' : can only be referenced inside non-static member functions
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(81): error C2065: 'TheTileset' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(81): error C2355: 'this' : can only be referenced inside non-static member functions
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(81): error C2661: 'PicWindow::PicWindow' : no overloaded function takes 3 arguments
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(82): error C2065: 'TheTileset' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(82): error C2227: left of '->MakeVSB' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(83): error C2065: 'TheTileset' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(83): error C2227: left of '->VSB' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(83): error C2227: left of '->SetScrollbar' must point to class/struct/union/generic type
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(86): error C2065: 'TheTileset' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(86): error C2227: left of '->gI' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(86): error C2065: 'TheTileset' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(86): error C2227: left of '->dcPic' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\windowstuff.cpp(88): error C2065: 'TheTileset' : undeclared identifier
+         SMClass.cpp
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\smclass.cpp(64): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\smclass.cpp(129): warning C4101: 'fullsize' : unreferenced local variable
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\smclass.cpp(232): warning C4101: 'TempBytes' : unreferenced local variable
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\smclass.cpp(228): warning C4101: 'Destination' : unreferenced local variable
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\smclass.cpp(398): error C2065: 'dst' : undeclared identifier
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\smclass.cpp(398): error C2227: left of '->Blit' must point to class/struct/union/generic type
+                 type is ''unknown-type''
+     1>d:\files\c\2011\danssmr\cheesie-read-only\newcheesy\smclass.cpp(398): error C2065: 'src' : undeclared identifier
+         Generating Code...
+     1>Done Building Project "D:\files\C\2011\dansSMR\cheesie-read-only\NewCheesy\NewCheesy.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:13.33

@@ -1,0 +1,7 @@
+E07F (aka- HIBASHI)<Possesser Type A>
+FIRST PIECE (graphical):
+     [Special] = 2500
+     [Speed] = Delay
+SECOND PIECE (physical):
+     [Special] = 2100
+     [Special] = 0001

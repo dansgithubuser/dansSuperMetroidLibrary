@@ -1,0 +1,5 @@
+E5BF
+Speed 2 = Which of the 3 Eticoons.
+     -0000 = Wall jump until stopping, then run.
+     -0001 = Wall jump until stopping, run, then more jumping.
+     -0002 = Wall jump until stopping, then stay stopped.

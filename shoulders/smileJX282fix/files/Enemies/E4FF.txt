@@ -1,0 +1,10 @@
+E4FF (Pieces of Phantoon)
+[Special] = 2C00
+[Graphic Unknown] = 0004
+
+Must use Graphic Set 5 or 6.
+Possessed by E4FF (Phantoon).
+Do not place in the Enemies Allowed List.
+E4FF, E53F, and E57F are interchangable.
+Speed 2 should be 0003, 0002, or 0001 (reverse order of its index).
+

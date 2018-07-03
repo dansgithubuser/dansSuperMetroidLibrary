@@ -1,0 +1,6 @@
+E4BF (Boss - Phantoon!)
+[Special] = 2800
+[Graphic Unknown] = 0004
+
+Must use Graphic Set 5 or 6.
+Possesses the next 3 enemies (E4FF, E53F, or E57F)  which aren't in the Enemies Allowed List.  Their Speed 2 should be 0003, 0002, and 0001 (in that order).

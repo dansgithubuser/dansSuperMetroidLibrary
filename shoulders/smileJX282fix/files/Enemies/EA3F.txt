@@ -1,0 +1,7 @@
+EA3F (aka- SPA)
+[Speed] Sparkler Type
+     0000 = appear and disappear
+     0001 = 
+     0002 = falling sparks
+[Speed 2] = Delay
+

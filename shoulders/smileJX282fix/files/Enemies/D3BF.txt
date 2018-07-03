@@ -1,0 +1,7 @@
+C3BF (aka- HIRU)
+[Speed 2] = Proximity
+[Speed] = Speed/Height
+     -1st nybble (00-04) is horizontal distance to cover
+     -2nd nybble (00-0A) is height to leap
+
+

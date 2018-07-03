@@ -1,0 +1,22 @@
+DFBF (aka- RSTONE)
+Speed: 0X00
+0000 = fall and roll to the right
+0100 = fall and roll to the left
+0200 = fall, bounce once, then crumble
+Other values work, but seem to be repeats of these 3, or a very similar effect
+
+Speed2: XXYY
+XX = Number of pixels above the enemy to place the rock and how far it will fall
+YY = (I think) how close samus can come horizontally before the rock falls
+
+Orientation: 00XX
+XX = (I think) how close samus can come vertically before the rock falls.
+
+Example: Place the rock on the very bottom left of a room so that the bottom of the rock touches the floor and give it these values: 
+Speed: 0000 
+Speed2: 8040 
+Orientation: 0080. 
+The rock will be placed 8 tiles above the place you see it in SMILE and activate upon samus coming within both 4 tiles horizontally and 8 tiles vertically, where it will then fall 8 tiles, and roll to the right until it hits a wall, where it will crumble.
+
+
+Discovered by Cardweaver

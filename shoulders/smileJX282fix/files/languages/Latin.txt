@@ -1,0 +1,102 @@
+Latin
+Charta
+Aperi LSM novum
+Serve cellam
+Proprius
+Fac picturam
+Lectiones
+Linguae
+Modus colorum
+Pone inimicos in gride
+Butones celeres
+Lectiones currendi
+Probatio lectionum cellae
+Emulator
+SRM loculamentum
+Claude
+Muta
+Lectiones cellae
+Lectiones statuae
+Roomvar data (statua)
+FX1
+Indicia
+Loci aperiendi areae
+Samus statuae
+Proprius
+Aream comple
+Modus ludi
+Inimicus/PAM +/-
+Videndum
+Fenestra
+Solet (2x1)
+Magnus (2x2 menu se celat)
+Magnus (2x2)
+Maior (3x2)
+Maior (3x2 menu se celat)
+Sibi MSC
+Maximus (4x3)
+Maximus (4x3 menu se celat)
+Valde maximus (5x4)
+Valde maximus (5x4 menu se celat)
+V-v maximus (6x5)
+V-v maximus (6x5 menu se celat)
+Amplitudo tegularum
+Lectiones
+Claritudo
+Solet
+Luce
+Valde luce
+BTS cela
+Demonstra areas scrolum
+Pinge arcam circum PAM
+Layer 1
+Layer 2
+Post Scaenis
+PAM
+Inimici
+Demonstra omnes
+Utilitates
+Mutator cellae
+Mutator scrolum (apert cellam iterum)
+Cellam propriam mutator
+Chartae mutator
+Picturae mutator
+Postchartae mutator
+Muta PC
+PC/layer 2 scrol
+Adde layer 2 postchartam
+Dele layer 2 postchartam
+Mutator formarum
+Mutator verborum
+Header
+Adde headerem
+Dele headerem
+Adde LSM
+Fac SIPS pannum
+Fac IPS pannum
+Admove pannum
+Admove loculamentum
+Compara chartas
+Intratores
+Curre
+Probatio cellae
+Auxilium
+De hoc
+Occurre
+Inveni novos
+SMICM in-line intror (SOLA)
+Inimici invisi in fenestram
+PAM invisi in fenestram
+Frequentia inimicorum
+Modi
+Seca navem cum moverit
+Frequentia PAM
+Modi
+Frequentia inuarum
+Ianuam effinge
+Intra cellam
+Prime serva
+Noli servare
+Mutator ianuarum
+% buto
+Aperi cellam praeviam

@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7E965152-D021-4AF4-B26D-8C2E4ED55B88}</ProjectGuid>
+    <RootNamespace>NewCheesy</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\SourceCode\Libraries\wxWidgets2.8\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\SourceCode\Libraries\wxWidgets2.8\lib\vc_lib;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\SourceCode\Libraries\wxWidgets2.8\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\SourceCode\Libraries\wxWidgets2.8\lib\vc_lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_UNICODE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>wxbase28d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="app.cpp" />
+    <ClCompile Include="Compare.cpp" />
+    <ClCompile Include="gameImage.cpp" />
+    <ClCompile Include="gbaimage.cpp" />
+    <ClCompile Include="gbatiles.cpp" />
+    <ClCompile Include="globals.cpp" />
+    <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="picWindow.cpp" />
+    <ClCompile Include="RomClass.cpp" />
+    <ClCompile Include="SMClass.cpp" />
+    <ClCompile Include="tilebuffer.cpp" />
+    <ClCompile Include="TileHandling.cpp" />
+    <ClCompile Include="mainpanel.cpp" />
+    <ClCompile Include="WindowStuff.cpp" />
+    <ClCompile Include="Compresch\block_lz2.cpp" />
+    <ClCompile Include="Compresch\block_lzbitrev.cpp" />
+    <ClCompile Include="Compresch\block_minus.cpp" />
+    <ClCompile Include="Compresch\blocklist.cpp" />
+    <ClCompile Include="Compresch\compresch_castlevania4.cpp" />
+    <ClCompile Include="Compresch\compresch_kirby.cpp" />
+    <ClCompile Include="Compresch\compresch_konamiblock.cpp" />
+    <ClCompile Include="Compresch\compresch_lttp.cpp" />
+    <ClCompile Include="Compresch\compresch_metroid.cpp" />
+    <ClCompile Include="Compresch\compresch_pokemon.cpp" />
+    <ClCompile Include="Compresch\compresch_stdblock.cpp" />
+    <ClCompile Include="Compresch\CompreschMain.cpp" />
+    <ClCompile Include="Compresch\crunchtree.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="app.h" />
+    <ClInclude Include="Compare.h" />
+    <ClInclude Include="gameImage.h" />
+    <ClInclude Include="gbaimage.h" />
+    <ClInclude Include="gbatiles.h" />
+    <ClInclude Include="gbatypes.h" />
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="MainHeader.h" />
+    <ClInclude Include="mainpanel.h" />
+    <ClInclude Include="menu.h" />
+    <ClInclude Include="picWindow.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="RomClass.h" />
+    <ClInclude Include="SMClass.h" />
+    <ClInclude Include="tilebuffer.h" />
+    <ClInclude Include="TileData.h" />
+    <ClInclude Include="TileHandling.h" />
+    <ClInclude Include="Tileset.h" />
+    <ClInclude Include="Tools.h" />
+    <ClInclude Include="wxDeclarations.h" />
+    <ClInclude Include="wxhdr.h" />
+    <ClInclude Include="Compresch\block.h" />
+    <ClInclude Include="Compresch\block_copy.h" />
+    <ClInclude Include="Compresch\block_copypadded.h" />
+    <ClInclude Include="Compresch\block_copytwo.h" />
+    <ClInclude Include="Compresch\block_hybridlz.h" />
+    <ClInclude Include="Compresch\block_hybridlzbitrev.h" />
+    <ClInclude Include="Compresch\block_hybridlzrev.h" />
+    <ClInclude Include="Compresch\block_lz.h" />
+    <ClInclude Include="Compresch\block_lz2.h" />
+    <ClInclude Include="Compresch\block_lzbitrev.h" />
+    <ClInclude Include="Compresch\block_lzrev.h" />
+    <ClInclude Include="Compresch\block_minus.h" />
+    <ClInclude Include="Compresch\block_rle.h" />
+    <ClInclude Include="Compresch\block_rlealternate.h" />
+    <ClInclude Include="Compresch\block_rleplus.h" />
+    <ClInclude Include="Compresch\block_rletwo.h" />
+    <ClInclude Include="Compresch\block_zero.h" />
+    <ClInclude Include="Compresch\blocklist.h" />
+    <ClInclude Include="Compresch\compresch_castlevania4.h" />
+    <ClInclude Include="Compresch\compresch_kirby.h" />
+    <ClInclude Include="Compresch\compresch_konamiblock.h" />
+    <ClInclude Include="Compresch\compresch_lttp.h" />
+    <ClInclude Include="Compresch\compresch_metroid.h" />
+    <ClInclude Include="Compresch\compresch_pokemon.h" />
+    <ClInclude Include="Compresch\compresch_stdblock.h" />
+    <ClInclude Include="Compresch\compresch_types.h" />
+    <ClInclude Include="Compresch\CompreschMain.h" />
+    <ClInclude Include="Compresch\crunchtree.h" />
+    <ClInclude Include="Compresch\resource.h" />
+    <ClInclude Include="Compresch\sizelimits.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Compresch\block_copy.h.bak" />
+    <None Include="Compresch\block_copypadded.h.bak" />
+    <None Include="Compresch\block_lz.h.bak" />
+    <None Include="Compresch\block_rle.h.bak" />
+    <None Include="Compresch\blocklist.cpp.bak" />
+    <None Include="Compresch\blocklist.h.bak" />
+    <None Include="Compresch\compresch.aps" />
+    <None Include="Compresch\compresch.ncb" />
+    <None Include="Compresch\compresch.sln" />
+    <None Include="Compresch\compresch.sln.old" />
+    <None Include="Compresch\compresch.suo" />
+    <None Include="Compresch\compresch.suo.old" />
+    <None Include="Compresch\compresch.vcproj" />
+    <None Include="Compresch\compresch.vcproj.7.00.old" />
+    <None Include="Compresch\compresch_kirby.cpp.bak" />
+    <None Include="Compresch\compresch_konamiblock.cpp.bak" />
+    <None Include="Compresch\compresch_lttp.cpp.bak" />
+    <None Include="Compresch\compresch_lttp.h.bak" />
+    <None Include="Compresch\compresch_pokemon.cpp.bak" />
+    <None Include="Compresch\compresch_stdblock.cpp.bak" />
+    <None Include="Compresch\crunchtree.cpp.bak" />
+    <None Include="Compresch\crunchtree.h.bak" />
+    <None Include="Compresch\sizelimits.h.bak" />
+    <None Include="Compresch\UpgradeLog.XML" />
+    <None Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Compresch\compresch.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,5 @@
+CEBF (aka- BOYON)
+[Speed 2] = Proximity
+[Speed] = Speed/Height
+     -1st nybble (00-07) is momentum
+     -2nd nybble (00-07) is speed/height

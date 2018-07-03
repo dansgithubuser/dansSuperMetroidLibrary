@@ -1,0 +1,5 @@
+B8AC (Rising Lava After Getting Speedboots)
+[High] = 80
+[Low] = 00
+
+Sets the Rising Lava event, but can be used over and over. Basically, this PLM delays any rising lava effects (FX1) in a room unless it determines Samus has speedboots.  If acquiring speedboots within the same room as the PLM, the lava will not rise until you return to the room.

@@ -1,0 +1,3 @@
+DA3F (aka- DESGEEGA)
+[Special] = XXX0/XXX1 for right/left
+[Speed] = speed

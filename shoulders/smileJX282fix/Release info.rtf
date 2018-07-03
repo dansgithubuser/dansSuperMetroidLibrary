@@ -1,0 +1,353 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\froman Times New Roman;}{\f1\froman\fcharset0 Times New Roman;}{\f2\froman\fcharset204{\*\fname Times New Roman;}Times New Roman Cyr;}{\f3\fswiss\fcharset0 Arial;}{\f4\fswiss\fcharset204{\*\fname Arial;}Arial Cyr;}{\f5\fswiss Arial;}{\f6\fswiss\fprq2\fcharset0 Arial;}{\f7\fswiss\fprq2\fcharset204{\*\fname Arial;}Arial Cyr;}{\f8\fnil\fcharset0 Times New Roman;}{\f9\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red128\green0\blue0;\red0\green0\blue0;}
+\viewkind4\uc1\pard\b\f0\fs24 SMILE \f1 JX \f0 (Super Metroid Integrated Level Editor\f1 : JAM Extras\f0 ) Version \f1 2.82.2\f0\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520 -\lang1049\f2 07\lang1033\f1 .12.\lang1049\f2 20\lang1033\f1 12\f0 -\par
+\cf1\b0\f3\fs20\par
+\lang1049\f4 07\lang1033\f3 .12.12 \f5 (\f3 2.8\lang1049\f4 2\lang1033\f3 .\lang1049\f4 2\lang1033\f5 ):\par
+\f3 Intermediate version contains just bugfixes. More stable than 2.82\f5\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\f6 Fixed run-time error "373". It happens if you're changed mdb.txt file between SMILE loads when working on different hacks. This bug is not allowing SMILE to run in attemt to load the room that not exists in file mdb.txt. Now in that case the very first room in the list will be loaded.\lang1049\par
+\lang1033{\pntext\f9\'B7\tab}Fixed bug causing the game crash after entering the room with already collected PLM with graphics used in CRE (Missile, Super Missile, Power Bombs, Energy Tank). If you have modified this PLM, zero word was saved to 3rd byte of item code causing the crash.\lang1049\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf1\lang1033\f3\par
+16.10.12 \f5 (\f3 2.8\lang1049\f4 2\lang1033\f5 ):\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\lang1049\f6 Added \lang1033 support for Scroll repoint patch. Now all scrolls will be loaded from another bank correctly.\lang1049\par
+\lang1033{\pntext\f9\'B7\tab}Added support for Yellow scrolls patch. But new scrolls can be set only if patch is actually applied. I thought that 2 white colors will be too confusing as well as yellow and orange scroll, so scroll frame colors were changed a bit to navigate easily:\lang1049\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\tab\tab 03: \lang1033 Aqua\lang1049  scroll: red scroll becaming blue (marked as "orange" in original patch desription).\par
+\tab\tab 04: Yellow scroll: red scroll becaming green (red + green = yellow).\par
+\tab\tab 05: Purple scroll: red scroll becaming blue, but turning into red after leaving this screen (red + blue + more red).\par
+\tab\tab 06: Orange scroll: red scroll becaming green, but turning into red after leaving this screen (red + green + more red).\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\lang1033 Now event names can be loaded from text file. Edit file "files\\events.txt" and name events in your hack as you wish. \lang1049\par
+\lang1033{\pntext\f9\'B7\tab}$100 Extra Events patch is supported.\lang1049\par
+\lang1033\i{\pntext\f9\'B7\tab}Layer1_2\i0  in pointers window is renamed to \i FX0(Setup Code)\i0  to better fit it's action (ASM code executed once, before FX2, nothing to do with layering).\lang1049\par
+\lang1033{\pntext\f9\'B7\tab}Add New Graphic Set feature was improved. Now it have protection from missing patches. Although, you need to set pointers manually in hex editor in this version.\lang1049\par
+\lang1033{\pntext\f9\'B7\tab}Finally, runtime-error 76 was killed. SMILE.ini file will not be corrupted anymore when selecting no ROM at first time. If it was corrupted earlier, it will be deleted\lang1049\f7  \lang1033\f6 and SMILE finally runs.\lang1049\par
+{\pntext\f9\'B7\tab}Fixed bug causing data overwriting when entering Hex address instead of SNES address in Level Data field. Now you if you save the room with Level Data pointer $300000, data at $180000 (30:0000) will not be overwrited and pointer will be recoded to SNES format (E0:8000).\par
+\lang1033{\pntext\f9\'B7\tab}Fixed little bug in PLM C878's description.\lang1049\par
+\lang1033{\pntext\f9\'B7\tab}Fixed small bug in level_entries.txt. Line 280000 is replaced with 278000.\lang1049\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\par
+\par
+\cf1\f4 0\lang1033\f3 5.07.12 \f5 (\f3 2.81.1\f5 ):\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\lang1049\f6 Added missed patches to make Add New Graphic Set function works.\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf1\lang1033\f3\par
+\par
+\lang1049\f4 02\lang1033\f3 .07.12 \f5 (\f3 2.81\f5 ):\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\lang1049\f6 Fixed bug causing program crash when selecting no ROM.\par
+\cf2\lang1033\f3{\pntext\f9\'B7\tab}Diagonal Electrical Outlet GIFs were remaked to make spawn PLMs to the right position.\par
+{\pntext\f9\'B7\tab}Unused Item and Beam bits can be set in TestRoom options.\lang1049\f4  \lang1033\f3 Useful if your hack have new items.\par
+{\pntext\f9\'B7\tab}Boss events are marked in regular event list. Now it's easy to set room state depending on boss event from any area.\par
+{\pntext\f9\'B7\tab}Unused boss bits are marked like \i (main boss)\i0  or \i (mini boss)\i0 . Bomb Torizo is placed in front on right check (finally!).\par
+{\pntext\f9\'B7\tab}Certain events are marked in boss bits. Now it's easy to make room state depending on few events!\par
+{\pntext\f9\'B7\tab}Fixed bug causing "Run time error 55" when saving palette in Graphic Editor. Now palettes can be saved again.\par
+{\pntext\f9\'B7\tab}Fixed little bug of dragging slope. Now while dragging slope metroid icon with arrow will be shown as before.\par
+{\pntext\f9\'B7\tab}Now you'll need to confirm your desire to Save Room. I did that to prevent clicking on Save Room icon when trying to click on ROM icon as these 2 icons are close to each other.\par
+{\pntext\f9\'B7\tab}Max amount of Enemies to set in Enemy/PLM +/- window is set to $20 (instead of $32) because the game can't actually handle more than $20.\par
+{\pntext\f9\'B7\tab}Now you can set 0 enemies and items in Enemy/PLM +/- window.\par
+{\pntext\f9\'B7\tab}ROM Checksum corrector was added, optimized, broken and fixed. No more [bad checksum] or CHSUM: FAIL messages.\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\par
+\cf1\par
+21.06.12 \f5 (\f3 2.80\f5 ):\par
+\f3 First official release of SMILE JX.\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\lang1049\f6 Extended support for Ceres & Debug patch. Now Debug area name can be edited in SMILE. Text area names will be saved to exact places where they are.\par
+\cf2\lang1033\f3{\pntext\f9\'B7\tab}CRE will be removed only in area that was set in ROM.\par
+{\pntext\f9\'B7\tab}Small cosmetic changes in Hotkeys and TestRoom forms.\par
+{\pntext\f9\'B7\tab}Program info and contacts were changed to avoid bugging Jathys.\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf1\par
+\par
+17.06.12 Private release \f5 (\f3 2.79\f5 ):\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\lang1049\f6 Now you can select message number to display when collecting certain item and change item graphics pointer in PLM Editor. Graphic text box will be active only when selecting Item or Beam. Message text box will be active only if it actually sets here.\cf2\lang1033\f3\par
+{\pntext\f9\'B7\tab}Now you can set "Hits to Open" / "Power to Open" property for the Orange Doors, Beam Eye Door and Electrical Outlets.\par
+{\pntext\f9\'B7\tab}Added Diagonal Electrical Outlet support.\par
+{\pntext\f9\'B7\tab}Added Exceed maximum check for Test Room menu. Now you can load the game from SMILE having more energy and ammo that original game have. Useful if max you can get in your hack is something like 250 Missiles, 75 Super Missiles and 75 Power Bombs.\par
+{\pntext\f9\'B7\tab}Unused gates from Upside down and opened gate patch are added to PLM folder. \par
+{\pntext\f9\'B7\tab}All gates are have a bit detailed description.\par
+{\pntext\f9\'B7\tab}If the PLM have header consisting of 3 words, like doors, then 3rd word will be shown.\par
+{\pntext\f9\'B7\tab}File level_entries.txt is replaced by fixed version from patch Level Entries Fix v1.1 by me and Scyzer.\par
+{\pntext\f9\'B7\tab}All unused enemies from Extra Enemies patch by A red monk called Key are placed to Enemies folder. Some descriptions and gifs are corrected.\par
+{\pntext\f9\'B7\tab}Enemies D53F, D57F and DFBF are having new description. \par
+{\pntext\f9\'B7\tab}Fixed annoying bug when PLM jumps from you after clicking it. Actually, undoing some stuff.\par
+{\pntext\f9\'B7\tab}PLM menu will not close when you switch to another program.\par
+{\pntext\f9\'B7\tab}Add Graphic Set Tool is available to make new tilesets (more than 29 in total, up to 255).\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\par
+\par
+\cf1 03.06.12 Test release \f5 (\f3 2.76\f5 ):\par
+\f3 Project name changed to SMILE JX. Now me and Scyzer will update SMILE. Each of us is working on own project based on SMILE, but I hope we can join our efforts and send some features to each other. I prefer Co-op over Deathmatch.\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\lang1049\f6 Plugins folder is recreated to prevent runtime error 76 and it's having all existing plugins for SMILE (one).\cf2\lang1033\f3\par
+\cf0\lang1049\f6{\pntext\f9\'B7\tab}Added support for Ceres & Debug patch. Now visibility arrays and area map will be saved to exact places where they are, even if you have repointed them.\cf2\lang1033\f3\par
+\cf0\lang1049\f6{\pntext\f9\'B7\tab}Added special support for the Shutter2 enemy. Now Clicking on Normal GFX / Special GFX button will change value between \i Special GFX\i0  and \i Move once\i0  to make shutter move only after beign hit if \i Move once\i0  is selected.\cf2\lang1033\f3\par
+{\pntext\f9\'B7\tab}Fixed delays in beam menu. Data at second delay in Charged form have nothing similar to delay. It's Beam Sounds, actually. Now cooldown after charge delay now having it's own scroll. \par
+\cf0\lang1049\f6{\pntext\f9\'B7\tab}Now you can import and export title BG from Graphics Menu.\par
+{\pntext\f9\'B7\tab}Changed text in pointers menu. Now it's clear what is Enemy Pop pointer and what is Enemy Allowed pointer.\par
+\lang1033{\pntext\f9\'B7\tab}Started\lang1049  graphic set expansion.\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\par
+\par
+\cf1\lang1033\f3 02.06.\lang1049\f4 1\lang1033\f3 2\f5  \f3 Smile became open sourced. No changes since Waffle. Message from Jathys\f5 :\par
+\cf0\lang1049\f6 Unofficial SMILE release (re-release of Parlor - Waffle). Source code has been included. I will not be doing any public releases of SMILE, due to the indirect effect of making me want to bash my head into the wall every time I get motivated and start working on it. Despite that, I hope someone(s) will make significant progress with it in the future.\par
+\par
+\par
+\cf1\lang1033\f3 12/30/\lang1049\f4 11\lang1033\f5  \f3 Parlor - Waffle \f5 (\f3 aka 2.75\f5 ):\par
+Bug fixes mostly. And handful of bug fixes remain for the next release.\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\lang1049\f6 A handful of bug fixes\par
+{\pntext\f9\'B7\tab}Map Editor window is a separate window \par
+{\pntext\f9\'B7\tab}More menu adjustments \par
+{\pntext\f9\'B7\tab}Graphics Editor color labels changed for readability \par
+{\pntext\f9\'B7\tab}Beauty Salon Palette Blends down to 8 rows (had been 16) to prevent corruption \par
+{\pntext\f9\'B7\tab}Beauty Salon Value update glitch (sometimes didn't) \par
+{\pntext\f9\'B7\tab}BTS and Other menus usable again (oops) \par
+{\pntext\f9\'B7\tab}Some boxes (around BTS and while showing type preview) are prettier \par
+{\pntext\f9\'B7\tab}Test Room Options save again\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\par
+\par
+\cf1\f4 10\lang1033\f3 /\lang1049\f4 11\lang1033\f3 /\lang1049\f4 11\lang1033\f5  \f3 Parlor - Sky \f5 (\f3 aka 2.70\f5 ):\par
+As are all releases, Sky is a transition release. I did a fair amount of work last week and none this week. Improvements? Yes. Refinement? No.\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\lang1049\f6 A handful of bug fixes \par
+{\pntext\f9\'B7\tab}A few more menu changes \par
+{\pntext\f9\'B7\tab}Gutted out the map editor and put it in its own window. Currently, this window is always on top of all other windows (not just within the program). I'll be changing this later, but I needed a quick fix way to make sure the window doesn't get covered up by the level editor (which will still steal focus when the mouse goes over it). \par
+{\pntext\f9\'B7\tab}Another change or two here and there, though for the life of me I can't remember what. No changes since last week and I'm old, so I forget these things.\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\par
+\par
+\cf1\lang1033\f3 09/\lang1049\f4 26\lang1033\f3 /\lang1049\f4 11\lang1033\f5  \f3 Parlor - Snow \f5 (\f3 aka 2.65\f5 ):\par
+This is another transition release (as all Parlor releases will be). Lots of things will be broken as we move forward. By not having a polished product, I can release more regularly. This is both good and bad.\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\lang1049\f6 Fixed the crash caused by leaving the scroll editor\par
+{\pntext\f9\'B7\tab}Re-arranged lots of stuff in the menus/title bar\par
+{\pntext\f9\'B7\tab}Changed how you adjust the FX1 height (it's now the orange bar on the left of the screen)\cf2\lang1033\f5\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\par
+\par
+\cf1\f3 09/\lang1049\f4 19\lang1033\f3 /\lang1049\f4 11\lang1033\f5  \f3 Parlor - Emerald \f5 (\f3 aka 2.60\f5 ):\par
+\f3 Project name changed to Parlor.\par
+Parlor is an unofficial release of SMILE. I would not recommend you replace your current SMILE with this, as it's experiencing some interface changing and is likely to have lots of issues I haven't noticed yet. When you find new crashes, errors, glitches, etc... please let me know either here or by PM.\par
+I will try (read: no promises) to update Parlor on a far more regular basis than I could ever release SMILE. It is unrefined and unfinished, but should quickly turn into what will eventually be SMILE 3.0. As best as possible, I'll try to include a "what's new", but it won't be very detailed.\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\lang1049\f6 Started interface changes... Mostly in the title bar of the main form, but also the PLM form. (I know the menus don't work as normal Windows menus when moving the mouse from one to the next)\cf2\lang1033\f5\par
+\cf0\lang1049\f6{\pntext\f9\'B7\tab}Auto-Open... Parlor auto-opens whatever ROM you last had opened and auto-opens the room you last had opened. As of yet, I have not added error trap for if your ROM/room are messed up to the point that it crashes before you can do anything.\cf2\lang1033\f5\par
+\cf0\lang1049\f6{\pntext\f9\'B7\tab}Favorites... Rooms you work on more than others and want quick access to. You can create favorites and give them names (instead of having to find them in the typical list of hex values).\cf2\lang1033\f5\par
+\cf0\lang1049\f6{\pntext\f9\'B7\tab}Swap Button... Opens whatever room you had opened most recently. Allows you to swap back and forth between two rooms easily.\cf2\lang1033\f5\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf1\f3\par
+\par
+09/23/09\f5  (\f3 2.50\f5 ):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\f3 Doubled the speed of the file comparer.\f5\par
+\f3{\pntext\f9\'B7\tab}Beefed up the BG_Editor (pasting from level editor clipboard, shows actual colors, etc...)\f5\par
+\f3{\pntext\f9\'B7\tab}Fixed some common crashes involving the FX1 and Layer3 editors.\f5\par
+\f3{\pntext\f9\'B7\tab}Fixed a few issues in the Samus Pose editor.\f5\par
+\f3{\pntext\f9\'B7\tab}Update to SOLA (correctly checks for updates, now able to download plugins).\f5\par
+\f3{\pntext\f9\'B7\tab}Adjusted the brightness settings (Bright and Blazing) to be more usable.\f5\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\par
+\cf1\f3 05/25/09\f5  (\f3 2.30\f5 ):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\f3 Created Metroid Buddy... It's a metroid that follows your mouse around eating enemies as you edit.  The point?  It's a frickin' metroid chasing your mouse.\f5\par
+\f3{\pntext\f9\'B7\tab}Started a new Help File... I actually expect this one to go somewhere.  At the very least, I took several of the seperate text files (enemy quirks, door help, etc...) and stuck them into a single file.\f5\par
+\f3{\pntext\f9\'B7\tab}Legna.dll is no longer needed as it's been merged with SMILE.dll... Removed unused functions to slim that down as well.\f5\par
+\f3{\pntext\f9\'B7\tab}Simplified the Graphics Editor by making it quicker to select which 16x16 you're editing (and a few other tweaks I'll mention in the help file should I get to it at some point).  Added the ability to import/export \i tile tables\i0 .  Added the option to grab the palette from a 256 color bitmap.\f5\par
+\f3{\pntext\f9\'B7\tab}Added an error trap to prevent certain common errors from crashing smile.  So far, only one error has been trapped.  "Subscript out of Range" errors caused by overwriting part of a tile table will no longer crash the program, giving you a chance to fix your problem with the new tile table import/export feature.\f5\par
+\f3{\pntext\f9\'B7\tab}Drastically improved quality of the Scroll Editor (8x8 mode) view.\f5\par
+\f3{\pntext\f9\'B7\tab}Quickmet (Room Test) now supports boss/event states.\f5\par
+\f3{\pntext\f9\'B7\tab}Added support for door dependent FX1's (ie- Room 7AFA3, for example, has raised or lowered lava, depending on which door you enter)\f5\par
+\f3{\pntext\f9\'B7\tab}Implemented a new palette chooser (old one still functions) for quicker color setting (a temporary harmless bug affects the transparent color of samus's suit, but is not visible in-game... Will be fixed soon).\f5\par
+\f3{\pntext\f9\'B7\tab}BTS can now be changed by hitting # over a tile to type in a BTS value -or- by hitting 0-9 to do the same thing (but start with 0-9 in the textbox that pops-up).\f5\par
+\f3{\pntext\f9\'B7\tab}Several bug fixes (including the lower-right tile getting screwed up in layer 2), minor tweaks, and a few unfinished ideas.\f5\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf1\f3\par
+03/14/09\f5  (\f3 2.10\f5 ):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\f3 Added langauge translation files for English, French, Finnish, and Latin.  If you'd like to make a translation for your own language, use "Custom.txt" and send it to me.  These files currently only edit the basic menus.\f5\par
+\f3{\pntext\f9\'B7\tab}Technically added support for PLM Lists and Scroll PLM data to be in banks other than $8F (you'd have to change this in a hex editor).  Only successfully tested the Scroll PLM's at this point.  No luck with the PLM Lists even when no changes have been made with SMILE, so not sure how that goes... Fortunately, it still works with the original bank so you're golden.\f5\par
+\f3{\pntext\f9\'B7\tab}Fixed a bug that crashed SMILE when changing window size when the window is maximized... Sigh...\f5\par
+\f3{\pntext\f9\'B7\tab}Fixed a 32x32 mode bug that prevented door cloning from giving accurate values.\f5\par
+\f3{\pntext\f9\'B7\tab}Fixed a 32x32 mode bug that made the tile type preview be misplaced.\f5\par
+\f3{\pntext\f9\'B7\tab}Fixed a bug when clearing the clone door list and clicking on it could crash the program\f5\par
+\f3{\pntext\f9\'B7\tab}Fixed a bug that would crash on using "Open most recent room" in specific rooms... example: 7D340\f5\par
+\f3{\pntext\f9\'B7\tab}Scroll areas/screens now visible for rooms with 0000/0001 used as their scroll pointers.  Blue/green tint of the box will remind you which value does all blue screens and which does all green.\f5\par
+\f3{\pntext\f9\'B7\tab}Tile Type Preview is no longer called by double clicking on the tile type preview picture, as too many people didn't know the feature existed.  There is now a check box available ("Show Type on Map") that will enable/disable the feature.  The preview mode has been improved slightly, remaining in effect when you right click on new tiles, add new tiles, etc...\f5\par
+\f3{\pntext\f9\'B7\tab}Fixed an annoying little shit of a bug that made SMILE fail to redraw transparent areas of tiles in Layer 1 when Layer 2 is hidden.\f5\par
+\f3{\pntext\f9\'B7\tab}Quickmet/RoomTest slightly updated to support heat rooms, glowing colors, and the other FX1 features that weren't enabled in tests before.\f5\par
+\f3{\pntext\f9\'B7\tab}Fixed a few smaller bugs that don't come to mind now.\f5\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\b\f0\fs24\par
+\cf1\b0\f3\fs20 02/14/09\f5  (\f3 2.00\f5 ):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\f3 Powerbomb colors now editable in the Game Behavior form.\f5\par
+\f3{\pntext\f9\'B7\tab}Added a Test Room feature that allows you to open a room to the spot indicated with your mouse, with equipment you specify.\f5\par
+\f3{\pntext\f9\'B7\tab}Added BTS viewing to reveal non-zero BTS values on tiles that aren't slopes or "special" tiles.\f5\par
+\f3{\pntext\f9\'B7\tab}Modified Tile Type Preview to go on/off as needed when you double click the preview box.\f5\par
+\f3{\pntext\f9\'B7\tab}Created SOLA (Smile On-Line Access) which will act as a gateway to Help Links, Updates, and (in the future) plug-ins.\f5\par
+\f3{\pntext\f9\'B7\tab}Added support for most non-beam damages.\f5\par
+\f3{\pntext\f9\'B7\tab}Added the "rest" of the slopes to the wireframe.  Modified existing block grids to make it easier to remember which blocks respawn (respawnables have a double box around them . . . Also gave door tiles a unique box.\f5\par
+\f3{\pntext\f9\'B7\tab}Added scrolling by holding down the mouse wheel button.\f5\par
+\f3{\pntext\f9\'B7\tab}Added an annoying blinker at the start of the program so even the mentally challenged can figure out why "everything" is disabled.\f5\par
+\f3{\pntext\f9\'B7\tab}Fixed Kraid's room.\f5\par
+\f3{\pntext\f9\'B7\tab}Changed many pieces of the User Interface, ranging from menu placements, hotkeys, icons, more text help, etc...\f5\par
+\f3{\pntext\f9\'B7\tab}Fixed bug that put Palette Indexes out of order in the Enemies Allowed list when changing them\f5\par
+\f3{\pntext\f9\'B7\tab}Removed the imbedded ROM Protection feature of SMILE.  Too many people had made it public knowledge, so it wasn't protecting anything anymore anyway.\f5\par
+\f3{\pntext\f9\'B7\tab}Enemies/PLM's to 0,0 now places enemies/plm's in the upper left of the active screen.\f5\par
+\f3{\pntext\f9\'B7\tab}Fixed bug that scrolled rooms backwards if they were too small vertically.\f5\par
+\f3{\pntext\f9\'B7\tab}New gradient mode of choosing colors for palettes (the old method is still available, by popular request).\f5\par
+\f3{\pntext\f9\'B7\tab}Fixed graphical glitch in flipping slopes in the bts menu while in 32x32 mode.\f5\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\f3\par
+\cf0\b\f0\fs24\par
+\cf1\b0\f3\fs20 04/08/08\f5  (\f3 1\f5 .\f3 32\f5 ):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\f3 Some more bug fixes that I thought I had included in the last release\f5\par
+\f3{\pntext\f9\'B7\tab}In-editor documents for both enemies and plm's (plus more accurate images for some)\f5\par
+\f3{\pntext\f9\'B7\tab}% key can be used to re-open the last room you worked opened (even after closing the editor)\f5\par
+\f3{\pntext\f9\'B7\tab}Map editor allows for coding that Kejardon made to allow map saving to function correctly in game\f5\par
+\f3{\pntext\f9\'B7\tab}I'm sure there's more stuff, but I forgot\f5\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\par
+\par
+\cf1\f3 12/31/07\f5  (\f3 1\f5 .\f3 23\f5 ):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\f3 Load rooms directly from the map editor\f5\par
+\f3{\pntext\f9\'B7\tab}Varia/Gravity Suits now read correctly in the PLM editor\f5\par
+\f3{\pntext\f9\'B7\tab}Added RoomVar support (my own data type, to be made public shortly)\f5\par
+\f3{\pntext\f9\'B7\tab}Added LOTS of new screen modes (plus improved auto-hide menus)\f5\par
+\f3{\pntext\f9\'B7\tab}Tweaked 32x32 tile view, since it's actually useful with the new screen modes\f5\par
+\f3{\pntext\f9\'B7\tab}Allow enemies to be moved without snapping to the grid\f5\par
+\f3{\pntext\f9\'B7\tab}Move the ship as a single unit (shift cancels this)\f5\par
+\f3{\pntext\f9\'B7\tab}Drag/Drop the ship icon where you want it in the Map Editor\f5\par
+\f3{\pntext\f9\'B7\tab}Added a basic Scroll PLM editing.\f5\par
+\f3{\pntext\f9\'B7\tab}Added a very basic Background Editor\f5\par
+\f3{\pntext\f9\'B7\tab}Added a projectile editor (Game Behavior)\f5\par
+\f3{\pntext\f9\'B7\tab}Added support for text reference in the enemy/plm forms... Files still need to be added\f5\par
+\f3{\pntext\f9\'B7\tab}A \i tremendous\i0  number of bug fixes (you have no idea)\f5\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf1\par
+0\f3 7\f5 /\f3 1\f5 7/0\f3 6\f5  (\f3 1\f5 .\f3 0\f5 0):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\f3 Back up and Recovery system.\f5\par
+\f3{\pntext\f9\'B7\tab}IPS support (creating, applying, and applying an entire folder of patches)... clearmem.ips, gravity.ips, and torizo.ips bundled for public use.\f5\par
+\f3{\pntext\f9\'B7\tab}Text Editor (green intro text, bomb text, area name text, JTE engine (patch not provided yet).\f5\par
+\f3{\pntext\f9\'B7\tab}Samus Palette Editor.\f5\par
+\f3{\pntext\f9\'B7\tab}More game properties.\f5\par
+\f3{\pntext\f9\'B7\tab}Minor stuff I'm forgetting.\f5\par
+\f3{\pntext\f9\'B7\tab}Bug fixes.\f5\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\par
+\cf1\f3 12/25\f5 /05 (0.\f3 7\f5 0):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\f3 Re-Added Pointer Pop-Ups\f5\par
+\f3{\pntext\f9\'B7\tab}Added partial support for Area Load Stations\f5\par
+\f3{\pntext\f9\'B7\tab}Added support for enemy palettes to be converted to YY-Char format\f5\par
+\f3{\pntext\f9\'B7\tab}Rip/Save scenery palettes to/from TLP/YY-Char formats\f5\par
+\f3{\pntext\f9\'B7\tab}Rip/Save scenery graphic sheets for editing in a tile editor\f5\par
+\f3{\pntext\f9\'B7\tab}Added support for editing tile tables (ie- choose which 8x8's make p the 16x16 tiles)\f5\par
+\f3{\pntext\f9\'B7\tab}Changed CRE ignoring to be done based on area (Ceres) instead of the sheet number\f5\par
+\f3{\pntext\f9\'B7\tab}Added support for an ASM code (available at a later date) to allow for more than one bank to be used for enemy populations\f5\par
+\f3{\pntext\f9\'B7\tab}Lots of bug fixes\par
+{\pntext\f9\'B7\tab}Lots of stuff I'm either forgetting or choosing not to list\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\f5\par
+\cf1 06/07/05 (0.50):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520 Added support to De/Recompress graphics for editing in a tile editor\par
+{\pntext\f9\'B7\tab}Added support for YY-Char palettes (in addition to TLP)\par
+{\pntext\f9\'B7\tab}Added ability to load and save palette files for scenery\par
+{\pntext\f9\'B7\tab}Fixed the hex -> dec bug in the music contro\f3 l\f5\par
+{\pntext\f9\'B7\tab}Convert enemy palettes to Tile Layer format (TPL) . . . Saved in folder with your ROM, as EnemyID.TPL.\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf1\par
+06/01/05 (0.40):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520 Set maximum number of bombs, missiles, and beams visible on screen at once (from 1-5)\par
+{\pntext\f9\'B7\tab}Set duration of bomb timer\par
+{\pntext\f9\'B7\tab}Convert enemy palettes to Tile Layer format (TPL) . . . Saved in folder with your ROM, as EnemyID.TPL.\par
+{\pntext\f9\'B7\tab}Load and save Tile Layer palettes (TPL) for enemy palettes\par
+{\pntext\f9\'B7\tab}Improved support for changing songs in an area (control and track)\par
+{\pntext\f9\'B7\tab}Added support for "barrier blocks" in the special blocks bts menu\par
+{\pntext\f9\'B7\tab}Fixed a few more bugs\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\b\f0\fs24\par
+\cf1\b0\f5\fs20 05/03/05 (0.35):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520 Added support for adding new rooms (type in the new offset, then save)\par
+{\pntext\f9\'B7\tab}Added support for adding/removing enemies from a room\par
+{\pntext\f9\'B7\tab}Added support for adding/removing plm's from a room\par
+{\pntext\f9\'B7\tab}Fixed an "unknown" music entry (west maridia)\par
+{\pntext\f9\'B7\tab}Fixed a few bugs\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\b\f0\fs24\par
+\cf1\b0\f5\fs20 03/07/05 (0.30):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520 Fixed the bug that caused a crash when clearing Show Intro or Red Powerbomb\par
+{\pntext\f9\'B7\tab}Fixed some mini-map bugs\par
+{\pntext\f9\'B7\tab}Fixed enable/disable in clipboard\par
+{\pntext\f9\'B7\tab}Added support for different color themes in mini-map, though you can't see them\par
+{\pntext\f9\'B7\tab}A few behind the scenes changes that will be apparent in the next release\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\b\f0\fs24\par
+\cf1\b0\f5\fs20 01/11/05 (0.25):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520 Added the rest of the enemy props (and fixed some old)\par
+{\pntext\f9\'B7\tab}Added Item Drop editing\par
+{\pntext\f9\'B7\tab}Added support for second part of enemy allowed list\par
+{\pntext\f9\'B7\tab}Added ability to move offscreen enemies/plms on screen\par
+{\pntext\f9\'B7\tab}Added default gravity editing\par
+{\pntext\f9\'B7\tab}Fixed potential errors in Room Header form\par
+{\pntext\f9\'B7\tab}Fixed a *critical* error in the Pointer Editor (using $0000 would write data to the start of the bank, even though $0000 signifies that there should be no pointer)\par
+{\pntext\f9\'B7\tab}Added primitive map editing support\par
+{\pntext\f9\'B7\tab}Added a tile type preview to help identify the solidness of tiles in your level\par
+{\pntext\f9\'B7\tab}Fixed the overflow error caused when a n00b tries to expand the ROM beyond bank $FF\par
+{\pntext\f9\'B7\tab}Added a file comparer, to speed up error fixing in the future\par
+{\pntext\f9\'B7\tab}Added ability to change the # of hits it takes to open pink/green doors\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf0\b\f0\fs24\par
+\cf1\b0\f5\fs20 11/24/04 (0.18):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520 Added palette editing (scenery)\par
+{\pntext\f9\'B7\tab}Added a pointer editor for most the pointers handled by the editor\par
+{\pntext\f9\'B7\tab}Rooms are loaded from a list, instead of hardcoded, so you can add/subtract them (if you move pointers around)\par
+{\pntext\f9\'B7\tab}Added support for changing ceres/zebes timers, plus intro toggle\par
+{\pntext\f9\'B7\tab}Added support for expanding the ROM\par
+{\pntext\f9\'B7\tab}Changed hotkeys for door editing\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\b\f0\fs24\par
+\cf1\b0\f5\fs20 08/08/04 (0.15):\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf2 Added FX1 support.\par
+{\pntext\f9\'B7\tab}Fixed a bug that would crash the editor if beta room opened first\par
+{\pntext\f9\'B7\tab}Added PLM Editing (ie- you can change items/door shells).\par
+{\pntext\f9\'B7\tab}Fixed a bug that caused rooms with no enemies to "create" enemies when you saved.\par
+{\pntext\f9\'B7\tab}Added lots of new properties to Enemy Editor (including Palette Editing).\par
+{\pntext\f9\'B7\tab}Added an easier way to drag-n-drop BTS values.\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\f0\fs24\par
+\cf1\f5\fs20 06/01/04 (0.1):\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf2 Added Door Editing.\par
+{\pntext\f9\'B7\tab}Added PLM Editing (ie- you can change items/door shells).\par
+{\pntext\f9\'B7\tab}Fixed a bug that caused rooms with no enemies to "create" enemies when you saved.\par
+{\pntext\f9\'B7\tab}Added lots of new properties to Enemy Editor (including Palette Editing).\par
+{\pntext\f9\'B7\tab}Added an easier way to drag-n-drop BTS values.\par
+{\pntext\f9\'B7\tab}Fixed a lot of tiny bugs.\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\f0\fs24\par
+\par
+\cf1\f5\fs20 03/16/04 (0.0691):\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\cf2 Added state editor.\par
+{\pntext\f9\'B7\tab}Added defaults for Common Room Elements (CRE) and 7 graphic sheets (1, 2, 22, 23, 24, 25, 26).\par
+{\pntext\f9\'B7\tab}Added legna.dll (will be used in most my projects for now on).\par
+{\pntext\f9\'B7\tab}Allow user to get offsets for various data that SMILE doesn't yet handle (in state editor)\par
+{\pntext\f9\'B7\tab}Removed dependency on Ultima's msdll.dll.\par
+{\pntext\f9\'B7\tab}Fixed a bug that saved Layer 2 with one byte less than it should have had.\par
+{\pntext\f9\'B7\tab}Fixed the double-click on the menu bug.\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\f0\fs24\par
+\cf1\f5\fs20 11/27/03 (0.055):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520 Added autoscroll when dragging enemies.\par
+{\pntext\f9\'B7\tab}Allow user to safely increase room size (in screens) . . . *Scroll data may still overwrite other data though*\par
+{\pntext\f9\'B7\tab}Allow user to add/remove Layer 2 from rooms.\par
+{\pntext\f9\'B7\tab}Re-added (temporarily) a feature that will allow default values to be made for the menus.\par
+{\pntext\f9\'B7\tab}Fixed a bug that saved enemy speeds above $7FFF incorrectly.\par
+{\pntext\f9\'B7\tab}Fixed bugs related to clicking the "x" on room header and state editor forms.\par
+{\pntext\f9\'B7\tab}Fixed bug that gave Layer 2 one byte more than it should have had in most rooms.\par
+{\pntext\f9\'B7\tab}Fixed a bug that caused a Subscript Out Of Range error when dragging off the lower right corner of the map.\par
+{\pntext\f9\'B7\tab}Fixed a bug in dragging up-right and down-left in the menu (also fixes errors from dragging off the menu's edge).\par
+{\pntext\f9\'B7\tab}Fixed overflow error when making room dimensions too large, too smaller, or in decimal (stupid users).\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\par
+\cf1 11/11/03 (0.045):\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520 Changed the way headers are detected.\par
+{\pntext\f9\'B7\tab}Started converting some code to C++ (dll) . . . No visible changes to the user.\par
+{\pntext\f9\'B7\tab}Selecting tiles from menu can now be done with left or right mouse buttons.\par
+{\pntext\f9\'B7\tab}Rooms with no enemies no longer crash after being saved.\par
+{\pntext\f9\'B7\tab}Warning if new data is too large and will overwrite other data.\par
+{\pntext\f9\'B7\tab}Added Prop-X support to the enemy editor.\par
+{\pntext\f9\'B7\tab}Refresh level when changing room dimensions.\par
+{\pntext\f9\'B7\tab}Dialogue window defaulted to the folder you've got SMILE in, instead of C:\\.\par
+{\pntext\f9\'B7\tab}Black line bug gone for good.\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\f0\fs24\par
+\cf1\f5\fs20 10/19/03:\cf2\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520 Scroll area boxes can now be seen in other editing views.\par
+{\pntext\f9\'B7\tab}Removed scroll value #3 (yellow) from the scroll viewer, since it isn't supposed to exist anyway.\par
+{\pntext\f9\'B7\tab}Adjusted scroll area boxes by one pixel, to eliminate the illusion that there's different colors (ie- red & green makes yellow).\par
+{\pntext\f9\'B7\tab}Changed the mouse icon used in dragging/dropping from the BTS menu to make it easier on the eyes.\par
+{\pntext\f9\'B7\tab}Made the clipboard grid much easier on the eyes.\par
+{\pntext\f9\'B7\tab}Click-n-Drag to select tiles in multiple directions now.\par
+{\pntext\f9\'B7\tab}Fixed a bug that saved graphic sheet and music track/control to Standard states, regardless of the state selected.\par
+{\pntext\f9\'B7\tab}Select music from a list with song titles\par
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\f0\fs24\par
+\cf1 10/12/03:\cf2\f5\fs20\par
+\pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520 Faster pasting/flipping of large groups of tiles.\par
+{\pntext\f9\'B7\tab}Re-added 32x32 tile view.\par
+{\pntext\f9\'B7\tab}Optional larger window (also, autohide menu).\par
+{\pntext\f9\'B7\tab}Minor speed improvement when loading rooms.\par
+{\pntext\f9\'B7\tab}Removed enemies from scroll view ... was saving incorrectly (ie- bugs).\par
+{\pntext\f9\'B7\tab}Save to Bitmap feature now saves to romName_Address.bmp instead of romName.smc.bmp.\par
+{\pntext\f9\'B7\tab}Load/Save INI file.\par
+{\pntext\f9\'B7\tab}Disable pieces of the clipboard.\par
+{\pntext\f9\'B7\tab}BTS Menu.  Support for most slopes and special tiles.\par
+{\pntext\f9\'B7\tab}Fixed the black line bug (twice) and the green line bug.\par
+{\pntext\f9\'B7\tab}Fixed orientation flipping bug in property scroller (also, automatically updates clipboard).\par
+{\pntext\f9\'B7\tab}Fixed bug that prevented grid from showing if Layer 1 and 2 were both off.\par
+{\pntext\f9\'B7\tab}Fixed mouse wheel bug (clicking outside map).\par
+{\pntext\f9\'B7\tab}Scrollbars now scroll the right distance in all view modes.\par
+{\pntext\f9\'B7\tab}*.BIN file is deleted after closing the program.\par
+{\pntext\f9\'B7\tab}Fixed a graphical bug that showed old graphics on redrawn areas.\par
+\pard\cf0\f8\par
+}
+ 

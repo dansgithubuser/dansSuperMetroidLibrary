@@ -1,0 +1,12 @@
+C854 (Grey Door)
+[High] == Open on certain criteria being met.*
+     00 = Main boss for the area is dead.
+     04 = Mini boss for the area is dead.
+     08 = Torizo for the area is dead.
+     0C = Enemies Dead matches Enemies Needed.
+     10 = Always closed.
+     14 = Delay in Tourian Gate room.
+     18 = Eticoons/Dachora saved?
+[Low] = Index of the door.
+
+*Set high bit (ie- add $80) to make this door re-appear every time you enter the room.

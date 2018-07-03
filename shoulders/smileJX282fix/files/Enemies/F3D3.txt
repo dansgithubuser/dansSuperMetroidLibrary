@@ -1,0 +1,7 @@
+F3D3 (BATTA1No)
+[Speed] = 0000/0001 for left/right wall
+[Speed 2] = distance to jump
+[Graphic Unknown] = 0004
+Set [Special GFX]
+
+Climbing pirate from Norfair.

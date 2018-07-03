@@ -1,0 +1,2 @@
+EABF (HACHI1)
+Speed is used rarely (set to 0050 sometimes), but not sure for what.
