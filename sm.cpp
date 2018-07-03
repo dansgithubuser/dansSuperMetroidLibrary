@@ -181,19 +181,20 @@ class LzCompressor{
 			//table tells us what index into the search word to start from when we hit a mismatch
 			int table[MAX_BLOCK_LENGTH];
 			const unsigned wordLength=min(maxBlockLength, uint32_t(_source.size()-offset));//length of search word
-			table[0]=-1;
-			table[1]=0;
+			table[0]=-1;//search word mismatches on 1st char: negative backtrack by one computes as move to next position in text
+			table[1]= 0;//search word mismatches on 2nd char: nothing else to do but go back to beginning of search word and try again
 			{
-				unsigned i=2, j=0;
-				while(i<wordLength){
-					if(_source[offset+i-1]==_source[offset+j]){
+				unsigned i=2,//index pointing to part of table being computed
+					j=0;//the value going into table[i]
+				while(i<wordLength){//size of table is size of search word
+					if(_source[offset+i-1]==_source[offset+j]){//search word continues to match search word prefix
 						++j;
 						table[i]=j;
 						++i;
 					}
-					else if(j>0) j=table[j];
-					else{
-						table[i]=0;
+					else if(j>0) j=table[j];//mismatch -- backtrack j using table defined so far
+					else{//mismatch, nothing more to backtrack to
+						table[i]=0;//j is 0
 						++i;
 					}
 				}
