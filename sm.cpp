@@ -165,11 +165,12 @@ class LzCompressor{
 			unsigned bytes=1;//bytes allocated to specify where to decompress from
 			uint8_t mask=0;//the range being decompressed shall be xor with this value
 			bool absolute=true;//whether the place to decompress from specified absolutely or relatively
+			unsigned maxBlockLength=1024;
 			switch(op){
 				case 4: bytes=2; break;
 				case 5: bytes=2; mask=0xFFu; break;
 				case 6: absolute=false; break;
-				case 7: mask=0xFFu; absolute=false; break;
+				case 7: mask=0xFFu; absolute=false; maxBlockLength=768; break;
 				default: throw std::logic_error("bad op in call for lz compress");
 			}
 			uint32_t lowest=0, highest=offset;//extreme possible indices to start reading from while decompressing
@@ -179,7 +180,7 @@ class LzCompressor{
 			//search word is source[offset..length]
 			//table tells us what index into the search word to start from when we hit a mismatch
 			int table[MAX_BLOCK_LENGTH];
-			const unsigned wordLength=min(MAX_BLOCK_LENGTH, uint32_t(_source.size()-offset));//length of search word
+			const unsigned wordLength=min(maxBlockLength, uint32_t(_source.size()-offset));//length of search word
 			table[0]=-1;
 			table[1]=0;
 			{
@@ -216,7 +217,7 @@ class LzCompressor{
 				||(//we may want to allow decompression by reading what we've just decompressed, but we must fulfill
 					j!=0//currently matching
 					&&i<offset//start of match is before where we're trying to compress
-					&&i+j<highest+MAX_BLOCK_LENGTH//we are capable of specifying how to decompress when limited by absolute offset
+					&&i+j<highest+maxBlockLength//we are capable of specifying how to decompress when limited by absolute offset
 					&&i+j<_source.size()//reading valid data at all
 				)
 			){
