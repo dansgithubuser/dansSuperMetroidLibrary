@@ -8,3 +8,6 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/SFML/include")
 add_definitions(-DSFML_STATIC)
 add_executable(DansSmv "${CMAKE_CURRENT_SOURCE_DIR}/sm.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/viewer.cpp")
 target_link_libraries(DansSmv sfml-system sfml-window sfml-graphics)
+
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/obvious/cpp")
+add_executable(DansSmlTest "${CMAKE_CURRENT_SOURCE_DIR}/sm.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/test.cpp")

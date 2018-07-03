@@ -1,8 +1,8 @@
 #include "sm.hpp"
 
 #include <fstream>
-#include <cassert>
 #include <algorithm>
+#include <stdexcept>
 
 using namespace std;
 using namespace sm;
@@ -49,8 +49,8 @@ const uint16_t VANILLA_CERES_RIDLEY_ROOM_LAYER_HANDLING=0xC97Bu;
 const unsigned MAX_BLOCK_LENGTH=1024;
 
 unsigned lzDecompress(const Buffer& source, uint32_t offset, uint32_t length, unsigned bytes, uint8_t mask, bool absolute, Buffer* destination=NULL){
-	assert(bytes==1||bytes==2);
-	assert(mask==0||mask==0xFFu);
+	if(!(bytes==1||bytes==2)) throw std::logic_error("bad bytes in call for lz decompress");
+	if(!(mask==0||mask==0xFFu)) throw std::logic_error("bad mask in call for lz decompress");
 	if(destination){
 		int from=source[offset];
 		if(bytes==2) from|=source[offset+1]<<8;
@@ -63,7 +63,7 @@ unsigned lzDecompress(const Buffer& source, uint32_t offset, uint32_t length, un
 }
 
 //returns size of compressed data
-unsigned decompress(const Buffer& source, uint32_t offset, Buffer* destination=NULL){
+unsigned decompress(const Buffer& source, uint32_t offset, Buffer* destination){
 	unsigned initialOffset=offset;
 	while(true){
 		if(source[offset]==0xFF) break;//done
@@ -118,6 +118,11 @@ unsigned decompress(const Buffer& source, uint32_t offset, Buffer* destination=N
 }
 
 void putBlockHeader(Buffer& destination, uint8_t op, unsigned length){
+	if(length==0||length>MAX_BLOCK_LENGTH){
+		std::stringstream ss;
+		ss<<"bad length "<<length<<" in compression block header";
+		throw std::logic_error(ss.str());
+	}
 	--length;
 	if(length>0x1Fu||op==7u){
 		destination.push_back(0xE0u|op<<2|(length&0x300u)>>8);
@@ -138,7 +143,7 @@ void rleCompress(const Buffer& source, uint32_t offset, uint32_t& length, uint8_
 		case 1: break;
 		case 2: bytes=2; break;
 		case 3: gradient=1; break;
-		default: assert(false);
+		default: throw std::logic_error("bad op in call for rle compress");
 	}
 	length=1;
 	for(unsigned i=1; offset+i<source.size()&&length<MAX_BLOCK_LENGTH; ++i){
@@ -152,84 +157,98 @@ void rleCompress(const Buffer& source, uint32_t offset, uint32_t& length, uint8_
 
 class LzCompressor{
 	public:
-		LzCompressor(const Buffer& source): source(source) {
-			for(unsigned i=0; i<source.size(); ++i)
-				offsets[source[i]].push_back(i);
+		LzCompressor(const Buffer& source): _source(source) {
+			for(unsigned i=0; i<_source.size(); ++i)
+				_offsets[_source[i]].push_back(i);
 		}
 		void compress(uint32_t offset, uint32_t& length, uint8_t op, Buffer& destination){
-			unsigned bytes=1;
-			uint8_t mask=0;
-			bool absolute=true;
+			unsigned bytes=1;//bytes allocated to specify where to decompress from
+			uint8_t mask=0;//the range being decompressed shall be xor with this value
+			bool absolute=true;//whether the place to decompress from specified absolutely or relatively
+			unsigned maxBlockLength=1024;
 			switch(op){
 				case 4: bytes=2; break;
 				case 5: bytes=2; mask=0xFFu; break;
 				case 6: absolute=false; break;
-				case 7: mask=0xFFu; absolute=false; break;
-				default: assert(false);
+				case 7: mask=0xFFu; absolute=false; maxBlockLength=768; break;
+				default: throw std::logic_error("bad op in call for lz compress");
 			}
-			uint32_t lowest=0, highest=offset;
-			if(absolute){
-				if(bytes==2) highest=min(0x10000u, highest);
-				else highest=min(0x100u, highest);
-			}
-			else{
-				if(bytes==2) lowest=max(int(offset-0xFFFFu), 0);
-				else lowest=max(int(offset-0xFFu), 0);
-			}
+			uint32_t lowest=0, highest=offset;//extreme possible indices to start reading from while decompressing
+			if(absolute) highest=min(bytes==2?0x10000u:0x100u, offset);
+			else lowest=max(int(offset-(bytes==2?0xFFFFu:0xFFu)), 0);
 			//build Knuth–Morris–Pratt table
+			//search word is source[offset..length]
+			//table tells us what index into the search word to start from when we hit a mismatch
 			int table[MAX_BLOCK_LENGTH];
-			const unsigned wordLength=min(MAX_BLOCK_LENGTH, uint32_t(source.size()-offset));
-			table[0]=-1;
-			table[1]=0;
-			unsigned i=2, j=0;
-			while(i<wordLength){
-				if(source[offset+i-1]==source[offset+j]){
-					++j;
-					table[i]=j;
-					++i;
-				}
-				else if(j>0) j=table[j];
-				else{
-					table[i]=0;
-					++i;
+			const unsigned wordLength=min(maxBlockLength, uint32_t(_source.size()-offset));//length of search word
+			table[0]=-1;//search word mismatches on 1st char: negative backtrack by one computes as move to next position in text
+			table[1]= 0;//search word mismatches on 2nd char: nothing else to do but go back to beginning of search word and try again
+			{
+				unsigned i=2,//index pointing to part of table being computed
+					j=0;//the value going into table[i]
+				while(i<wordLength){//size of table is size of search word
+					if(_source[offset+i-1]==_source[offset+j]){//search word continues to match search word prefix
+						++j;
+						table[i]=j;
+						++i;
+					}
+					else if(j>0) j=table[j];//mismatch -- backtrack j using table defined so far
+					else{//mismatch, nothing more to backtrack to
+						table[i]=0;//j is 0
+						++i;
+					}
 				}
 			}
 			//find longest match using Knuth–Morris–Pratt algorithm
-			unsigned bestStart=0, bestLength=0, nextOffsetToTry=0;
-			while(nextOffsetToTry<offsets[source[offset]^mask].size()){
-				i=offsets[source[offset]^mask][nextOffsetToTry];
+			unsigned bestStart=0, bestLength=0, nextOffsetToTry=0,
+				i,//i is where in source current match started
+				j=0;//j is index into search word; i+j is index into source currently being inspected
+			const auto offsets=_offsets[_source[offset]^mask];//the particular offsets into source that we will try
+			while(true){//skip to the lowest offset we can use
+				if(nextOffsetToTry>=offsets.size()){
+					length=0;
+					return;
+				}
+				i=offsets[nextOffsetToTry];
 				if(i>=lowest) break;
 				++nextOffsetToTry;
 			}
-			if(nextOffsetToTry>=offsets[source[offset]^mask].size()){
-				length=0;
-				return;
-			}
-			j=0;//offset into string being searched for
-			while(i+j<highest||(j!=0&&i<offset&&i+j<highest+MAX_BLOCK_LENGTH&&i+j<source.size())){
-				if(source[offset+j]==(source[i+j]^mask)){
-					++j;
-					if(j>bestLength){
+			while(
+				i+j<highest//obvious condition for condition for continuing
+				||(//we may want to allow decompression by reading what we've just decompressed, but we must fulfill
+					j!=0//currently matching
+					&&i<offset//start of match is before where we're trying to compress
+					&&i+j<highest+maxBlockLength//we are capable of specifying how to decompress when limited by absolute offset
+					&&i+j<_source.size()//reading valid data at all
+				)
+			){
+				if(_source[offset+j]==(_source[i+j]^mask)){//match
+					++j;//increase length of match (which is index into search word)
+					if(j>bestLength){//keep track of best
 						bestStart=i;
 						bestLength=j;
 					}
-					if(j==wordLength) break;
+					if(j==wordLength) break;//early exit if we found the entire search word
 				}
-				else{
+				else{//mismatch
 					i+=j-table[j];
-					if(table[j]>=0) j=table[j];
+					if(table[j]>=0) j=table[j];//don't have to start over; i+j remains constant
 					else{
-						j=0;
+						j=0;//have to start over; i+j increases by 1
 						//advance i based on index of source
 						while(true){
 							++nextOffsetToTry;
-							if(nextOffsetToTry>=offsets[source[offset]^mask].size()) break;
-							if(offsets[source[offset]^mask][nextOffsetToTry]>=i) break;
+							if(nextOffsetToTry>=offsets.size()) break;
+							if(offsets[nextOffsetToTry]>=i) break;
 						}
-						if(nextOffsetToTry>=offsets[source[offset]^mask].size()) break;
-						else i=offsets[source[offset]^mask][nextOffsetToTry];
+						if(nextOffsetToTry>=offsets.size()) break;
+						else i=offsets[nextOffsetToTry];
 					}
 				}
+			}
+			if(bestLength==0){
+				length=0;
+				return;
 			}
 			//apply
 			length=bestLength;
@@ -239,8 +258,8 @@ class LzCompressor{
 			if(bytes==2) destination.push_back(bestStart>>8);
 		}
 	private:
-		const Buffer& source;
-		vector<unsigned> offsets[256];
+		const Buffer& _source;
+		vector<unsigned> _offsets[256];//map byte to vector of offsets into source equal to that byte, sorted low-to-high
 };
 
 void compress(const Buffer& source, Buffer& destination){
@@ -281,7 +300,10 @@ void compress(const Buffer& source, Buffer& destination){
 		if(bestOp==0){
 			++noCompressionLength;
 			++i;
-			if(i>=source.size()) noCompress(source, i, noCompressionLength, destination);
+			if(i>=source.size()||noCompressionLength==MAX_BLOCK_LENGTH){
+				noCompress(source, i, noCompressionLength, destination);
+				noCompressionLength=0;
+			}
 		}
 		else{
 			//actually stick in the no compression block first if it exists
@@ -506,7 +528,7 @@ bool Save::save(uint32_t& offset){
 //=====class Mode7=====//
 void Mode7::index(uint8_t tileSet, Rom::Index& index){
 	unsigned offset=dataOffset(tileSet);
-	index.set(offset, decompress(rom->buffer, offset), Rom::HACKABLE);
+	index.set(offset, decompress(rom->buffer, offset, NULL), Rom::HACKABLE);
 }
 
 void Mode7::open(uint8_t tileSet){

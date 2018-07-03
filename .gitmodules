@@ -1,0 +1,6 @@
+[submodule "SFML"]
+	path = SFML
+	url = https://github.com/sfml/sfml
+[submodule "obvious"]
+	path = obvious
+	url = git@github.com:dansgithubuser/obvious
